@@ -6,20 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="了解Redis | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="为了解决什么问题 访问速度加快 单线程  特点 基于内存。 模型是key&#x2F;value。 单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。 v的类型很多，5种。具备了多种本地方法，也就是io的优化。 操作的串行化  线程模型串行和并行用在哪里，以秒杀为例：  用户量过大的时候，首先用户并发的发起请求。 经过负载均衡转">
+<meta name="description" content="启动线程的三种方式 1：Thread 2: Runnable 3:Executors.newCachedThrad Runnable1234@FunctionalInterfacepublic interface Runnable &amp;#123;    public abstract void run();&amp;#125; 如果只是想开多线程实现run方法，那么最好是实现Runnable接口，而不是继承">
 <meta property="og:type" content="article">
-<meta property="og:title" content="了解Redis">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;09&#x2F;backend&#x2F;redis&#x2F;redis-base&#x2F;index.html">
+<meta property="og:title" content="java实现多线程的几种方式">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;16&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;implementt-multi-thread&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="为了解决什么问题 访问速度加快 单线程  特点 基于内存。 模型是key&#x2F;value。 单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。 v的类型很多，5种。具备了多种本地方法，也就是io的优化。 操作的串行化  线程模型串行和并行用在哪里，以秒杀为例：  用户量过大的时候，首先用户并发的发起请求。 经过负载均衡转">
+<meta property="og:description" content="启动线程的三种方式 1：Thread 2: Runnable 3:Executors.newCachedThrad Runnable1234@FunctionalInterfacepublic interface Runnable &amp;#123;    public abstract void run();&amp;#125; 如果只是想开多线程实现run方法，那么最好是实现Runnable接口，而不是继承">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis1.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;io.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis2.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis2.png">
-<meta property="og:updated_time" content="2020-05-10T08:57:07.329Z">
+<meta property="og:updated_time" content="2020-05-17T03:22:26.051Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
