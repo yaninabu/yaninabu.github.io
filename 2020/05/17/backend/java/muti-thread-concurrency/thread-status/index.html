@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>了解Redis | Hexo</title>
+  <title>多线程的几种状态 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="了解Redis | Hexo">
+  <meta name="description" content="多线程的几种状态 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="String 字符串操作set&#x2F;get&#x2F;append&#x2F;strlen1strlen 数值计算 二进制   基于内存。 模型是key&#x2F;value。 单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。 v的类型很多，5种。具备了多种本地方法，也就是io的优化。 操作的串行化  线程模型串行和并行用在哪里，以秒杀为例：  用">
 <meta property="og:type" content="article">
@@ -334,9 +334,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-backend/redis/redis-base" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/thread-status" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">了解Redis</h1>
+        <h1 class="article-title">多线程的几种状态</h1>
     
     <div class="article-meta">
         
@@ -346,7 +346,9 @@
             
                 <a  data-rel="后端">后端</a>/
             
-                <a  data-rel="redis">redis</a>
+                <a  data-rel="java">java</a>/
+            
+                <a  data-rel="多线程与高并发">多线程与高并发</a>
             
         </span>
         
@@ -354,7 +356,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-10 16:57:07'>2020-05-09 17:17</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-17 16:26:59'>2020-05-17 15:39</time>
         
     </div>
     <div class="article-meta">
@@ -376,7 +378,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#为了解决什么问题"><span class="toc-text">为了解决什么问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程模型"><span class="toc-text">线程模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程的六种状态"><span class="toc-text">线程的六种状态</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -392,44 +394,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="为了解决什么问题"><a href="#为了解决什么问题" class="headerlink" title="为了解决什么问题"></a>为了解决什么问题</h3><ol>
-<li>访问速度加快</li>
-<li>单线程</li>
+        <h2 id="线程的六种状态"><a href="#线程的六种状态" class="headerlink" title="线程的六种状态"></a>线程的六种状态</h2><ol>
+<li>new MyThread()的时候进入New状态</li>
+<li>执行start方法的时候进入Runnable状态；其中Runnable状态又分为Ready和Running状态，所谓Ready状态就是被线程调度器执行，在可执行的队列中，随时可以执行进入Running状态；Running状态是正在执行</li>
+<li>线程执行完进入terminated终止状态，运行结束</li>
+<li>线程运行中遇到Thread.sleep/o.wait/o.join/LockSupport.parkNanos/LockSupport.Until方法进入TimeWait状态。TimeWait状态等待时间结束，进入Runnable状态</li>
+<li>运行中线程遇到o.wait/o.join/LockSupport.park方法进入wait状态，直到再遇到o.notify/o.notifyAll/LockSupport.unPark方法进入Runnable状态</li>
+<li>当线程遇见等待同步锁进入Block状态，直到获得锁进入Runnable状态</li>
 </ol>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
-<li>基于内存。</li>
-<li>模型是key/value。</li>
-<li>单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。</li>
-<li>v的类型很多，5种。具备了多种本地方法，也就是io的优化。</li>
-<li>操作的串行化</li>
-</ol>
-<h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p>串行和并行用在哪里，以秒杀为例：</p>
-<ol>
-<li>用户量过大的时候，首先用户并发的发起请求。</li>
-<li>经过负载均衡转发到不同的server。</li>
-<li>有几台server就变成了并行度。</li>
-<li>最后关系到数值的运算，比如秒杀，落地到数据库就变成了串行。<br><img src="/img/backend/redis/redis1.png" alt="io"></li>
-</ol>
-<p>如果最后的数值操作发生在redis里面，工作原理如下：</p>
-<ol>
-<li>用户发起请求</li>
-<li>进入内核</li>
-<li>进入多路复用器，比如说epoll：多线程的接受io事件，告诉redis有可以操作的数据，但是本事并不读取数据，仅仅是发出事件。</li>
-<li>redis自己去内核里面取数据（单线程）</li>
-<li>redis进行运算（单线程）<br><img src="/img/backend/redis/io.png" alt="io"></li>
-</ol>
-<p>但是这样会有一个问题，单线程读数据，单线程计算会造成cpu的利用率低的问题。</p>
-<ol>
-<li>redis读内核里面的值</li>
-<li>计算</li>
-<li>写<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
-<p>于是就有了iothreads这个技术，又能保证worker是单线程的。根据一个线程运行在一个cpu内核上面画图如下：</p>
-<ol>
-<li>同一时间下，将读取交给两个线程</li>
-<li>计算在一个worker单线程上面运算</li>
-<li>写操作交给两个线程<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
+<p><img src="/img/backend/java/multi-thread-concurrency/thread1.png" alt="io"></p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -443,12 +416,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>了解Redis</p>
+    <p><span class="copy-title">文章标题:</span>多线程的几种状态</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-09, 17:17:33</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-10, 16:57:07</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/09/backend/redis/redis-base/" title="了解Redis">https://yaninabu.github.io/2020/05/09/backend/redis/redis-base/</a>
+    <p><span class="copy-title">发布时间:</span>2020-05-17, 15:39:57</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-17, 16:26:59</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/17/backend/java/muti-thread-concurrency/thread-status/" title="多线程的几种状态">https://yaninabu.github.io/2020/05/17/backend/java/muti-thread-concurrency/thread-status/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
