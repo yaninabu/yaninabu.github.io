@@ -6,15 +6,20 @@
   <meta name="keywords" content="">
   <meta name="description" content="Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="目的开发出比较良好的响应式页面，随之覆盖多种不同分辨率的终端，包括移动设备。 解决方案从css3开始，浏览器对逻辑单位的支持又提升到了另外一个境界，增加了rem、vh、vw、vm等一些新的长度单位，我们可以利用这些新的单位开发。 px、em、rem、%、vw、wh、vm是什么1. pxpx是pixel的缩写，意思是像素，直白来讲就是一张图片里面最小的一个点。一张图就是由千千万万个这样的点组成，比如">
+<meta name="description" content="为了解决什么问题 访问速度加快 单线程  特点 基于内存。 模型是key&#x2F;value。 单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。 v的类型很多，5种。具备了多种本地方法，也就是io的优化。 操作的串行化  线程模型串行和并行用在哪里，以秒杀为例：  用户量过大的时候，首先用户并发的发起请求。 经过负载均衡转">
 <meta property="og:type" content="article">
-<meta property="og:title" content="字体单位">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;09&#x2F;frontend&#x2F;css-font-size&#x2F;index.html">
+<meta property="og:title" content="了解Redis">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;09&#x2F;backend&#x2F;redis&#x2F;redis-base&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="目的开发出比较良好的响应式页面，随之覆盖多种不同分辨率的终端，包括移动设备。 解决方案从css3开始，浏览器对逻辑单位的支持又提升到了另外一个境界，增加了rem、vh、vw、vm等一些新的长度单位，我们可以利用这些新的单位开发。 px、em、rem、%、vw、wh、vm是什么1. pxpx是pixel的缩写，意思是像素，直白来讲就是一张图片里面最小的一个点。一张图就是由千千万万个这样的点组成，比如">
+<meta property="og:description" content="为了解决什么问题 访问速度加快 单线程  特点 基于内存。 模型是key&#x2F;value。 单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。 v的类型很多，5种。具备了多种本地方法，也就是io的优化。 操作的串行化  线程模型串行和并行用在哪里，以秒杀为例：  用户量过大的时候，首先用户并发的发起请求。 经过负载均衡转">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-09T08:35:55.632Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis1.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;io.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis2.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis2.png">
+<meta property="og:updated_time" content="2020-05-10T08:57:07.329Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -125,7 +130,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(4)</small></div></li>
+    <li><div class="all active">全部文章<small>(6)</small></div></li>
     
         
             
@@ -167,28 +172,35 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(2)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(4)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java">java<small>(1)</small></div>
-                            
-                        </li>
-                            
-                        <li><div data-rel="redis"><i class="fold iconfont icon-right"></i>redis<small>(1)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(2)</small></div>
                             
                                 <ul class="sub hide">
                                     
-                                    <li><div data-rel="了解Redis">了解Redis<small>(1)</small></div>
+                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
                                 </ul>
                             
                         </li>
                             
+                        <li><div data-rel="redis">redis<small>(2)</small></div>
+                            
+                        </li>
+                            
                     </ul>
                 
             </li>
+            
+        
+    
+        
             
         
     
@@ -214,7 +226,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="4">
+<input type="hidden" id="yelog_site_posts_number" value="6">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -270,7 +282,7 @@
             <span class="post-date" title="2020-05-09 13:59:41">2020/05/09</span>
         </a>
         
-        <a  class="后端 redis 了解Redis "
+        <a  class="后端 redis "
            href="/2020/05/09/backend/redis/redis-base/"
            data-tag=""
            data-author="" >
@@ -278,8 +290,24 @@
             <span class="post-date" title="2020-05-09 17:17:33">2020/05/09</span>
         </a>
         
-        <a  class="后端 java "
-           href="/2019/12/14/backend/java/java-collection/"
+        <a  class="后端 redis "
+           href="/2020/05/10/backend/redis/redis-view/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis应用场景">Redis应用场景</span>
+            <span class="post-date" title="2020-05-10 16:46:57">2020/05/10</span>
+        </a>
+        
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/05/16/backend/java/muti-thread-concurrency/implementt-multi-thread/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java实现多线程的几种方式">java实现多线程的几种方式</span>
+            <span class="post-date" title="2020-05-16 22:03:49">2020/05/16</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2019/12/14/backend/java/base/java-collection/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="java集合">java集合</span>
