@@ -42,6 +42,7 @@
   }
   .post {
     font-size: 17px;
+    padding-left: 17px;
   }
   .post .pjax {
     max-width: 780px;
