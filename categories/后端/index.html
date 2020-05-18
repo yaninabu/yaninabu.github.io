@@ -6,17 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="线程的六种状态 new MyThread()的时候进入New状态 执行start方法的时候进入Runnable状态；其中Runnable状态又分为Ready和Running状态，所谓Ready状态就是被线程调度器执行，在可执行的队列中，随时可以执行进入Running状态；Running状态是正在执行 线程执行完进入terminated终止状态，运行结束 线程运行中遇到Thread.sleep&#x2F;o.">
+<meta name="description" content="sleepsleep方法，执行完进行TimeWait状态，等待时间结束进入Runnable状态 1234567891011121314151617181920public class SleepJoinYield &amp;#123;    public static void main(String[] args) &amp;#123;        new MyThread().start();    &amp;#1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="多线程的几种状态">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;17&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;thread-status&#x2F;index.html">
+<meta property="og:title" content="sleep&#x2F;yield&#x2F;join">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;17&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;join-yield-sleep&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="线程的六种状态 new MyThread()的时候进入New状态 执行start方法的时候进入Runnable状态；其中Runnable状态又分为Ready和Running状态，所谓Ready状态就是被线程调度器执行，在可执行的队列中，随时可以执行进入Running状态；Running状态是正在执行 线程执行完进入terminated终止状态，运行结束 线程运行中遇到Thread.sleep&#x2F;o.">
+<meta property="og:description" content="sleepsleep方法，执行完进行TimeWait状态，等待时间结束进入Runnable状态 1234567891011121314151617181920public class SleepJoinYield &amp;#123;    public static void main(String[] args) &amp;#123;        new MyThread().start();    &amp;#1">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;multi-thread-concurrency&#x2F;thread1.png">
-<meta property="og:updated_time" content="2020-05-17T08:26:59.353Z">
+<meta property="og:updated_time" content="2020-05-17T09:37:33.469Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;multi-thread-concurrency&#x2F;thread1.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -127,7 +125,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(8)</small></div></li>
+    <li><div class="all active">全部文章<small>(9)</small></div></li>
     
         
             
@@ -169,18 +167,18 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(6)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(7)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(4)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(5)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
-                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(3)</small></div>
+                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(4)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -223,7 +221,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="8">
+<input type="hidden" id="yelog_site_posts_number" value="9">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -325,6 +323,14 @@
            data-author="" >
             <span class="post-title" title="sleep/yield/join">sleep/yield/join</span>
             <span class="post-date" title="2020-05-17 16:32:48">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="synchronized">synchronized</span>
+            <span class="post-date" title="2020-05-17 17:43:41">2020/05/17</span>
         </a>
         
     </nav>
