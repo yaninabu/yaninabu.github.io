@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="synchronized的特性1. 对对象上锁上锁对象可以任意指定，利用对象上面的两位值，去判断是否能拿到锁 12345678910111213141516171819public class TestSynchronized implements Runnable &amp;#123;    static int count = 100;    private Object o = new Object">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-19T13:52:10.795Z">
+<meta property="og:updated_time" content="2020-05-19T14:51:04.330Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -125,7 +125,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(9)</small></div></li>
+    <li><div class="all active">全部文章<small>(10)</small></div></li>
     
         
             
@@ -167,18 +167,18 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(7)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(8)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(5)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(6)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
-                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(4)</small></div>
+                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(5)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -221,7 +221,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="9">
+<input type="hidden" id="yelog_site_posts_number" value="10">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -333,6 +333,14 @@
             <span class="post-date" title="2020-05-17 17:43:41">2020/05/17</span>
         </a>
         
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/05/19/backend/java/muti-thread-concurrency/volatile/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="volatile">volatile</span>
+            <span class="post-date" title="2020-05-19 22:37:36">2020/05/19</span>
+        </a>
+        
     </nav>
 </div>
     </div>
@@ -367,7 +375,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-19 21:52:10'>2020-05-17 17:43</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-19 22:51:04'>2020-05-17 17:43</time>
         
     </div>
     <div class="article-meta">
@@ -389,7 +397,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#synchronized的特性"><span class="toc-text">synchronized的特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-对对象上锁"><span class="toc-text">1. 对对象上锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-synchronized-允许加锁和不加锁的方法同时执行"><span class="toc-text">2. synchronized 允许加锁和不加锁的方法同时执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-可重入锁"><span class="toc-text">3. 可重入锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-程序之中遇到异常，默认情况下锁会被释放"><span class="toc-text">4. 程序之中遇到异常，默认情况下锁会被释放</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#synchronize的底层实现"><span class="toc-text">synchronize的底层实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CAS-重量级锁的使用场景"><span class="toc-text">CAS/重量级锁的使用场景</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#synchronized的特性"><span class="toc-text">synchronized的特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-对对象上锁"><span class="toc-text">1. 对对象上锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-synchronized-允许加锁和不加锁的方法同时执行"><span class="toc-text">2. synchronized 允许加锁和不加锁的方法同时执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-可重入锁"><span class="toc-text">3. 可重入锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-程序之中遇到异常，默认情况下锁会被释放"><span class="toc-text">4. 程序之中遇到异常，默认情况下锁会被释放</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#synchronize的底层实现"><span class="toc-text">synchronize的底层实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CAS-重量级锁的使用场景"><span class="toc-text">CAS/重量级锁的使用场景</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#synchronized的优化"><span class="toc-text">synchronized的优化</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -429,7 +437,7 @@
 <h1 id="synchronize的底层实现"><a href="#synchronize的底层实现" class="headerlink" title="synchronize的底层实现"></a>synchronize的底层实现</h1><ol>
 <li>JDK早期1.6之前是去操作（内核）去申请锁。重量级锁。</li>
 <li>JDK高版本1.6z之后包含1.6改进成了锁升级的方式<ul>
-<li>第一个线程到来先加偏向锁。所谓偏向锁就是对加锁对象头的的mark word用两位来记录锁的信息。</li>
+<li>第一个线程到来先加偏向锁（乐观锁）。所谓偏向锁就是对加锁对象头的的mark word用两位来记录锁的信息。</li>
 <li>第二个线程到来，升级成自旋锁（默认自旋10次）。占CPU在用户态，不占内核态效率高。</li>
 <li>自旋10次之后，如果还没抢占到资源，升级为重量级锁（去OS中申请）。不占CPU，在等待状态，只有CPU叫你你才起来，占内核态效率低</li>
 </ul>
@@ -438,6 +446,21 @@
 <h1 id="CAS-重量级锁的使用场景"><a href="#CAS-重量级锁的使用场景" class="headerlink" title="CAS/重量级锁的使用场景"></a>CAS/重量级锁的使用场景</h1><ol>
 <li>执行时间短，线程数比较少的时候用自旋锁</li>
 <li>执行时间长，线程数比较多的时候用重量级锁</li>
+</ol>
+<h1 id="synchronized的优化"><a href="#synchronized的优化" class="headerlink" title="synchronized的优化"></a>synchronized的优化</h1><ol>
+<li>同步锁的细化<ul>
+<li>如果有业务上的逻辑在一个方法上，就只对该该锁的值得范围上加锁</li>
+</ul>
+</li>
+<li>锁的粗化<ul>
+<li>如果锁定的值比较多，就不要多次加锁，一次性加一个锁</li>
+</ul>
+</li>
+<li>对锁定对象加 final修饰 final private Object o = new Object()<ul>
+<li>原因是如果对象的属性发生了改变，不影响锁的使用，但是如果对象的引用发生了改变，就会影响</li>
+</ul>
+</li>
+<li>不要用String/Integer等基本数据类型的类作为加锁对象</li>
 </ol>
 
       
@@ -456,7 +479,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-05-17, 17:43:41</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-19, 21:52:10</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-19, 22:51:04</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/17/backend/java/muti-thread-concurrency/synchronized/" title="synchronized">https://yaninabu.github.io/2020/05/17/backend/java/muti-thread-concurrency/synchronized/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
