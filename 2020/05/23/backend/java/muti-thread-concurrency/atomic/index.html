@@ -6,14 +6,14 @@
   <meta name="keywords" content="">
   <meta name="description" content="AtomicXXX | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="用了CAS(Compare And Swap)无锁(乐观锁)优点:  不是重量级锁，保证线程执行的安全性 CPU指令对CAS的支持。 假设存在多个线程执行CAS操作并且CAS的步骤很多，有没有可能在判断V和E相同后，正要赋值时，切换了线程，更改了值。造成了数据不一致呢？答案是否定的，因为CAS是一种系统原语，原语属于操作系统用语范畴，是由若干条指令组成的，用于完成某个功能的一个过程，并且原语的执行">
+<meta name="description" content="区别 关键字 volatile是线程同步轻量级实现，性能比synchronized好，但是volatitle只能修饰变量，synchronized可以修饰方法，代码块。 多线程访问synchronized会阻塞，而volatile不会。 volatile能保证数据可见性，但是不能保证原子性。比如count++，执行完++线程二三同时得到一，同时执行+++操作；synchronized能够保证原子性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AtomicXXX">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;23&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;atomic&#x2F;index.html">
+<meta property="og:title" content="volatile vs synchronized">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;23&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;volatile-vs-synchronized&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="用了CAS(Compare And Swap)无锁(乐观锁)优点:  不是重量级锁，保证线程执行的安全性 CPU指令对CAS的支持。 假设存在多个线程执行CAS操作并且CAS的步骤很多，有没有可能在判断V和E相同后，正要赋值时，切换了线程，更改了值。造成了数据不一致呢？答案是否定的，因为CAS是一种系统原语，原语属于操作系统用语范畴，是由若干条指令组成的，用于完成某个功能的一个过程，并且原语的执行">
+<meta property="og:description" content="区别 关键字 volatile是线程同步轻量级实现，性能比synchronized好，但是volatitle只能修饰变量，synchronized可以修饰方法，代码块。 多线程访问synchronized会阻塞，而volatile不会。 volatile能保证数据可见性，但是不能保证原子性。比如count++，执行完++线程二三同时得到一，同时执行+++操作；synchronized能够保证原子性">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-23T13:43:21.879Z">
+<meta property="og:updated_time" content="2020-05-23T05:37:52.007Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -133,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(13)</small></div></li>
+    <li><div class="all active">全部文章<small>(14)</small></div></li>
     
         
             
@@ -172,18 +172,18 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(10)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(11)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(8)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(9)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
-                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(7)</small></div>
+                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(8)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -230,7 +230,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="13">
+<input type="hidden" id="yelog_site_posts_number" value="14">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -374,6 +374,14 @@
             <span class="post-date" title="2020-05-23 16:06:31">2020/05/23</span>
         </a>
         
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic-longadder-synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Atomic/LongAdder/synchronized">Atomic/LongAdder/synchronized</span>
+            <span class="post-date" title="2020-05-23 21:56:03">2020/05/23</span>
+        </a>
+        
     </nav>
 </div>
     </div>
@@ -408,7 +416,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-23 21:43:21'>2020-05-23 16:06</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-23 22:23:25'>2020-05-23 16:06</time>
         
     </div>
     <div class="article-meta">
@@ -450,6 +458,9 @@
 <ol>
 <li>不是重量级锁，保证线程执行的安全性</li>
 <li>CPU指令对CAS的支持。 假设存在多个线程执行CAS操作并且CAS的步骤很多，有没有可能在判断V和E相同后，正要赋值时，切换了线程，更改了值。造成了数据不一致呢？答案是否定的，因为CAS是一种系统原语，原语属于操作系统用语范畴，是由若干条指令组成的，用于完成某个功能的一个过程，并且原语的执行必须是连续的，在执行过程中不允许被中断，也就是说CAS是一条CPU的原子指令，不会造成所谓的数据不一致问题。</li>
+<li>AtomXXX类可以保证可见性, 以下程序可以正常的结束<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAtomic</span> </span>&#123;</span><br><span class="line">	<span class="keyword">static</span> AtomicInteger running = <span class="keyword">new</span> AtomicInteger(<span class="number">1</span>); </span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">m</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(running.get() != <span class="number">2</span>) &#123;</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(<span class="string">"m end!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		TestAtomic t = <span class="keyword">new</span> TestAtomic();</span><br><span class="line">		System.out.println(running.get() == <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">new</span> Thread(t::m).start();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			TimeUnit.SECONDS.sleep(<span class="number">1</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		running.set(<span class="number">2</span>);</span><br><span class="line">		System.out.println(<span class="string">"main end"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
 </ol>
 <h1 id="通过Unsafe类，实现线程"><a href="#通过Unsafe类，实现线程" class="headerlink" title="通过Unsafe类，实现线程"></a>通过Unsafe类，实现线程</h1><p>作用提供的API大致可分为内存操作、CAS、Class相关、对象操作、线程调度、系<br>统信息获取、内存屏障、数组操作等几类。<br>Unsafe类存在于sun.misc包中，其内部方法操作可以像C的指针一样直接操作内存，单从名称看来就可以知道该类是非安全的，毕竟Unsafe拥有着类似于C的指针操作，因此总是不应该首先使用Unsafe类，Java官方也不建议直接使用的Unsafe类，据说Oracle正在计划从Java 9中去掉Unsafe类</p>
 <h1 id="以AtomicInteger为例实现线程安全"><a href="#以AtomicInteger为例实现线程安全" class="headerlink" title="以AtomicInteger为例实现线程安全"></a>以AtomicInteger为例实现线程安全</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAtomic</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">increaseCount</span> <span class="params">()</span> </span>&#123;<span class="comment">//线程不安全</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TestAtomic testAtomic = <span class="keyword">new</span> TestAtomic();</span><br><span class="line"></span><br><span class="line">        List&lt;Thread&gt; threadList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            threadList.add(<span class="keyword">new</span> Thread(testAtomic::increaseCount));</span><br><span class="line">        &#125;</span><br><span class="line">        threadList.forEach(t -&gt; t.start());</span><br><span class="line">        threadList.forEach(t -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t.join();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -473,7 +484,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-05-23, 16:06:31</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-23, 21:43:21</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-23, 22:23:25</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/23/backend/java/muti-thread-concurrency/atomic/" title="AtomicXXX">https://yaninabu.github.io/2020/05/23/backend/java/muti-thread-concurrency/atomic/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
