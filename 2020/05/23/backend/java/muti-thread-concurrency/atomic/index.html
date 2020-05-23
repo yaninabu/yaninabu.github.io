@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>闭合标签使用不当 | Hexo</title>
+  <title>AtomicXXX | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="闭合标签使用不当 | Hexo">
+  <meta name="description" content="AtomicXXX | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="区别 关键字 volatile是线程同步轻量级实现，性能比synchronized好，但是volatitle只能修饰变量，synchronized可以修饰方法，代码块。 多线程访问synchronized会阻塞，而volatile不会。 volatile能保证数据可见性，但是不能保证原子性。比如count++，执行完++线程二三同时得到一，同时执行+++操作；synchronized能够保证原子性">
 <meta property="og:type" content="article">
@@ -386,9 +386,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-frontend/vue/closing-tab" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/atomic" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">闭合标签使用不当</h1>
+        <h1 class="article-title">AtomicXXX</h1>
     
     <div class="article-meta">
         
@@ -396,9 +396,11 @@
         
         <span class="book">
             
-                <a  data-rel="前端">前端</a>/
+                <a  data-rel="后端">后端</a>/
             
-                <a  data-rel="vue">vue</a>
+                <a  data-rel="java">java</a>/
+            
+                <a  data-rel="多线程与高并发">多线程与高并发</a>
             
         </span>
         
@@ -406,7 +408,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-23 09:43:43'>2020-05-23 09:39</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-23 21:43:21'>2020-05-23 16:06</time>
         
     </div>
     <div class="article-meta">
@@ -428,7 +430,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#在Dom模板里面使用自闭合标签"><span class="toc-text">在Dom模板里面使用自闭合标签</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么时候使用自闭合标签"><span class="toc-text">什么时候使用自闭合标签</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#原因"><span class="toc-text">原因</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#什么是单文件组件、字符串模板、DOM-模板"><span class="toc-text">什么是单文件组件、字符串模板、DOM 模板</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#单文件组件"><span class="toc-text">单文件组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字符串模板"><span class="toc-text">字符串模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dom模板"><span class="toc-text">Dom模板</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#用了CAS-Compare-And-Swap-无锁-乐观锁"><span class="toc-text">用了CAS(Compare And Swap)无锁(乐观锁)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#通过Unsafe类，实现线程"><span class="toc-text">通过Unsafe类，实现线程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#以AtomicInteger为例实现线程安全"><span class="toc-text">以AtomicInteger为例实现线程安全</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -444,24 +446,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>闭合标签使用不当</p>
-<h1 id="在Dom模板里面使用自闭合标签"><a href="#在Dom模板里面使用自闭合标签" class="headerlink" title="在Dom模板里面使用自闭合标签"></a>在Dom模板里面使用自闭合标签</h1><p>出现标签下面内容加载不出来的现象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=&quot;en&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/vue/dist/vue.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line"></span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;my-component /&gt;</span><br><span class="line">    看到我</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  let MyComponent = &#123;</span><br><span class="line">    template: `</span><br><span class="line">            &lt;div&gt;我的组件&lt;/div&gt;</span><br><span class="line">        `</span><br><span class="line">  &#125;</span><br><span class="line">  const app = new Vue(&#123;</span><br><span class="line">    el: &apos;#app&apos;,</span><br><span class="line">    components: &#123;</span><br><span class="line">      &apos;my-component&apos;: MyComponent</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>将<my-component />换成<my-component></my-component>就可以看到<code>看到我</code></p>
-<h1 id="什么时候使用自闭合标签"><a href="#什么时候使用自闭合标签" class="headerlink" title="什么时候使用自闭合标签"></a>什么时候使用自闭合标签</h1><p><a href="https://cn.vuejs.org/v2/style-guide/index.html#%E8%87%AA%E9%97%AD%E5%90%88%E7%BB%84%E4%BB%B6%E5%BC%BA%E7%83%88%E6%8E%A8%E8%8D%90" target="_blank" rel="noopener">来自Vue官网的强烈推荐</a><br><strong>在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板里永远不要这样做。</strong></p>
-<h2 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h2><p>HTML并不支持自闭合的自定义元素</p>
-<ul>
-<li>在Dom模板中不经过Vue的模板编译器能够触达的地方，不能再产出符合 DOM 规范的 HTML<br>如果您对组件使用自动关闭标签，则浏览器会将其视为开始标签。当父元素关闭时，将创建一个隐式的结束标记。如果没有其他兄弟姐妹，那会很好，但是如果有其他兄弟姐妹，那将会出错。<br>比如<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;brewtitle /&gt;</span><br><span class="line">  &lt;snackbar /&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-会被编译成<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;app&quot;&gt;</span><br><span class="line">  &lt;brewtitle&gt;</span><br><span class="line">    &lt;snackbar&gt;&lt;/snackbar&gt;</span><br><span class="line">  &lt;/brewtitle&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<snackbar>将被视为的孩子<brewtitle>。如果brewtitle没有插槽，snackbar将被丢弃。</li>
-</ul>
-<h1 id="什么是单文件组件、字符串模板、DOM-模板"><a href="#什么是单文件组件、字符串模板、DOM-模板" class="headerlink" title="什么是单文件组件、字符串模板、DOM 模板"></a>什么是单文件组件、字符串模板、DOM 模板</h1><h2 id="单文件组件"><a href="#单文件组件" class="headerlink" title="单文件组件"></a>单文件组件</h2><p>单独的后缀是.vue的文件</p>
-<h2 id="字符串模板"><a href="#字符串模板" class="headerlink" title="字符串模板"></a>字符串模板</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.component(&apos;my-component&apos;, &#123;</span><br><span class="line">  template: &apos;&lt;p&gt;This is a String template, it iss passed as a string to the component.&lt;/p&gt;&apos;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>.vue从这个意义上说，文件中的模板也是字符串模板模板。</p>
-<h2 id="Dom模板"><a href="#Dom模板" class="headerlink" title="Dom模板"></a>Dom模板</h2><p>DOM模板是在浏览器将加载并打开的实际<strong>.html</strong>文件中定义的模板，通常在不使用构建系统并直接在页面中包含Vue时使用。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt; &lt;!-- your App is runnning in this div ---&gt;</span><br><span class="line">    &lt;my-component&gt;&lt;/my-component&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line"></span><br><span class="line">  &lt;template id=&quot;template-for-my-component&quot;&gt;</span><br><span class="line">    &#123;&#123; message &#125;&#125;</span><br><span class="line">  &lt;/template&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
-
-
+        <h1 id="用了CAS-Compare-And-Swap-无锁-乐观锁"><a href="#用了CAS-Compare-And-Swap-无锁-乐观锁" class="headerlink" title="用了CAS(Compare And Swap)无锁(乐观锁)"></a>用了CAS(Compare And Swap)无锁(乐观锁)</h1><p>优点:</p>
+<ol>
+<li>不是重量级锁，保证线程执行的安全性</li>
+<li>CPU指令对CAS的支持。 假设存在多个线程执行CAS操作并且CAS的步骤很多，有没有可能在判断V和E相同后，正要赋值时，切换了线程，更改了值。造成了数据不一致呢？答案是否定的，因为CAS是一种系统原语，原语属于操作系统用语范畴，是由若干条指令组成的，用于完成某个功能的一个过程，并且原语的执行必须是连续的，在执行过程中不允许被中断，也就是说CAS是一条CPU的原子指令，不会造成所谓的数据不一致问题。</li>
+</ol>
+<h1 id="通过Unsafe类，实现线程"><a href="#通过Unsafe类，实现线程" class="headerlink" title="通过Unsafe类，实现线程"></a>通过Unsafe类，实现线程</h1><p>作用提供的API大致可分为内存操作、CAS、Class相关、对象操作、线程调度、系<br>统信息获取、内存屏障、数组操作等几类。<br>Unsafe类存在于sun.misc包中，其内部方法操作可以像C的指针一样直接操作内存，单从名称看来就可以知道该类是非安全的，毕竟Unsafe拥有着类似于C的指针操作，因此总是不应该首先使用Unsafe类，Java官方也不建议直接使用的Unsafe类，据说Oracle正在计划从Java 9中去掉Unsafe类</p>
+<h1 id="以AtomicInteger为例实现线程安全"><a href="#以AtomicInteger为例实现线程安全" class="headerlink" title="以AtomicInteger为例实现线程安全"></a>以AtomicInteger为例实现线程安全</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAtomic</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">increaseCount</span> <span class="params">()</span> </span>&#123;<span class="comment">//线程不安全</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TestAtomic testAtomic = <span class="keyword">new</span> TestAtomic();</span><br><span class="line"></span><br><span class="line">        List&lt;Thread&gt; threadList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            threadList.add(<span class="keyword">new</span> Thread(testAtomic::increaseCount));</span><br><span class="line">        &#125;</span><br><span class="line">        threadList.forEach(t -&gt; t.start());</span><br><span class="line">        threadList.forEach(t -&gt; &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                t.join();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改成如下代码变成线程安全的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> AtomicInteger count = <span class="keyword">new</span> AtomicInteger();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">increaseCount</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) &#123;</span><br><span class="line">        count.incrementAndGet();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是利用了Unsafe类里面的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">incrementAndGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> unsafe.getAndAddInt(<span class="keyword">this</span>, valueOffset, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Unsafe</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">getAndAddInt</span><span class="params">(Object var1, <span class="keyword">long</span> var2, <span class="keyword">int</span> var4)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> var5;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        var5 = <span class="keyword">this</span>.getIntVolatile(var1, var2);</span><br><span class="line">    &#125; <span class="keyword">while</span>(!<span class="keyword">this</span>.compareAndSwapInt(var1, var2, var5, var5 + var4));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> var5;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">int</span> <span class="title">getIntVolatile</span><span class="params">(Object var1, <span class="keyword">long</span> var2)</span></span>;</span><br></pre></td></tr></table></figure>
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
     </div>
@@ -474,12 +469,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>闭合标签使用不当</p>
+    <p><span class="copy-title">文章标题:</span>AtomicXXX</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-23, 09:39:42</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-23, 09:43:43</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/23/frontend/vue/closing-tab/" title="闭合标签使用不当">https://yaninabu.github.io/2020/05/23/frontend/vue/closing-tab/</a>
+    <p><span class="copy-title">发布时间:</span>2020-05-23, 16:06:31</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-23, 21:43:21</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/23/backend/java/muti-thread-concurrency/atomic/" title="AtomicXXX">https://yaninabu.github.io/2020/05/23/backend/java/muti-thread-concurrency/atomic/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>

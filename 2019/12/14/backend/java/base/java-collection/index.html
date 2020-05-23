@@ -6,14 +6,14 @@
   <meta name="keywords" content="">
   <meta name="description" content="java集合 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="闭合标签使用不当 在Dom模板里面使用自闭合标签出现标签下面内容加载不出来的现象 12345678910111213141516171819202122232425262728&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;&amp;lt;head&amp;gt;  &amp;lt;script src=&amp;quot;https:&#x2F;&#x2F;cdn.jsdelivr.net">
+<meta name="description" content="区别 关键字 volatile是线程同步轻量级实现，性能比synchronized好，但是volatitle只能修饰变量，synchronized可以修饰方法，代码块。 多线程访问synchronized会阻塞，而volatile不会。 volatile能保证数据可见性，但是不能保证原子性。比如count++，执行完++线程二三同时得到一，同时执行+++操作；synchronized能够保证原子性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="闭合标签使用不当">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;23&#x2F;frontend&#x2F;vue&#x2F;closing-tab&#x2F;index.html">
+<meta property="og:title" content="volatile vs synchronized">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;23&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;volatile-vs-synchronized&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="闭合标签使用不当 在Dom模板里面使用自闭合标签出现标签下面内容加载不出来的现象 12345678910111213141516171819202122232425262728&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;&amp;lt;head&amp;gt;  &amp;lt;script src=&amp;quot;https:&#x2F;&#x2F;cdn.jsdelivr.net">
+<meta property="og:description" content="区别 关键字 volatile是线程同步轻量级实现，性能比synchronized好，但是volatitle只能修饰变量，synchronized可以修饰方法，代码块。 多线程访问synchronized会阻塞，而volatile不会。 volatile能保证数据可见性，但是不能保证原子性。比如count++，执行完++线程二三同时得到一，同时执行+++操作；synchronized能够保证原子性">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-23T01:43:43.111Z">
+<meta property="og:updated_time" content="2020-05-23T05:37:52.007Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -82,6 +82,14 @@
         
     
         
+        <a title="reddit" href="http://cl06kw.coding-pages.com/" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-reddit"></use>
+                </svg>
+            
+        </a>
+        
     
         
     
@@ -125,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(12)</small></div></li>
+    <li><div class="all active">全部文章<small>(13)</small></div></li>
     
         
             
@@ -164,18 +172,18 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(9)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(10)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(7)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(8)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
-                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(6)</small></div>
+                                    <li><div data-rel="多线程与高并发">多线程与高并发<small>(7)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -222,7 +230,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="12">
+<input type="hidden" id="yelog_site_posts_number" value="13">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -356,6 +364,14 @@
            data-author="" >
             <span class="post-title" title="volatile vs synchronized">volatile vs synchronized</span>
             <span class="post-date" title="2020-05-23 13:01:56">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="AtomicXXX">AtomicXXX</span>
+            <span class="post-date" title="2020-05-23 16:06:31">2020/05/23</span>
         </a>
         
     </nav>
