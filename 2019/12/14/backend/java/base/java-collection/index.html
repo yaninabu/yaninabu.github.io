@@ -6,14 +6,14 @@
   <meta name="keywords" content="">
   <meta name="description" content="java集合 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="synchronized的特性1. 对对象上锁上锁对象可以任意指定，利用对象上面的两位值，去判断是否能拿到锁 12345678910111213141516171819public class TestSynchronized implements Runnable &amp;#123;    static int count = 100;    private Object o = new Object">
+<meta name="description" content="volatile的特性保证线程可见性123456789101112131415161718192021public class TestVolatile &amp;#123;	boolean running = true; &#x2F;&#x2F;对比一下有无volatile的情况下，整个程序运行结果的区别	void m() &amp;#123;		System.out.println(&amp;quot;m start&amp;quot;);">
 <meta property="og:type" content="article">
-<meta property="og:title" content="synchronized">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;17&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;synchronized&#x2F;index.html">
+<meta property="og:title" content="volatile">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;19&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;volatile&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="synchronized的特性1. 对对象上锁上锁对象可以任意指定，利用对象上面的两位值，去判断是否能拿到锁 12345678910111213141516171819public class TestSynchronized implements Runnable &amp;#123;    static int count = 100;    private Object o = new Object">
+<meta property="og:description" content="volatile的特性保证线程可见性123456789101112131415161718192021public class TestVolatile &amp;#123;	boolean running = true; &#x2F;&#x2F;对比一下有无volatile的情况下，整个程序运行结果的区别	void m() &amp;#123;		System.out.println(&amp;quot;m start&amp;quot;);">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-19T14:51:04.330Z">
+<meta property="og:updated_time" content="2020-05-20T13:24:12.139Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -125,20 +125,17 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(10)</small></div></li>
+    <li><div class="all active">全部文章<small>(11)</small></div></li>
     
         
             
-            <li><div data-rel="前端"><i class="fold iconfont icon-right"></i>前端<small>(2)</small></div>
+            <li><div data-rel="前端"><i class="fold iconfont icon-right"></i>前端<small>(3)</small></div>
                 
                     <ul class="sub hide">
                         
                         <li><div data-rel="css"><i class="fold iconfont icon-right"></i>css<small>(2)</small></div>
                             
                                 <ul class="sub hide">
-                                    
-                                    <li><div data-rel="字体单位">字体单位<small>(1)</small></div>
-                                    </li>
                                     
                                     <li><div data-rel="less">less<small>(1)</small></div>
                                     </li>
@@ -147,13 +144,13 @@
                             
                         </li>
                             
+                        <li><div data-rel="vue">vue<small>(1)</small></div>
+                            
+                        </li>
+                            
                     </ul>
                 
             </li>
-            
-        
-    
-        
             
         
     
@@ -211,6 +208,10 @@
             
         
     
+        
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -221,7 +222,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="10">
+<input type="hidden" id="yelog_site_posts_number" value="11">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -260,22 +261,6 @@
 
     
     <nav id="title-list-nav">
-        
-        <a  class="前端 css 字体单位 "
-           href="/2020/05/09/frontend/css-font-size/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="字体单位">字体单位</span>
-            <span class="post-date" title="2020-05-09 15:26:49">2020/05/09</span>
-        </a>
-        
-        <a  class="前端 css less "
-           href="/2020/05/09/frontend/css-less/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="less变量">less变量</span>
-            <span class="post-date" title="2020-05-09 13:59:41">2020/05/09</span>
-        </a>
         
         <a  class="后端 redis "
            href="/2020/05/09/backend/redis/redis-base/"
@@ -339,6 +324,30 @@
            data-author="" >
             <span class="post-title" title="volatile">volatile</span>
             <span class="post-date" title="2020-05-19 22:37:36">2020/05/19</span>
+        </a>
+        
+        <a  class="前端 css "
+           href="/2020/05/09/frontend/css/css-font-size/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="字体单位">字体单位</span>
+            <span class="post-date" title="2020-05-09 15:26:49">2020/05/09</span>
+        </a>
+        
+        <a  class="前端 css less "
+           href="/2020/05/09/frontend/css/css-less/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="less变量">less变量</span>
+            <span class="post-date" title="2020-05-09 13:59:41">2020/05/09</span>
+        </a>
+        
+        <a  class="前端 vue "
+           href="/2020/05/23/frontend/vue/closing-tab/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="闭合标签使用不当">闭合标签使用不当</span>
+            <span class="post-date" title="2020-05-23 09:39:42">2020/05/23</span>
         </a>
         
     </nav>
