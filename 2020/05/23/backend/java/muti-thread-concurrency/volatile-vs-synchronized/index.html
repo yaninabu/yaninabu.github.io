@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redis应用场景 | Hexo</title>
+  <title>volatile vs synchronized | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Redis应用场景 | Hexo">
+  <meta name="description" content="volatile vs synchronized | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="闭合标签使用不当 在Dom模板里面使用自闭合标签出现标签下面内容加载不出来的现象 12345678910111213141516171819202122232425262728&amp;lt;!DOCTYPE html&amp;gt;&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;&amp;lt;head&amp;gt;  &amp;lt;script src=&amp;quot;https:&#x2F;&#x2F;cdn.jsdelivr.net">
 <meta property="og:type" content="article">
@@ -370,9 +370,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-backend/redis/redis-view" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/volatile-vs-synchronized" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Redis应用场景</h1>
+        <h1 class="article-title">volatile vs synchronized</h1>
     
     <div class="article-meta">
         
@@ -382,7 +382,9 @@
             
                 <a  data-rel="后端">后端</a>/
             
-                <a  data-rel="redis">redis</a>
+                <a  data-rel="java">java</a>/
+            
+                <a  data-rel="多线程与高并发">多线程与高并发</a>
             
         </span>
         
@@ -390,7 +392,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-10 17:28:09'>2020-05-10 16:46</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-23 13:37:52'>2020-05-23 13:01</time>
         
     </div>
     <div class="article-meta">
@@ -412,7 +414,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-text">String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程模型"><span class="toc-text">线程模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#区别"><span class="toc-text">区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#volatile能代替synchronize吗"><span class="toc-text">volatile能代替synchronize吗</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#synchronize能代替volatile吗"><span class="toc-text">synchronize能代替volatile吗</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -428,44 +430,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ol>
-<li>字符串操作<br>set/get/append/strlen<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strlen</span><br></pre></td></tr></table></figure></li>
-<li>数值计算</li>
-<li>二进制</li>
+        <h1 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h1><ol>
+<li>关键字 volatile是线程同步轻量级实现，性能比synchronized好，但是volatitle只能修饰变量，synchronized可以修饰方法，代码块。</li>
+<li>多线程访问synchronized会阻塞，而volatile不会。</li>
+<li>volatile能保证数据可见性，但是不能保证原子性。比如count++，执行完++线程二三同时得到一，同时执行+++操作；synchronized能够保证原子性，同时保证线程可见性，因为它是将私有内存和共有内存中的数据进行通报。</li>
+<li>关键字volatile是解决变量在多线程间的可见性，而synchronized是解决多个线程间访问资源的同步性。</li>
 </ol>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><ol>
-<li>基于内存。</li>
-<li>模型是key/value。</li>
-<li>单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。</li>
-<li>v的类型很多，5种。具备了多种本地方法，也就是io的优化。</li>
-<li>操作的串行化</li>
-</ol>
-<h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p>串行和并行用在哪里，以秒杀为例：</p>
+<h1 id="volatile能代替synchronize吗"><a href="#volatile能代替synchronize吗" class="headerlink" title="volatile能代替synchronize吗"></a>volatile能代替synchronize吗</h1><p>答案不能<br>volatile只能解决多个线程不同时访问的时候的，变量的线程可见性；<br>synchronize是解决多个线程同时访问的</p>
+<h1 id="synchronize能代替volatile吗"><a href="#synchronize能代替volatile吗" class="headerlink" title="synchronize能代替volatile吗"></a>synchronize能代替volatile吗</h1><p>答案也不能</p>
 <ol>
-<li>用户量过大的时候，首先用户并发的发起请求。</li>
-<li>经过负载均衡转发到不同的server。</li>
-<li>有几台server就变成了并行度。</li>
-<li>最后关系到数值的运算，比如秒杀，落地到数据库就变成了串行。<br><img src="/img/backend/redis/redis1.png" alt="io"></li>
-</ol>
-<p>如果最后的数值操作发生在redis里面，工作原理如下：</p>
-<ol>
-<li>用户发起请求</li>
-<li>进入内核</li>
-<li>进入多路复用器，比如说epoll：多线程的接受io事件，告诉redis有可以操作的数据，但是本事并不读取数据，仅仅是发出事件。</li>
-<li>redis自己去内核里面取数据（单线程）</li>
-<li>redis进行运算（单线程）<br><img src="/img/backend/redis/io.png" alt="io"></li>
-</ol>
-<p>但是这样会有一个问题，单线程读数据，单线程计算会造成cpu的利用率低的问题。</p>
-<ol>
-<li>redis读内核里面的值</li>
-<li>计算</li>
-<li>写<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
-<p>于是就有了iothreads这个技术，又能保证worker是单线程的。根据一个线程运行在一个cpu内核上面画图如下：</p>
-<ol>
-<li>同一时间下，将读取交给两个线程</li>
-<li>计算在一个worker单线程上面运算</li>
-<li>写操作交给两个线程<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
+<li>volatile性能比synchronize好。volatile是根据MESI(缓存一致性协议)来保证线程可见性的，也就是最终靠硬件实现的，synchronize是通过在主存里面对一个对象加锁，来保证线性访问做到的。</li>
+<li>竟然synchronize能做到线程可见性和原子性，是不是在不考虑性能的情况下可以替代volatile？不是的，synchronize不能保证指令重排序的问题。比如：<br>开发模式里面双重验证单例模式可以不加volatile吗？不能<br>因为new这条语句底层并不是只有一条语句，而是有多条语句，比如如下三条<ul>
+<li>申请内存(赋予默认值比如int类型为0)</li>
+<li>赋予真正的值(i=9)</li>
+<li>地址指向<br>如果3和2的顺序换了，synchronize虽然加锁了，但是new对象只到一半，也就是只有默认值和指向的时候， 这时候instance != null 线程直接getInstance直接使用i的值。<br>当然超高超高的并发情况下才可能出现，比如双十一，一般测不出来，ASM直接操作二进制码，在第二条语句上面加睡眠也可以</li>
+</ul>
+</li>
 </ol>
 
       
@@ -480,12 +460,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>Redis应用场景</p>
+    <p><span class="copy-title">文章标题:</span>volatile vs synchronized</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-10, 16:46:57</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-10, 17:28:09</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/10/backend/redis/redis-view/" title="Redis应用场景">https://yaninabu.github.io/2020/05/10/backend/redis/redis-view/</a>
+    <p><span class="copy-title">发布时间:</span>2020-05-23, 13:01:56</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-23, 13:37:52</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/" title="volatile vs synchronized">https://yaninabu.github.io/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
