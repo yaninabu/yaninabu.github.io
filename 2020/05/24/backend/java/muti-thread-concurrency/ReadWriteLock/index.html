@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>了解Redis | Hexo</title>
+  <title>ReadWriteLock | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="了解Redis | Hexo">
+  <meta name="description" content="ReadWriteLock | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="移位器，相位器 ，阶段不仅会等待所有的线程都到达，还会指定参与下一阶段的数目 比如结婚是分阶段的：  所有人到齐了，去吃饭 所有人吃完饭了， 离开 所有人离开了， 新娘新郎入洞房（只有两个人）  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
 <meta property="og:type" content="article">
@@ -442,9 +442,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-backend/redis/redis-base" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/ReadWriteLock" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">了解Redis</h1>
+        <h1 class="article-title">ReadWriteLock</h1>
     
     <div class="article-meta">
         
@@ -454,7 +454,11 @@
             
                 <a  data-rel="后端">后端</a>/
             
-                <a  data-rel="redis">redis</a>
+                <a  data-rel="java">java</a>/
+            
+                <a  data-rel="多线程与高并发">多线程与高并发</a>/
+            
+                <a  data-rel="locks">locks</a>
             
         </span>
         
@@ -462,7 +466,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-10 16:57:07'>2020-05-09 17:17</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-24 11:24:44'>2020-05-24 11:06</time>
         
     </div>
     <div class="article-meta">
@@ -484,7 +488,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#为了解决什么问题"><span class="toc-text">为了解决什么问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#特点"><span class="toc-text">特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程模型"><span class="toc-text">线程模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#用到的case"><span class="toc-text">用到的case</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码实现"><span class="toc-text">代码实现</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -500,44 +504,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="为了解决什么问题"><a href="#为了解决什么问题" class="headerlink" title="为了解决什么问题"></a>为了解决什么问题</h3><ol>
-<li>访问速度加快</li>
-<li>单线程</li>
-</ol>
-<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ol>
-<li>基于内存。</li>
-<li>模型是key/value。</li>
-<li>单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。</li>
-<li>v的类型很多，5种。具备了多种本地方法，也就是io的优化。</li>
-<li>操作的串行化</li>
-</ol>
-<h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p>串行和并行用在哪里，以秒杀为例：</p>
-<ol>
-<li>用户量过大的时候，首先用户并发的发起请求。</li>
-<li>经过负载均衡转发到不同的server。</li>
-<li>有几台server就变成了并行度。</li>
-<li>最后关系到数值的运算，比如秒杀，落地到数据库就变成了串行。<br><img src="/img/backend/redis/redis1.png" alt="io"></li>
-</ol>
-<p>如果最后的数值操作发生在redis里面，工作原理如下：</p>
-<ol>
-<li>用户发起请求</li>
-<li>进入内核</li>
-<li>进入多路复用器，比如说epoll：多线程的接受io事件，告诉redis有可以操作的数据，但是本事并不读取数据，仅仅是发出事件。</li>
-<li>redis自己去内核里面取数据（单线程）</li>
-<li>redis进行运算（单线程）<br><img src="/img/backend/redis/io.png" alt="io"></li>
-</ol>
-<p>但是这样会有一个问题，单线程读数据，单线程计算会造成cpu的利用率低的问题。</p>
-<ol>
-<li>redis读内核里面的值</li>
-<li>计算</li>
-<li>写<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
-<p>于是就有了iothreads这个技术，又能保证worker是单线程的。根据一个线程运行在一个cpu内核上面画图如下：</p>
-<ol>
-<li>同一时间下，将读取交给两个线程</li>
-<li>计算在一个worker单线程上面运算</li>
-<li>写操作交给两个线程<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
+        <h1 id="用到的case"><a href="#用到的case" class="headerlink" title="用到的case"></a>用到的case</h1><p>读线程很多，写线程很少，如果给每个读线程加锁，会造成很慢的情况，那么就加一个读线程的锁，发现是读线程来了放行，发现写线程来了，我正在读你不能进，如果上了排它锁也就是互斥锁，等待所有的读/写操作只能完才能执行对应的操作</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.Lock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReadWriteLock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.ReentrantReadWriteLock;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">T10_TestReadWriteLock</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> ReadWriteLock readWriteLock = <span class="keyword">new</span> ReentrantReadWriteLock();</span><br><span class="line">    <span class="keyword">static</span> Lock readLock = readWriteLock.readLock();</span><br><span class="line">    <span class="keyword">static</span> Lock writeLock = readWriteLock.writeLock();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">(Lock lock)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            lock.lock();</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            System.out.println(<span class="string">"read over!"</span>);</span><br><span class="line">            <span class="comment">//模拟读取操作</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(Lock lock, <span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            lock.lock();</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            value = v;</span><br><span class="line">            System.out.println(<span class="string">"write over!"</span>);</span><br><span class="line">            <span class="comment">//模拟写操作</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//Runnable readR = ()-&gt; read(lock);</span></span><br><span class="line">        Runnable readR = ()-&gt; read(readLock);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Runnable writeR = ()-&gt;write(lock, new Random().nextInt());</span></span><br><span class="line">        Runnable writeR = ()-&gt;write(writeLock, <span class="keyword">new</span> Random().nextInt());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">18</span>; i++) <span class="keyword">new</span> Thread(readR).start();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">2</span>; i++) <span class="keyword">new</span> Thread(writeR).start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -551,12 +519,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>了解Redis</p>
+    <p><span class="copy-title">文章标题:</span>ReadWriteLock</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-09, 17:17:33</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-10, 16:57:07</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/09/backend/redis/redis-base/" title="了解Redis">https://yaninabu.github.io/2020/05/09/backend/redis/redis-base/</a>
+    <p><span class="copy-title">发布时间:</span>2020-05-24, 11:06:55</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-24, 11:24:44</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/24/backend/java/muti-thread-concurrency/ReadWriteLock/" title="ReadWriteLock">https://yaninabu.github.io/2020/05/24/backend/java/muti-thread-concurrency/ReadWriteLock/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
