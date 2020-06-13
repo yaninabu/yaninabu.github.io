@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redis应用场景 | Hexo</title>
+  <title>Phaser | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Redis应用场景 | Hexo">
+  <meta name="description" content="Phaser | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="循环的栅栏只要满足第一个参数的条件，就可以只能第二个参数的操作；如果第一次只能没执行完，继续循环执行。比如一共81个人，规定满20个人就要发车，那么20+20+20+20发四次车，剩下的一个人必须等待再来19个人，才能执行发车的动作 代码实现1234567891011121314151617181920212223import java.util.concurrent.BrokenBarrierE">
 <meta property="og:type" content="article">
@@ -474,9 +474,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-backend/redis/redis-view" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/semaphore" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Redis应用场景</h1>
+        <h1 class="article-title">Phaser</h1>
     
     <div class="article-meta">
         
@@ -486,7 +486,9 @@
             
                 <a  data-rel="后端">后端</a>/
             
-                <a  data-rel="redis">redis</a>
+                <a  data-rel="java">java</a>/
+            
+                <a  data-rel="多线程与高并发">多线程与高并发</a>
             
         </span>
         
@@ -494,7 +496,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-10 17:28:09'>2020-05-10 16:46</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-24 13:51:46'>2020-05-24 13:42</time>
         
     </div>
     <div class="article-meta">
@@ -516,7 +518,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-text">String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程模型"><span class="toc-text">线程模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#信号灯"><span class="toc-text">信号灯</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -532,46 +534,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ol>
-<li>字符串操作<br>set/get/append/strlen<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strlen</span><br></pre></td></tr></table></figure></li>
-<li>数值计算</li>
-<li>二进制</li>
-</ol>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><ol>
-<li>基于内存。</li>
-<li>模型是key/value。</li>
-<li>单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。</li>
-<li>v的类型很多，5种。具备了多种本地方法，也就是io的优化。</li>
-<li>操作的串行化</li>
-</ol>
-<h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p>串行和并行用在哪里，以秒杀为例：</p>
-<ol>
-<li>用户量过大的时候，首先用户并发的发起请求。</li>
-<li>经过负载均衡转发到不同的server。</li>
-<li>有几台server就变成了并行度。</li>
-<li>最后关系到数值的运算，比如秒杀，落地到数据库就变成了串行。<br><img src="/img/backend/redis/redis1.png" alt="io"></li>
-</ol>
-<p>如果最后的数值操作发生在redis里面，工作原理如下：</p>
-<ol>
-<li>用户发起请求</li>
-<li>进入内核</li>
-<li>进入多路复用器，比如说epoll：多线程的接受io事件，告诉redis有可以操作的数据，但是本事并不读取数据，仅仅是发出事件。</li>
-<li>redis自己去内核里面取数据（单线程）</li>
-<li>redis进行运算（单线程）<br><img src="/img/backend/redis/io.png" alt="io"></li>
-</ol>
-<p>但是这样会有一个问题，单线程读数据，单线程计算会造成cpu的利用率低的问题。</p>
-<ol>
-<li>redis读内核里面的值</li>
-<li>计算</li>
-<li>写<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
-<p>于是就有了iothreads这个技术，又能保证worker是单线程的。根据一个线程运行在一个cpu内核上面画图如下：</p>
-<ol>
-<li>同一时间下，将读取交给两个线程</li>
-<li>计算在一个worker单线程上面运算</li>
-<li>写操作交给两个线程<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
-
+        <h1 id="信号灯"><a href="#信号灯" class="headerlink" title="信号灯"></a>信号灯</h1><p>最多允许多少个线程同时执行，取决于permits写几</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestSemaphore</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//Semaphore s = new Semaphore(2);</span></span><br><span class="line"><span class="comment">//        Semaphore s = new Semaphore(2, true);</span></span><br><span class="line">        <span class="comment">//允许一个线程同时执行</span></span><br><span class="line">        Semaphore s = <span class="keyword">new</span> Semaphore(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                s.acquire(); <span class="comment">//阻塞</span></span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"T1 running..."</span>);</span><br><span class="line">                Thread.sleep(<span class="number">200</span>);</span><br><span class="line">                System.out.println(<span class="string">"T1 running..."</span>);</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                s.release(); <span class="comment">// 释放</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(()-&gt;&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                s.acquire();</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"T2 running..."</span>);</span><br><span class="line">                Thread.sleep(<span class="number">200</span>);</span><br><span class="line">                System.out.println(<span class="string">"T2 running..."</span>);</span><br><span class="line"></span><br><span class="line">                s.release();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
     </div>
@@ -584,12 +548,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>Redis应用场景</p>
+    <p><span class="copy-title">文章标题:</span>Phaser</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-10, 16:46:57</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-10, 17:28:09</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/10/backend/redis/redis-view/" title="Redis应用场景">https://yaninabu.github.io/2020/05/10/backend/redis/redis-view/</a>
+    <p><span class="copy-title">发布时间:</span>2020-05-24, 13:42:55</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-24, 13:51:46</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/24/backend/java/muti-thread-concurrency/semaphore/" title="Phaser">https://yaninabu.github.io/2020/05/24/backend/java/muti-thread-concurrency/semaphore/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>

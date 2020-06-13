@@ -6,14 +6,14 @@
   <meta name="keywords" content="">
   <meta name="description" content="synchronized | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="移位器，相位器 ，阶段不仅会等待所有的线程都到达，还会指定参与下一阶段的数目 比如结婚是分阶段的：  所有人到齐了，去吃饭 所有人吃完饭了， 离开 所有人离开了， 新娘新郎入洞房（只有两个人）  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+<meta name="description" content="循环的栅栏只要满足第一个参数的条件，就可以只能第二个参数的操作；如果第一次只能没执行完，继续循环执行。比如一共81个人，规定满20个人就要发车，那么20+20+20+20发四次车，剩下的一个人必须等待再来19个人，才能执行发车的动作 代码实现1234567891011121314151617181920212223import java.util.concurrent.BrokenBarrierE">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Phaser">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;24&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;phaser&#x2F;index.html">
+<meta property="og:title" content="CyclicBarrier">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;05&#x2F;24&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;cyclicbarrier&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="移位器，相位器 ，阶段不仅会等待所有的线程都到达，还会指定参与下一阶段的数目 比如结婚是分阶段的：  所有人到齐了，去吃饭 所有人吃完饭了， 离开 所有人离开了， 新娘新郎入洞房（只有两个人）  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+<meta property="og:description" content="循环的栅栏只要满足第一个参数的条件，就可以只能第二个参数的操作；如果第一次只能没执行完，继续循环执行。比如一共81个人，规定满20个人就要发车，那么20+20+20+20发四次车，剩下的一个人必须等待再来19个人，才能执行发车的动作 代码实现1234567891011121314151617181920212223import java.util.concurrent.BrokenBarrierE">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-05-24T02:59:56.384Z">
+<meta property="og:updated_time" content="2020-05-24T02:30:19.439Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -133,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(19)</small></div></li>
+    <li><div class="all active">全部文章<small>(22)</small></div></li>
     
         
             
@@ -172,18 +172,18 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(16)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(17)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(14)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(15)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
-                                    <li><div data-rel="多线程与高并发"><i class="fold iconfont icon-right"></i>多线程与高并发<small>(13)</small></div>
+                                    <li><div data-rel="多线程与高并发"><i class="fold iconfont icon-right"></i>多线程与高并发<small>(14)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -228,6 +228,14 @@
             
         
     
+        
+            
+            <li><div data-rel="Docker">Docker<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -238,7 +246,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="19">
+<input type="hidden" id="yelog_site_posts_number" value="22">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -430,6 +438,30 @@
             <span class="post-date" title="2020-05-24 11:06:55">2020/05/24</span>
         </a>
         
+        <a  class="Docker "
+           href="/2020/06/06/docker/why-use-docker/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="docker的认知">docker的认知</span>
+            <span class="post-date" title="2020-06-06 10:18:09">2020/06/06</span>
+        </a>
+        
+        <a  class="Docker "
+           href="/2020/06/06/docker/common-docker-cmd/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="常用的docker指令">常用的docker指令</span>
+            <span class="post-date" title="2020-06-06 11:04:52">2020/06/06</span>
+        </a>
+        
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/semaphore/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Phaser">Phaser</span>
+            <span class="post-date" title="2020-05-24 13:42:55">2020/05/24</span>
+        </a>
+        
     </nav>
 </div>
     </div>
@@ -464,7 +496,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-19 22:51:04'>2020-05-17 17:43</time>
+        创建时间:<time class="date" title='更新时间: 2020-05-24 13:57:11'>2020-05-17 17:43</time>
         
     </div>
     <div class="article-meta">
@@ -526,6 +558,7 @@
 <h1 id="synchronize的底层实现"><a href="#synchronize的底层实现" class="headerlink" title="synchronize的底层实现"></a>synchronize的底层实现</h1><ol>
 <li>JDK早期1.6之前是去操作（内核）去申请锁。重量级锁。</li>
 <li>JDK高版本1.6z之后包含1.6改进成了锁升级的方式<ul>
+<li>无锁</li>
 <li>第一个线程到来先加偏向锁（乐观锁）。所谓偏向锁就是对加锁对象头的的mark word用两位来记录锁的信息。</li>
 <li>第二个线程到来，升级成自旋锁（默认自旋10次）。占CPU在用户态，不占内核态效率高。</li>
 <li>自旋10次之后，如果还没抢占到资源，升级为重量级锁（去OS中申请）。不占CPU，在等待状态，只有CPU叫你你才起来，占内核态效率低</li>
@@ -568,7 +601,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-05-17, 17:43:41</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-19, 22:51:04</p>
+    <p><span class="copy-title">最后更新:</span>2020-05-24, 13:57:11</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/17/backend/java/muti-thread-concurrency/synchronized/" title="synchronized">https://yaninabu.github.io/2020/05/17/backend/java/muti-thread-concurrency/synchronized/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。

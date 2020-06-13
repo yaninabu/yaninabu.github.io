@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Redis应用场景 | Hexo</title>
+  <title>docker的认知 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="Redis应用场景 | Hexo">
+  <meta name="description" content="docker的认知 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="循环的栅栏只要满足第一个参数的条件，就可以只能第二个参数的操作；如果第一次只能没执行完，继续循环执行。比如一共81个人，规定满20个人就要发车，那么20+20+20+20发四次车，剩下的一个人必须等待再来19个人，才能执行发车的动作 代码实现1234567891011121314151617181920212223import java.util.concurrent.BrokenBarrierE">
 <meta property="og:type" content="article">
@@ -474,9 +474,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-backend/redis/redis-view" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-docker/why-use-docker" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">Redis应用场景</h1>
+        <h1 class="article-title">docker的认知</h1>
     
     <div class="article-meta">
         
@@ -484,9 +484,7 @@
         
         <span class="book">
             
-                <a  data-rel="后端">后端</a>/
-            
-                <a  data-rel="redis">redis</a>
+                <a  data-rel="Docker">Docker</a>
             
         </span>
         
@@ -494,7 +492,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-10 17:28:09'>2020-05-10 16:46</time>
+        创建时间:<time class="date" title='更新时间: 2020-06-06 11:03:32'>2020-06-06 10:18</time>
         
     </div>
     <div class="article-meta">
@@ -516,7 +514,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#String"><span class="toc-text">String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-text"></span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程模型"><span class="toc-text">线程模型</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是docker"><span class="toc-text">什么是docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker与虚拟机有何不同"><span class="toc-text">Docker与虚拟机有何不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Docker镜像"><span class="toc-text">什么是Docker镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Docker容器"><span class="toc-text">什么是Docker容器</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -532,45 +530,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><ol>
-<li>字符串操作<br>set/get/append/strlen<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strlen</span><br></pre></td></tr></table></figure></li>
-<li>数值计算</li>
-<li>二进制</li>
-</ol>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><ol>
-<li>基于内存。</li>
-<li>模型是key/value。</li>
-<li>单线程。worker是多线程，但是在6.x以后有了iothreads（连接数很多，线程池就一个）, 计算是单线程的，io是多线程的。</li>
-<li>v的类型很多，5种。具备了多种本地方法，也就是io的优化。</li>
-<li>操作的串行化</li>
-</ol>
-<h3 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h3><p>串行和并行用在哪里，以秒杀为例：</p>
-<ol>
-<li>用户量过大的时候，首先用户并发的发起请求。</li>
-<li>经过负载均衡转发到不同的server。</li>
-<li>有几台server就变成了并行度。</li>
-<li>最后关系到数值的运算，比如秒杀，落地到数据库就变成了串行。<br><img src="/img/backend/redis/redis1.png" alt="io"></li>
-</ol>
-<p>如果最后的数值操作发生在redis里面，工作原理如下：</p>
-<ol>
-<li>用户发起请求</li>
-<li>进入内核</li>
-<li>进入多路复用器，比如说epoll：多线程的接受io事件，告诉redis有可以操作的数据，但是本事并不读取数据，仅仅是发出事件。</li>
-<li>redis自己去内核里面取数据（单线程）</li>
-<li>redis进行运算（单线程）<br><img src="/img/backend/redis/io.png" alt="io"></li>
-</ol>
-<p>但是这样会有一个问题，单线程读数据，单线程计算会造成cpu的利用率低的问题。</p>
-<ol>
-<li>redis读内核里面的值</li>
-<li>计算</li>
-<li>写<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
-<p>于是就有了iothreads这个技术，又能保证worker是单线程的。根据一个线程运行在一个cpu内核上面画图如下：</p>
-<ol>
-<li>同一时间下，将读取交给两个线程</li>
-<li>计算在一个worker单线程上面运算</li>
-<li>写操作交给两个线程<br><img src="/img/backend/redis/redis2.png" alt="io"></li>
-</ol>
+        <h2 id="什么是docker"><a href="#什么是docker" class="headerlink" title="什么是docker"></a>什么是docker</h2><p>Docker是一个容器化平台，它以容器的形式将您的应用程序及其所有依赖项打包在一起，以确保您的应用程序在任何环境中无缝运行。</p>
+<h2 id="Docker与虚拟机有何不同"><a href="#Docker与虚拟机有何不同" class="headerlink" title="Docker与虚拟机有何不同"></a>Docker与虚拟机有何不同</h2><p>Docker不是虚拟化方法。它依赖于实际实现基于容器的虚拟化或操作系统级虚拟化的其他工具。为此，Docker最初使用LXC驱动程序，然后移动到libcontainer现在重命名为runc。Docker主要专注于在应用程序容器内自动部署应用程序。应用程序容器旨在打包和运行单个服务，而系统容器则设计为运行多个进程，如虚拟机。因此，Docker被视为容器化系统上的容器管理或应用程序部署工具。<br>A 容器不需要引导操作系统内核，因此可以在不到一秒的时间内创建容器。此功能使基于容器的虚拟化比其他虚拟化方法更加独特和可取。<br>B 由于基于容器的虚拟化为主机增加了很少或没有开销，因此基于容器的虚拟化具有接近本机的性能。<br>C 对于基于容器的虚拟化，与其他虚拟化不同，不需要其他软件。<br>D 主机上的所有容器共享主机的调度程序，从而节省了额外资源的需求。<br>E 与虚拟机映像相比，容器状态（Docker或LXC映像）的大小很小，因此容器映像很容易分发。<br>F 容器中的资源管理是通过cgroup实现的。Cgroups不允许容器消耗比分配给它们更多的资源。虽然主机的所有资源都在虚拟机中可见，但无法使用。这可以通过在容器和主机上同时运行top或htop来实现。所有环境的输出看起来都很相似。</p>
+<h2 id="什么是Docker镜像"><a href="#什么是Docker镜像" class="headerlink" title="什么是Docker镜像"></a>什么是Docker镜像</h2><p>Docker镜像是Docker容器的源代码，Docker镜像用于创建容器。使用build命令创建镜像。</p>
+<h2 id="什么是Docker容器"><a href="#什么是Docker容器" class="headerlink" title="什么是Docker容器"></a>什么是Docker容器</h2><p>Docker容器包括应用程序及其所有依赖项，作为操作系统的独立进程运行。</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -584,12 +547,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>Redis应用场景</p>
+    <p><span class="copy-title">文章标题:</span>docker的认知</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-10, 16:46:57</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-10, 17:28:09</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/10/backend/redis/redis-view/" title="Redis应用场景">https://yaninabu.github.io/2020/05/10/backend/redis/redis-view/</a>
+    <p><span class="copy-title">发布时间:</span>2020-06-06, 10:18:09</p>
+    <p><span class="copy-title">最后更新:</span>2020-06-06, 11:03:32</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/06/06/docker/why-use-docker/" title="docker的认知">https://yaninabu.github.io/2020/06/06/docker/why-use-docker/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
