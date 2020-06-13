@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>多线程的几种状态 | Hexo</title>
+  <title>Exchanger | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="多线程的几种状态 | Hexo">
+  <meta name="description" content="Exchanger | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="什么是dockerDocker是一个容器化平台，它以容器的形式将您的应用程序及其所有依赖项打包在一起，以确保您的应用程序在任何环境中无缝运行。 Docker与虚拟机有何不同Docker不是虚拟化方法。它依赖于实际实现基于容器的虚拟化或操作系统级虚拟化的其他工具。为此，Docker最初使用LXC驱动程序，然后移动到libcontainer现在重命名为runc。Docker主要专注于在应用程序容器内自">
 <meta property="og:type" content="article">
@@ -482,9 +482,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-backend/java/muti-thread-concurrency/thread-status" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/exchanger" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">多线程的几种状态</h1>
+        <h1 class="article-title">Exchanger</h1>
     
     <div class="article-meta">
         
@@ -504,7 +504,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-17 16:26:59'>2020-05-17 15:39</time>
+        创建时间:<time class="date" title='更新时间: 2020-06-13 16:59:53'>2020-06-13 16:55</time>
         
     </div>
     <div class="article-meta">
@@ -526,7 +526,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#线程的六种状态"><span class="toc-text">线程的六种状态</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#交换器"><span class="toc-text">交换器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码实现"><span class="toc-text">代码实现</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -542,15 +542,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="线程的六种状态"><a href="#线程的六种状态" class="headerlink" title="线程的六种状态"></a>线程的六种状态</h2><ol>
-<li>new MyThread()的时候进入New状态</li>
-<li>执行start方法的时候进入Runnable状态；其中Runnable状态又分为Ready和Running状态，所谓Ready状态就是被线程调度器执行，在可执行的队列中，随时可以执行进入Running状态；Running状态是正在执行</li>
-<li>线程执行完进入terminated终止状态，运行结束</li>
-<li>线程运行中遇到Thread.sleep/o.wait/o.join/LockSupport.parkNanos/LockSupport.Until方法进入TimeWait状态。TimeWait状态等待时间结束，进入Runnable状态</li>
-<li>运行中线程遇到o.wait/o.join/LockSupport.park方法进入wait状态，直到再遇到o.notify/o.notifyAll/LockSupport.unPark方法进入Runnable状态</li>
-<li>当线程遇见等待同步锁进入Block状态，直到获得锁进入Runnable状态</li>
-</ol>
-<p><img src="/img/backend/java/multi-thread-concurrency/thread1.png" alt="io"></p>
+        <h1 id="交换器"><a href="#交换器" class="headerlink" title="交换器"></a>交换器</h1><p>两个线程之间交换值，一个线程等待另一个线程到来，如果只有一个线程那么就是一直是阻塞的状态</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Exchanger;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestExchanger</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> Exchanger&lt;String&gt; e = <span class="keyword">new</span> Exchanger();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">           String s = <span class="string">"s1"</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                s = e.exchange(s);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;</span><br><span class="line">                ex.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + s);</span><br><span class="line">        &#125;, <span class="string">"s1"</span>).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            String s = <span class="string">"s2"</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">                s = e.exchange(s);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;</span><br><span class="line">                ex.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + s);</span><br><span class="line">        &#125;, <span class="string">"t2"</span>).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            String s = <span class="string">"s3"</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                s = e.exchange(s);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;</span><br><span class="line">                ex.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + s);</span><br><span class="line">        &#125;, <span class="string">"t3"</span>).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -564,12 +557,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>多线程的几种状态</p>
+    <p><span class="copy-title">文章标题:</span>Exchanger</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-17, 15:39:57</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-17, 16:26:59</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/17/backend/java/muti-thread-concurrency/thread-status/" title="多线程的几种状态">https://yaninabu.github.io/2020/05/17/backend/java/muti-thread-concurrency/thread-status/</a>
+    <p><span class="copy-title">发布时间:</span>2020-06-13, 16:55:33</p>
+    <p><span class="copy-title">最后更新:</span>2020-06-13, 16:59:53</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/06/13/backend/java/muti-thread-concurrency/exchanger/" title="Exchanger">https://yaninabu.github.io/2020/06/13/backend/java/muti-thread-concurrency/exchanger/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>
