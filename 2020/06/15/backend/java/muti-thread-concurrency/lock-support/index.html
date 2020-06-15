@@ -6,14 +6,14 @@
   <meta name="keywords" content="">
   <meta name="description" content="LockSupport | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="交换器两个线程之间交换值，一个线程等待另一个线程到来，如果只有一个线程那么就是一直是阻塞的状态 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041package bean;import java.util.concurrent.Exchanger;import java.util.concurr">
+<meta name="description" content="LockSupport 与 wait、notify wait、notify必须对调用对象加锁 notify必须在wait前面调用，否则不起作用 park、unpark可以互换顺序 park、unpark不会造成死锁  代码实现正常调用 123456789101112131415161718import java.util.concurrent.locks.LockSupport;public cl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Exchanger">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;13&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;exchanger&#x2F;index.html">
+<meta property="og:title" content="LockSupport">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;15&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;lock-support&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="交换器两个线程之间交换值，一个线程等待另一个线程到来，如果只有一个线程那么就是一直是阻塞的状态 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041package bean;import java.util.concurrent.Exchanger;import java.util.concurr">
+<meta property="og:description" content="LockSupport 与 wait、notify wait、notify必须对调用对象加锁 notify必须在wait前面调用，否则不起作用 park、unpark可以互换顺序 park、unpark不会造成死锁  代码实现正常调用 123456789101112131415161718import java.util.concurrent.locks.LockSupport;public cl">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-06-13T08:59:53.438Z">
+<meta property="og:updated_time" content="2020-06-15T13:34:11.354Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -520,7 +520,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-06-15 21:28:29'>2020-06-15 21:09</time>
+        创建时间:<time class="date" title='更新时间: 2020-06-15 21:34:11'>2020-06-15 21:09</time>
         
     </div>
     <div class="article-meta">
@@ -562,6 +562,7 @@
 <li>wait、notify必须对调用对象加锁</li>
 <li>notify必须在wait前面调用，否则不起作用</li>
 <li>park、unpark可以互换顺序</li>
+<li>park、unpark不会造成死锁</li>
 </ol>
 <h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>正常调用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.LockSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestLockSupport</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程1"</span>);</span><br><span class="line">            System.out.println(<span class="string">"线程1进入等待状态"</span>);</span><br><span class="line">            LockSupport.park();</span><br><span class="line">            System.out.println(<span class="string">"线程1继续执行"</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        t1.start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程2"</span>);</span><br><span class="line">            LockSupport.unpark(t1);</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -586,7 +587,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-06-15, 21:09:03</p>
-    <p><span class="copy-title">最后更新:</span>2020-06-15, 21:28:29</p>
+    <p><span class="copy-title">最后更新:</span>2020-06-15, 21:34:11</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/06/15/backend/java/muti-thread-concurrency/lock-support/" title="LockSupport">https://yaninabu.github.io/2020/06/15/backend/java/muti-thread-concurrency/lock-support/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
