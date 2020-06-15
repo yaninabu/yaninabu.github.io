@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>常用的docker指令 | Hexo</title>
+  <title>LockSupport | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="常用的docker指令 | Hexo">
+  <meta name="description" content="LockSupport | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="交换器两个线程之间交换值，一个线程等待另一个线程到来，如果只有一个线程那么就是一直是阻塞的状态 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041package bean;import java.util.concurrent.Exchanger;import java.util.concurr">
 <meta property="og:type" content="article">
@@ -498,9 +498,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-docker/common-docker-cmd" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/java/muti-thread-concurrency/lock-support" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">常用的docker指令</h1>
+        <h1 class="article-title">LockSupport</h1>
     
     <div class="article-meta">
         
@@ -508,7 +508,11 @@
         
         <span class="book">
             
-                <a  data-rel="Docker">Docker</a>
+                <a  data-rel="后端">后端</a>/
+            
+                <a  data-rel="java">java</a>/
+            
+                <a  data-rel="多线程与高并发">多线程与高并发</a>
             
         </span>
         
@@ -516,7 +520,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-06-06 11:05:19'>2020-06-06 11:04</time>
+        创建时间:<time class="date" title='更新时间: 2020-06-15 21:28:29'>2020-06-15 21:09</time>
         
     </div>
     <div class="article-meta">
@@ -538,7 +542,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是docker"><span class="toc-text">什么是docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker与虚拟机有何不同"><span class="toc-text">Docker与虚拟机有何不同</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Docker镜像"><span class="toc-text">什么是Docker镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Docker容器"><span class="toc-text">什么是Docker容器</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#LockSupport-与-wait、notify"><span class="toc-text">LockSupport 与 wait、notify</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#代码实现"><span class="toc-text">代码实现</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -554,10 +558,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="什么是docker"><a href="#什么是docker" class="headerlink" title="什么是docker"></a>什么是docker</h2><p>Docker是一个容器化平台，它以容器的形式将您的应用程序及其所有依赖项打包在一起，以确保您的应用程序在任何环境中无缝运行。</p>
-<h2 id="Docker与虚拟机有何不同"><a href="#Docker与虚拟机有何不同" class="headerlink" title="Docker与虚拟机有何不同"></a>Docker与虚拟机有何不同</h2><p>Docker不是虚拟化方法。它依赖于实际实现基于容器的虚拟化或操作系统级虚拟化的其他工具。为此，Docker最初使用LXC驱动程序，然后移动到libcontainer现在重命名为runc。Docker主要专注于在应用程序容器内自动部署应用程序。应用程序容器旨在打包和运行单个服务，而系统容器则设计为运行多个进程，如虚拟机。因此，Docker被视为容器化系统上的容器管理或应用程序部署工具。<br>A 容器不需要引导操作系统内核，因此可以在不到一秒的时间内创建容器。此功能使基于容器的虚拟化比其他虚拟化方法更加独特和可取。<br>B 由于基于容器的虚拟化为主机增加了很少或没有开销，因此基于容器的虚拟化具有接近本机的性能。<br>C 对于基于容器的虚拟化，与其他虚拟化不同，不需要其他软件。<br>D 主机上的所有容器共享主机的调度程序，从而节省了额外资源的需求。<br>E 与虚拟机映像相比，容器状态（Docker或LXC映像）的大小很小，因此容器映像很容易分发。<br>F 容器中的资源管理是通过cgroup实现的。Cgroups不允许容器消耗比分配给它们更多的资源。虽然主机的所有资源都在虚拟机中可见，但无法使用。这可以通过在容器和主机上同时运行top或htop来实现。所有环境的输出看起来都很相似。</p>
-<h2 id="什么是Docker镜像"><a href="#什么是Docker镜像" class="headerlink" title="什么是Docker镜像"></a>什么是Docker镜像</h2><p>Docker镜像是Docker容器的源代码，Docker镜像用于创建容器。使用build命令创建镜像。</p>
-<h2 id="什么是Docker容器"><a href="#什么是Docker容器" class="headerlink" title="什么是Docker容器"></a>什么是Docker容器</h2><p>Docker容器包括应用程序及其所有依赖项，作为操作系统的独立进程运行。</p>
+        <h1 id="LockSupport-与-wait、notify"><a href="#LockSupport-与-wait、notify" class="headerlink" title="LockSupport 与 wait、notify"></a>LockSupport 与 wait、notify</h1><ol>
+<li>wait、notify必须对调用对象加锁</li>
+<li>notify必须在wait前面调用，否则不起作用</li>
+<li>park、unpark可以互换顺序</li>
+</ol>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>正常调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.LockSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestLockSupport</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程1"</span>);</span><br><span class="line">            System.out.println(<span class="string">"线程1进入等待状态"</span>);</span><br><span class="line">            LockSupport.park();</span><br><span class="line">            System.out.println(<span class="string">"线程1继续执行"</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        t1.start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程2"</span>);</span><br><span class="line">            LockSupport.unpark(t1);</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>异常,继续执行后面的代码，和wait、notify的现象不一样，wait、notify报异常的线程不会执行后面的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.LockSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestLockSupport</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程1"</span>);</span><br><span class="line">            System.out.println(<span class="string">"线程1进入等待状态"</span>);</span><br><span class="line">            LockSupport.park();</span><br><span class="line">            System.out.println(<span class="string">"线程1继续执行"</span>);</span><br><span class="line">            System.out.println(<span class="string">"是否中断："</span> + Thread.currentThread().isInterrupted());</span><br><span class="line">        &#125;);</span><br><span class="line">        t1.start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程2"</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line"></span><br><span class="line">        t1.interrupt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>unpark在park之前执行,unpar一次可以抵消park一次</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bean;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.locks.LockSupport;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestLockSupport</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程1"</span>);</span><br><span class="line">            System.out.println(<span class="string">"线程1进入等待状态"</span>);</span><br><span class="line">            LockSupport.unpark(Thread.currentThread());</span><br><span class="line">            LockSupport.park();</span><br><span class="line">            System.out.println(<span class="string">"线程1继续执行"</span>);</span><br><span class="line">            System.out.println(<span class="string">"线程1继续被锁"</span>);</span><br><span class="line">            LockSupport.park();</span><br><span class="line">        &#125;);</span><br><span class="line">        t1.start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">"启动线程2"</span>);</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -571,12 +582,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>常用的docker指令</p>
+    <p><span class="copy-title">文章标题:</span>LockSupport</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-06-06, 11:04:52</p>
-    <p><span class="copy-title">最后更新:</span>2020-06-06, 11:05:19</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/06/06/docker/common-docker-cmd/" title="常用的docker指令">https://yaninabu.github.io/2020/06/06/docker/common-docker-cmd/</a>
+    <p><span class="copy-title">发布时间:</span>2020-06-15, 21:09:03</p>
+    <p><span class="copy-title">最后更新:</span>2020-06-15, 21:28:29</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/06/15/backend/java/muti-thread-concurrency/lock-support/" title="LockSupport">https://yaninabu.github.io/2020/06/15/backend/java/muti-thread-concurrency/lock-support/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>

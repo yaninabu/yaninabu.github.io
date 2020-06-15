@@ -6,14 +6,14 @@
   <meta name="keywords" content="">
   <meta name="description" content="Redis应用场景 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="什么是dockerDocker是一个容器化平台，它以容器的形式将您的应用程序及其所有依赖项打包在一起，以确保您的应用程序在任何环境中无缝运行。 Docker与虚拟机有何不同Docker不是虚拟化方法。它依赖于实际实现基于容器的虚拟化或操作系统级虚拟化的其他工具。为此，Docker最初使用LXC驱动程序，然后移动到libcontainer现在重命名为runc。Docker主要专注于在应用程序容器内自">
+<meta name="description" content="交换器两个线程之间交换值，一个线程等待另一个线程到来，如果只有一个线程那么就是一直是阻塞的状态 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041package bean;import java.util.concurrent.Exchanger;import java.util.concurr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常用的docker指令">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;06&#x2F;docker&#x2F;common-docker-cmd&#x2F;index.html">
+<meta property="og:title" content="Exchanger">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;13&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;exchanger&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="什么是dockerDocker是一个容器化平台，它以容器的形式将您的应用程序及其所有依赖项打包在一起，以确保您的应用程序在任何环境中无缝运行。 Docker与虚拟机有何不同Docker不是虚拟化方法。它依赖于实际实现基于容器的虚拟化或操作系统级虚拟化的其他工具。为此，Docker最初使用LXC驱动程序，然后移动到libcontainer现在重命名为runc。Docker主要专注于在应用程序容器内自">
+<meta property="og:description" content="交换器两个线程之间交换值，一个线程等待另一个线程到来，如果只有一个线程那么就是一直是阻塞的状态 代码实现1234567891011121314151617181920212223242526272829303132333435363738394041package bean;import java.util.concurrent.Exchanger;import java.util.concurr">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-06-06T03:05:19.956Z">
+<meta property="og:updated_time" content="2020-06-13T08:59:53.438Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -133,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(23)</small></div></li>
+    <li><div class="all active">全部文章<small>(25)</small></div></li>
     
         
             
@@ -172,18 +172,18 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(18)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(20)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(16)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(18)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="基础">基础<small>(1)</small></div>
                                     </li>
                                     
-                                    <li><div data-rel="多线程与高并发"><i class="fold iconfont icon-right"></i>多线程与高并发<small>(15)</small></div>
+                                    <li><div data-rel="多线程与高并发"><i class="fold iconfont icon-right"></i>多线程与高并发<small>(17)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -246,7 +246,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="23">
+<input type="hidden" id="yelog_site_posts_number" value="25">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -468,6 +468,22 @@
            data-author="" >
             <span class="post-title" title="Exchanger">Exchanger</span>
             <span class="post-date" title="2020-06-13 16:55:33">2020/06/13</span>
+        </a>
+        
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/06/15/backend/java/muti-thread-concurrency/wait-notify/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="wait/notify">wait/notify</span>
+            <span class="post-date" title="2020-06-15 20:20:06">2020/06/15</span>
+        </a>
+        
+        <a  class="后端 java 多线程与高并发 "
+           href="/2020/06/15/backend/java/muti-thread-concurrency/lock-support/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="LockSupport">LockSupport</span>
+            <span class="post-date" title="2020-06-15 21:09:03">2020/06/15</span>
         </a>
         
     </nav>
