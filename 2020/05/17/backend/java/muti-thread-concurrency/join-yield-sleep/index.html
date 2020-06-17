@@ -6,15 +6,19 @@
   <meta name="keywords" content="">
   <meta name="description" content="sleep/yield/join | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="LockSupport 与 wait、notify wait、notify必须对调用对象加锁 notify必须在wait前面调用，否则不起作用 park、unpark可以互换顺序 park、unpark不会造成死锁  代码实现正常调用 123456789101112131415161718import java.util.concurrent.locks.LockSupport;public cl">
+<meta name="description" content="引用的分类强、软、弱、虚 强引用普通的引用是强引用 MyFinalize myFinalize = new MyFinalize() 一定不会被回收（一个引用指向它）除非myFinalize = null, 将引用去掉 123456789101112131415import java.io.IOException;public class MyFinalize &amp;#123;    @Overrid">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LockSupport">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;15&#x2F;backend&#x2F;java&#x2F;muti-thread-concurrency&#x2F;lock-support&#x2F;index.html">
+<meta property="og:title" content="java的引用">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;17&#x2F;backend&#x2F;java&#x2F;base&#x2F;java-reference&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="LockSupport 与 wait、notify wait、notify必须对调用对象加锁 notify必须在wait前面调用，否则不起作用 park、unpark可以互换顺序 park、unpark不会造成死锁  代码实现正常调用 123456789101112131415161718import java.util.concurrent.locks.LockSupport;public cl">
+<meta property="og:description" content="引用的分类强、软、弱、虚 强引用普通的引用是强引用 MyFinalize myFinalize = new MyFinalize() 一定不会被回收（一个引用指向它）除非myFinalize = null, 将引用去掉 123456789101112131415import java.io.IOException;public class MyFinalize &amp;#123;    @Overrid">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-06-15T13:34:11.354Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;reference.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;weak-reference.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;thread-local.png">
+<meta property="og:updated_time" content="2020-06-17T13:58:26.239Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;reference.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
