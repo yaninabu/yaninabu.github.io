@@ -6,17 +6,27 @@
   <meta name="keywords" content="">
   <meta name="description" content="Redis 01 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="varchar(10)和varchar(100)存储 2个字符的内容，是否真的没有区别？varchar和char比起来，确实是可变长度的。那什么是可变长度呢？答案是在硬盘存储上面是可变的，也就是存储2个字符在硬盘上面varchar(10)和varchar(100)是一样的都占用2个字符的位置。但是在内存的存储上却是不一样的，也就是说当遇到mysql生成临时表(order sort等)的时候，var">
+<meta name="description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
 <meta property="og:type" content="article">
-<meta property="og:title" content="varchar">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;10&#x2F;31&#x2F;backend&#x2F;mysql&#x2F;base&#x2F;varchar&#x2F;index.html">
+<meta property="og:title" content="Redis 01">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;11&#x2F;12&#x2F;backend&#x2F;redis&#x2F;redis-01&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="varchar(10)和varchar(100)存储 2个字符的内容，是否真的没有区别？varchar和char比起来，确实是可变长度的。那什么是可变长度呢？答案是在硬盘存储上面是可变的，也就是存储2个字符在硬盘上面varchar(10)和varchar(100)是一样的都占用2个字符的位置。但是在内存的存储上却是不一样的，也就是说当遇到mysql生成临时表(order sort等)的时候，var">
+<meta property="og:description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;mysql&#x2F;varchar.png">
-<meta property="og:updated_time" content="2020-10-31T04:19:09.660Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis5.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis6.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis7.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis8.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis9.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis10.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis11.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis12.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
+<meta property="og:updated_time" content="2020-11-15T09:29:29.560Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;mysql&#x2F;varchar.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -688,7 +698,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-11-15 17:14:03'>2020-11-12 20:26</time>
+        创建时间:<time class="date" title='更新时间: 2020-11-15 17:29:29'>2020-11-12 20:26</time>
         
     </div>
     <div class="article-meta">
@@ -738,9 +748,9 @@
 <h3 id="epoll的发展历程"><a href="#epoll的发展历程" class="headerlink" title="epoll的发展历程"></a>epoll的发展历程</h3><ol>
 <li>刚开始socket是block的，也就是用户态和内核态没有数据返回就一直等待这是，也就是BIO<br><img src="/img/backend/redis/redis5.png" alt="io"></li>
 <li>用户态开始非阻塞了，也就是一直轮询，切换查看文件描述符的数据fd，实现了NIO，但是造成的问题是查看每个文件描述符的数据状态，每次都会有用户态到内核态之间切换的问题，效率低。<br><img src="/img/backend/redis/redis6.png" alt="io"></li>
-<li>内核态进行升级，将用户态的轮询放到了内核态，也就是select，以前轮询查看单个的文件描述符fd，但是现在我是把1000多个fds传给内核，然后内核区间空这个内容通过select()函数，知道一个或者更多变成了ready状态，就给用户态返回，然后用户拿着返回的文件描述符，也就是谁有了我就去调系统调用read(fd)。和以前先相比在系统调用上面更精准更精确了，减少了用户态和内核态不必的切换。实现了多路复用NIO</li>
+<li>内核态进行升级，将用户态的轮询放到了内核态，也就是select，以前轮询查看单个的文件描述符fd，但是现在我是把1000多个fds传给内核，然后内核区间空这个内容通过select()函数，知道一个或者更多变成了ready状态，就给用户态返回，然后用户拿着返回的文件描述符，也就是谁有了我就去调系统调用read(fd)。和以前先相比在系统调用上面更精准更精确了，减少了用户态和内核态不必的切换。实现了多路复用NIO<br>但是每次我把所有的文件描述符传给你，然后你告诉我谁好了，然后我再去读。如果这个过程再精简就更好了。<br>问题是用户态和内核态通过系统调用的函数，就有传参的问题，就会有数据的拷贝，于是乎大家都想做到零拷贝，所以问题就是拷贝来拷贝去的数据<br><img src="/img/backend/redis/redis7.png" alt="io"><br>select做到了在<br><img src="/img/backend/redis/redis8.png" alt="io"></li>
+<li>内核实现：mmap()的出现做一个映射，可以解决一个内核和用户组件一个共享的空间，也就是传参的时候不在传递数据的拷贝，而是传递一个地址，然后从共享空间里面拿东西。具体是用户态有1000个文件描述符，把这1000个文件描述符通过mmap写到共享空间里面去（将写入自己空间的过程换成写到共享空间里面），往共享空间的红黑树里面存放，然后内核去拿到红黑树里面的文件描述符数据，通过所有的IO中断，发现谁的数据到达了，谁的数据缓冲区有了，将到达的放到链表里，通过epoll事件通知设备，如果链表里面有数据了，用户态就可以从链表里面拿数据。<br><img src="/img/backend/redis/redis9.png" alt="io"><br><img src="/img/backend/redis/redis10.png" alt="io"></li>
 </ol>
-<p>但是每次我把所有的文件描述符传给你，然后你告诉我谁好了，然后我再去读。如果这个过程再精简就更好了。<br>问题是用户态和内核态通过系统调用的函数，就有传参的问题，就会有数据的拷贝，于是乎大家都想做到零拷贝，所以问题就是拷贝来拷贝去的数据<br><img src="/img/backend/redis/redis7.png" alt="io"><br>select做到了在<br><img src="/img/backend/redis/redis8.png" alt="io"><br>4. 内核实现：mmap()的出现做一个映射，可以解决一个内核和用户组件一个共享的空间，也就是传参的时候不在传递数据的拷贝，而是传递一个地址，然后从共享空间里面拿东西。具体是用户态有1000个文件描述符，把这1000个文件描述符通过mmap写到共享空间里面去（将写入自己空间的过程换成写到共享空间里面），往共享空间的红黑树里面存放，然后内核去拿到红黑树里面的文件描述符数据，通过所有的IO中断，发现谁的数据到达了，谁的数据缓冲区有了，将到达的放到链表里，通过epoll事件通知设备，如果链表里面有数据了，用户态就可以从链表里面拿数据。<br><img src="/img/backend/redis/redis9.png" alt="io"><br><img src="/img/backend/redis/redis10.png" alt="io"></p>
 <h3 id="零拷贝和共享空间不一样"><a href="#零拷贝和共享空间不一样" class="headerlink" title="零拷贝和共享空间不一样"></a>零拷贝和共享空间不一样</h3><p>零拷贝叫sendfile(),一个输入的fd，一个输出的fd。<br>以前是文件file.tex先把fd到内核，然后read拷贝到用户空间，然后用户空间再Write copy到内核write出去到网卡，会有copy的过程。<br>有了sendfile(),直接调了sendfile，然后内核直接读缓冲区里面的数据，然后发出去，就没了拷贝<br><img src="/img/backend/redis/redis11.png" alt="io"><br><img src="/img/backend/redis/redis12.png" alt="io"></p>
 <h3 id="sendfile-mmap就出来了kafka"><a href="#sendfile-mmap就出来了kafka" class="headerlink" title="sendfile+mmap就出来了kafka"></a>sendfile+mmap就出来了kafka</h3><p>通过mmap写入挂载文件，然后这时候用户个内核共享，内核直接能看到这个数据，然后通过sendfile展示给客户。<br>一切的知识来自于内核<br><img src="/img/backend/redis/redis13.png" alt="io"></p>
 <h3 id="和nginx也很像"><a href="#和nginx也很像" class="headerlink" title="和nginx也很像"></a>和nginx也很像</h3><p>怎么启动nginx，要满足有多少个内核，就启动多少个worker（一个worker就可以把他的数据压到一二三级缓存了）有几个cpu就有几个nginx进程，每个进程使用的是多路复用epoll，同步非阻塞下的多路复用<br><img src="/img/backend/redis/redis13.png" alt="io"></p>
@@ -761,7 +771,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-11-12, 20:26:22</p>
-    <p><span class="copy-title">最后更新:</span>2020-11-15, 17:14:03</p>
+    <p><span class="copy-title">最后更新:</span>2020-11-15, 17:29:29</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/11/12/backend/redis/redis-01/" title="Redis 01">https://yaninabu.github.io/2020/11/12/backend/redis/redis-01/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
