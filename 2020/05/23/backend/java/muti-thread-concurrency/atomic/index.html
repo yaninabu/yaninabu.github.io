@@ -6,19 +6,17 @@
   <meta name="keywords" content="">
   <meta name="description" content="AtomicXXX | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="引用的分类强、软、弱、虚 强引用普通的引用是强引用 MyFinalize myFinalize = new MyFinalize() 一定不会被回收（一个引用指向它）除非myFinalize = null, 将引用去掉 123456789101112131415import java.io.IOException;public class MyFinalize &amp;#123;    @Overrid">
+<meta name="description" content="varchar(10)和varchar(100)存储 2个字符的内容，是否真的没有区别？varchar和char比起来，确实是可变长度的。那什么是可变长度呢？答案是在硬盘存储上面是可变的，也就是存储2个字符在硬盘上面varchar(10)和varchar(100)是一样的都占用2个字符的位置。但是在内存的存储上却是不一样的，也就是说当遇到mysql生成临时表(order sort等)的时候，var">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java的引用">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;06&#x2F;17&#x2F;backend&#x2F;java&#x2F;base&#x2F;java-reference&#x2F;index.html">
+<meta property="og:title" content="varchar">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;10&#x2F;31&#x2F;backend&#x2F;mysql&#x2F;base&#x2F;varchar&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="引用的分类强、软、弱、虚 强引用普通的引用是强引用 MyFinalize myFinalize = new MyFinalize() 一定不会被回收（一个引用指向它）除非myFinalize = null, 将引用去掉 123456789101112131415import java.io.IOException;public class MyFinalize &amp;#123;    @Overrid">
+<meta property="og:description" content="varchar(10)和varchar(100)存储 2个字符的内容，是否真的没有区别？varchar和char比起来，确实是可变长度的。那什么是可变长度呢？答案是在硬盘存储上面是可变的，也就是存储2个字符在硬盘上面varchar(10)和varchar(100)是一样的都占用2个字符的位置。但是在内存的存储上却是不一样的，也就是说当遇到mysql生成临时表(order sort等)的时候，var">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;reference.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;weak-reference.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;thread-local.png">
-<meta property="og:updated_time" content="2020-06-17T13:58:26.239Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;mysql&#x2F;varchar.png">
+<meta property="og:updated_time" content="2020-10-31T04:19:09.660Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;base&#x2F;reference.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;mysql&#x2F;varchar.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -137,7 +135,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(30)</small></div></li>
+    <li><div class="all active">全部文章<small>(36)</small></div></li>
     
         
             
@@ -149,11 +147,11 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(25)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(31)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="redis">redis<small>(2)</small></div>
+                        <li><div data-rel="redis">redis<small>(3)</small></div>
                             
                         </li>
                             
@@ -188,11 +186,23 @@
                             
                         </li>
                             
-                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(1)</small></div>
+                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(6)</small></div>
                             
                                 <ul class="sub hide">
                                     
                                     <li><div data-rel="varchar">varchar<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="pom文件的配置">pom文件的配置<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="查询缓存">查询缓存<small>(2)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="join">join<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="排序算法">排序算法<small>(1)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -292,6 +302,22 @@
             
         
     
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -302,7 +328,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="30">
+<input type="hidden" id="yelog_site_posts_number" value="36">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -580,6 +606,54 @@
            data-author="" >
             <span class="post-title" title="volatile vs synchronized">volatile vs synchronized</span>
             <span class="post-date" title="2020-05-23 13:01:56">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/12/backend/redis/redis-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 01">Redis 01</span>
+            <span class="post-date" title="2020-11-12 20:26:22">2020/11/12</span>
+        </a>
+        
+        <a  class="后端 mysql pom文件的配置 "
+           href="/2020/11/04/backend/maven/pom/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="pom文件的配置">pom文件的配置</span>
+            <span class="post-date" title="2020-11-04 20:29:43">2020/11/04</span>
+        </a>
+        
+        <a  class="后端 mysql 查询缓存 "
+           href="/2020/10/31/backend/mysql/%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="查询缓存">查询缓存</span>
+            <span class="post-date" title="2020-10-31 14:27:44">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 mysql join "
+           href="/2020/11/01/backend/mysql/base/join/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="join">join</span>
+            <span class="post-date" title="2020-11-01 12:09:33">2020/11/01</span>
+        </a>
+        
+        <a  class="后端 mysql 查询缓存 "
+           href="/2020/10/31/backend/mysql/base/%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="查询缓存">查询缓存</span>
+            <span class="post-date" title="2020-10-31 14:44:45">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 mysql 排序算法 "
+           href="/2020/11/01/backend/mysql/base/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="排序算法">排序算法</span>
+            <span class="post-date" title="2020-11-01 12:35:30">2020/11/01</span>
         </a>
         
     </nav>
