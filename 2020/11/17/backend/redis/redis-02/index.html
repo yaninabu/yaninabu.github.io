@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>字体单位 | Hexo</title>
+  <title>redis 02 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="字体单位 | Hexo">
+  <meta name="description" content="redis 02 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
 <meta property="og:type" content="article">
@@ -686,9 +686,9 @@
 </aside>
 <div class="post">
     <div class="pjax">
-        <article id="post-frontend/css/css-font-size" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-backend/redis/redis-02" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">字体单位</h1>
+        <h1 class="article-title">redis 02</h1>
     
     <div class="article-meta">
         
@@ -696,9 +696,9 @@
         
         <span class="book">
             
-                <a  data-rel="前端">前端</a>/
+                <a  data-rel="后端">后端</a>/
             
-                <a  data-rel="css">css</a>
+                <a  data-rel="redis">redis</a>
             
         </span>
         
@@ -706,7 +706,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-23 09:44:20'>2020-05-09 15:26</time>
+        创建时间:<time class="date" title='更新时间: 2020-11-17 22:05:05'>2020-11-17 20:10</time>
         
     </div>
     <div class="article-meta">
@@ -728,7 +728,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#目的"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#px、em、rem、-、vw、wh、vm是什么"><span class="toc-text">px、em、rem、%、vw、wh、vm是什么</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-px"><span class="toc-text">1. px</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-em"><span class="toc-text">2. em</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-rem"><span class="toc-text">3. rem</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4"><span class="toc-text">4. %</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一般宽泛的讲是相对于父元素，但是并不是十分准确。"><span class="toc-text">一般宽泛的讲是相对于父元素，但是并不是十分准确。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-vw"><span class="toc-text">5. vw</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-vh"><span class="toc-text">6. vh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-vm"><span class="toc-text">7. vm</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#vm-vh-与-的区别是什么"><span class="toc-text">vm vh 与 %的区别是什么</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#连接"><span class="toc-text">连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#默认0-16个库"><span class="toc-text">默认0-16个库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#help"><span class="toc-text">help</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#key没有类型的区分，只有value有"><span class="toc-text">key没有类型的区分，只有value有</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String（Byte）类型"><span class="toc-text">String（Byte）类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#object"><span class="toc-text">object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二进制安全（字节流，字符流）不会破坏编码"><span class="toc-text">二进制安全（字节流，字符流）不会破坏编码</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -744,22 +744,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h1><p>开发出比较良好的响应式页面，随之覆盖多种不同分辨率的终端，包括移动设备。</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>从css3开始，浏览器对逻辑单位的支持又提升到了另外一个境界，增加了rem、vh、vw、vm等一些新的长度单位，我们可以利用这些新的单位开发。</p>
-<h1 id="px、em、rem、-、vw、wh、vm是什么"><a href="#px、em、rem、-、vw、wh、vm是什么" class="headerlink" title="px、em、rem、%、vw、wh、vm是什么"></a>px、em、rem、%、vw、wh、vm是什么</h1><h2 id="1-px"><a href="#1-px" class="headerlink" title="1. px"></a>1. px</h2><p>px是pixel的缩写，意思是像素，直白来讲就是一张图片里面最小的一个点。一张图就是由千千万万个这样的点组成，比如电脑的分辨率是1920x1068，就是水平方向有1920个这样的像素点，垂直方向有1068个这样的像素点组成。<br>也就是说，在屏幕大小一样，px值一样的情况下，分辨率越高字体的大小越小（所占的总点数的比例越少）</p>
-<h2 id="2-em"><a href="#2-em" class="headerlink" title="2. em"></a>2. em</h2><p>参考物是父元素的font-size，具有继承的特点。如果自身定义了font-size按自身来计算（浏览器默认字体是16px），整个页面内1em不是一个固定的值。</p>
-<h2 id="3-rem"><a href="#3-rem" class="headerlink" title="3. rem"></a>3. rem</h2><p>css3新单位，相对于根元素html（网页）的font-size，不会像em那样，依赖于父元素的字体大小，而造成混乱。</p>
-<h2 id="4"><a href="#4" class="headerlink" title="4. %"></a>4. %</h2><h3 id="一般宽泛的讲是相对于父元素，但是并不是十分准确。"><a href="#一般宽泛的讲是相对于父元素，但是并不是十分准确。" class="headerlink" title="一般宽泛的讲是相对于父元素，但是并不是十分准确。"></a>一般宽泛的讲是相对于父元素，但是并不是十分准确。</h3><ol>
-<li>对于普通定位元素就是我们理解的父元素</li>
-<li>2、对于position: absolute;的元素是相对于已定位的父元素</li>
-<li>3、对于position: fixed;的元素是相对于ViewPort（可视窗口）</li>
-</ol>
-<h2 id="5-vw"><a href="#5-vw" class="headerlink" title="5. vw"></a>5. vw</h2><p>css3新单位，viewpoint width的缩写，视窗宽度，1vw等于视窗宽度的1%。<br>举个例子：浏览器宽度1200px, 1 vw = 1200px/100 = 12 px。</p>
-<h2 id="6-vh"><a href="#6-vh" class="headerlink" title="6. vh"></a>6. vh</h2><p>css3新单位，viewpoint height的缩写，视窗高度，1vh等于视窗高度的1%。<br>举个例子：浏览器高度900px, 1 vh = 900px/100 = 9 px。</p>
-<h2 id="7-vm"><a href="#7-vm" class="headerlink" title="7. vm"></a>7. vm</h2><p>css3新单位，相对于视口的宽度或高度中较小的那个。其中最小的那个被均分为100单位的vm<br>举个例子：浏览器高度900px，宽度1200px，取最小的浏览器高度，1 vm = 900px/100 = 9 px。</p>
-<h1 id="vm-vh-与-的区别是什么"><a href="#vm-vh-与-的区别是什么" class="headerlink" title="vm vh 与 %的区别是什么"></a>vm vh 与 %的区别是什么</h1><p>vh vw是不包含页面滚动条的视窗宽度(innerwidth)，%包含了滚动条的宽度在里面了(outerwidth)。</p>
-<p>一般的情况下%就可以满足大部分自适应设计的需求，可以用height：100vh做一个高度占满屏幕的自适应，没有滚动条。</p>
-<p>用vw，vh设定的大小只和视窗大小有关，所以用来开发多种屏幕设备的应用用这个单位还是挺合适的。 </p>
+        <h3 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h3><p>redis-cli</p>
+<h3 id="默认0-16个库"><a href="#默认0-16个库" class="headerlink" title="默认0-16个库"></a>默认0-16个库</h3><h3 id="help"><a href="#help" class="headerlink" title="help"></a>help</h3><p>help @通用 比如类型@string @list<br>help command</p>
+<h3 id="key没有类型的区分，只有value有"><a href="#key没有类型的区分，只有value有" class="headerlink" title="key没有类型的区分，只有value有"></a>key没有类型的区分，只有value有</h3><h3 id="String（Byte）类型"><a href="#String（Byte）类型" class="headerlink" title="String（Byte）类型"></a>String（Byte）类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">- 字符串</span><br><span class="line">    set key1 hello</span><br><span class="line">    get key1 -&gt; hello</span><br><span class="line">    help set</span><br><span class="line">    set k1 ooxx nx -&gt; nil</span><br><span class="line">        nx: 不存在的时候才设置。</span><br><span class="line">        nx使用场景：使用分布式锁的时候，一堆人拿着key去redis里面删除文件，谁先拿到谁抢到锁了，其他人返回失败</span><br><span class="line">    get key1 -&gt; hello</span><br><span class="line">    set k2 hello xx -&gt; nil</span><br><span class="line">        xx: 只有存在的时候才去设置值，不存在的时候返回nil</span><br><span class="line">    get k2 -&gt; nil</span><br><span class="line">    mset k3 a k4 b -&gt;批量设置</span><br><span class="line">    get k3 -&gt; a</span><br><span class="line">    mget k3 k4 -&gt; 1)a 2)b -&gt; 批量取出</span><br><span class="line">    help @string</span><br><span class="line">    append k1 &quot;world&quot; -&gt; 追加</span><br><span class="line">    get k1 -&gt; hello world</span><br><span class="line">    getrange k1 6 10 -&gt; 取出world</span><br><span class="line">        但是数起来6到10很麻烦，这时候有一个正向索引0 1 2 3 4，反向索引-1 -2 -3，所以最后一个元素是-1，所以上面可以写成</span><br><span class="line">    getrange k1 6 -1 -&gt; 取出world</span><br><span class="line">    setrange k1 6 yanina -&gt;按照range覆盖;k1变成hello yanina</span><br><span class="line">    strlen k1 -&gt;k1的字符串长度 11</span><br><span class="line">    type k1-&gt;string 查看value的类型</span><br><span class="line">    getset k1 uuuu -&gt; hello yanina-&gt;赋值新值返回旧值</span><br><span class="line">        一般会get一次然后set一次这就出现了两次请求，出现两次i/o</span><br><span class="line">        但是getset就一次</span><br><span class="line"></span><br><span class="line">- 数值</span><br><span class="line">    incr -&gt; 加一</span><br><span class="line">    incrby k1 22 -&gt; 加22</span><br><span class="line">    decr k1 -&gt; 减一</span><br><span class="line">    desrby k1 -&gt; 减22</span><br><span class="line">    incrbyfloat k1 0.5 -&gt; 加小数</span><br><span class="line">- bitmap</span><br></pre></td></tr></table></figure>
+
+<h3 id="object"><a href="#object" class="headerlink" title="object"></a>object</h3><p>object help<br>object encoding k2 -&gt; embstr (k2是hello)<br>object encoding k1 -&gt; int (k2是99)这里面int不是类型type，而是object指向的这个value的encoding编码是int，所以type是string类型的value object encoding可能是int，但是只有object encoding 是int的才能进行incr等数值独有的运算</p>
+<h3 id="二进制安全（字节流，字符流）不会破坏编码"><a href="#二进制安全（字节流，字符流）不会破坏编码" class="headerlink" title="二进制安全（字节流，字符流）不会破坏编码"></a>二进制安全（字节流，字符流）不会破坏编码</h3><p>在redis与外界进行交互的时候，只取字节流<br>连接通信编码是什么redis存放的就是什么，比如set k1 中-&gt;utf-8 strlen k1 -&gt;3<br>如果客户端连接jbk编码中set k1 中 -&gt; strlen k1 -&gt; 2</p>
+<p>这时候redis-cli –raw连接在jbk编码格式下连接<br>k1 -&gt; 中<br>k2 -&gt; 涓<br>也就是–raw只要对应的AscII没有超出编码范围会显示对应编码下面代表的字符<br>但是strlen的数值不会变，该是2还是2，该是3还是3</p>
+<p>set k1 9999999<br>object encoding k1 -&gt; raw<br>inc k1 -&gt; 10000000<br>object encoding k1 -&gt; int<br>inc的时候进行判断是不是int，如果是int直接将encoding变成int，然后进行inc的计算<br>下一次发现encoding是int直接进行inc加一操作<br>也就是object encoding的存在就是适当的会加速计算的速度的<br>redis的操作函数是基于类型的，所以多一个object encoding会适当加速</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -773,12 +765,12 @@
 
 
 <div class="article_copyright">
-    <p><span class="copy-title">文章标题:</span>字体单位</p>
+    <p><span class="copy-title">文章标题:</span>redis 02</p>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
-    <p><span class="copy-title">发布时间:</span>2020-05-09, 15:26:49</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-23, 09:44:20</p>
-    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/09/frontend/css/css-font-size/" title="字体单位">https://yaninabu.github.io/2020/05/09/frontend/css/css-font-size/</a>
+    <p><span class="copy-title">发布时间:</span>2020-11-17, 20:10:59</p>
+    <p><span class="copy-title">最后更新:</span>2020-11-17, 22:05:05</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/11/17/backend/redis/redis-02/" title="redis 02">https://yaninabu.github.io/2020/11/17/backend/redis/redis-02/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
     </p>

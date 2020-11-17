@@ -24,7 +24,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis12.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
-<meta property="og:updated_time" content="2020-11-15T09:29:29.560Z">
+<meta property="og:updated_time" content="2020-11-17T11:57:31.131Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
 
@@ -145,7 +145,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(36)</small></div></li>
+    <li><div class="all active">全部文章<small>(37)</small></div></li>
     
         
             
@@ -157,11 +157,11 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(31)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(32)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="redis">redis<small>(3)</small></div>
+                        <li><div data-rel="redis">redis<small>(4)</small></div>
                             
                         </li>
                             
@@ -338,7 +338,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="36">
+<input type="hidden" id="yelog_site_posts_number" value="37">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -666,6 +666,14 @@
             <span class="post-date" title="2020-11-01 12:35:30">2020/11/01</span>
         </a>
         
+        <a  class="后端 redis "
+           href="/2020/11/17/backend/redis/redis-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="redis 02">redis 02</span>
+            <span class="post-date" title="2020-11-17 20:10:59">2020/11/17</span>
+        </a>
+        
     </nav>
 </div>
     </div>
@@ -698,7 +706,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-11-15 17:29:29'>2020-11-12 20:26</time>
+        创建时间:<time class="date" title='更新时间: 2020-11-17 19:57:31'>2020-11-12 20:26</time>
         
     </div>
     <div class="article-meta">
@@ -744,12 +752,12 @@
 <li><p>创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中查找到叶子节点，然后将叶子节点从磁盘中读到内存，循环遍历符合条件的数据的引用，在通过引用去找磁盘中符合条件的数据</p>
 </li>
 </ol>
-<h3 id="为什么redis发展快"><a href="#为什么redis发展快" class="headerlink" title="为什么redis发展快"></a>为什么redis发展快</h3><p>redis是单线程点调用，但是为什么每秒处理几十万的请求？<br>redis用了是基于内存的用了epoll技术，所有的client端连接先到系统的内核，然后才能到用户去处理，然而从内核到用户态的过程中用到了epoll。用户态端是基于内存的，是快的，而IO是慢的，client端慢慢悠悠传到内核，因为有epoll放到了map区，然后用户态端直接拿出来处理。那什么是epoll呢？<br><img src="/img/backend/redis/redis4.png" alt="io"></p>
+<h3 id="为什么redis发展快"><a href="#为什么redis发展快" class="headerlink" title="为什么redis发展快"></a>为什么redis发展快</h3><p>redis是单线程（数据处理上单线程，真正的处理其他的事情的不是单线程）调用，但是为什么每秒处理几十万的请求？<br>redis用了是基于内存的用了epoll技术，所有的client端连接先到系统的内核，然后才能到用户去处理，然而从内核到用户态的过程中用到了epoll。用户态端是基于内存的，是快的，而IO是慢的，client端慢慢悠悠传到内核，因为有epoll放到了map区，然后用户态端直接拿出来处理。那什么是epoll呢？<br><img src="/img/backend/redis/redis4.png" alt="io"></p>
 <h3 id="epoll的发展历程"><a href="#epoll的发展历程" class="headerlink" title="epoll的发展历程"></a>epoll的发展历程</h3><ol>
 <li>刚开始socket是block的，也就是用户态和内核态没有数据返回就一直等待这是，也就是BIO<br><img src="/img/backend/redis/redis5.png" alt="io"></li>
 <li>用户态开始非阻塞了，也就是一直轮询，切换查看文件描述符的数据fd，实现了NIO，但是造成的问题是查看每个文件描述符的数据状态，每次都会有用户态到内核态之间切换的问题，效率低。<br><img src="/img/backend/redis/redis6.png" alt="io"></li>
 <li>内核态进行升级，将用户态的轮询放到了内核态，也就是select，以前轮询查看单个的文件描述符fd，但是现在我是把1000多个fds传给内核，然后内核区间空这个内容通过select()函数，知道一个或者更多变成了ready状态，就给用户态返回，然后用户拿着返回的文件描述符，也就是谁有了我就去调系统调用read(fd)。和以前先相比在系统调用上面更精准更精确了，减少了用户态和内核态不必的切换。实现了多路复用NIO<br>但是每次我把所有的文件描述符传给你，然后你告诉我谁好了，然后我再去读。如果这个过程再精简就更好了。<br>问题是用户态和内核态通过系统调用的函数，就有传参的问题，就会有数据的拷贝，于是乎大家都想做到零拷贝，所以问题就是拷贝来拷贝去的数据<br><img src="/img/backend/redis/redis7.png" alt="io"><br>select做到了在<br><img src="/img/backend/redis/redis8.png" alt="io"></li>
-<li>内核实现：mmap()的出现做一个映射，可以解决一个内核和用户组件一个共享的空间，也就是传参的时候不在传递数据的拷贝，而是传递一个地址，然后从共享空间里面拿东西。具体是用户态有1000个文件描述符，把这1000个文件描述符通过mmap写到共享空间里面去（将写入自己空间的过程换成写到共享空间里面），往共享空间的红黑树里面存放，然后内核去拿到红黑树里面的文件描述符数据，通过所有的IO中断，发现谁的数据到达了，谁的数据缓冲区有了，将到达的放到链表里，通过epoll事件通知设备，如果链表里面有数据了，用户态就可以从链表里面拿数据。<br><img src="/img/backend/redis/redis9.png" alt="io"><br><img src="/img/backend/redis/redis10.png" alt="io"></li>
+<li>内核实现：mmap()的出现做一个映射，可以解决一个内核和用户组件一个共享的空间，也就是传参的时候不在传递数据的拷贝，而是传递一个地址，然后从共享空间里面拿东西。通过epoll的create方法产生一个epoll的文件描述符，以后每个连接进来之后，将这连接交给epoll的文件描述符，然后epoll这边会准备一个共享空间叫mmap，往共享空间的红黑树里面存放叫做注册，注意共享空间的增删改是内核来完成的，查看两方共同的，以前是1000个文件描述符来了通过传递给select函数，现在是通过epoll的create注册到红黑树里面，通过所有的IO中断，发现谁的数据到达了，谁的数据缓冲区有了，将到达的放到链表里，通过epoll事件通知设备，如果链表里面有数据了，用户态就可以从链表里面拿数据。<br>用户空间还会去调用系统调用，调到epoll上，一个ctl的调用add或者delete真正的socket描述符，一个是wait(),等待，等待事件链表有了wait就返回<br><img src="/img/backend/redis/redis9.png" alt="io"><br><img src="/img/backend/redis/redis10.png" alt="io"></li>
 </ol>
 <h3 id="零拷贝和共享空间不一样"><a href="#零拷贝和共享空间不一样" class="headerlink" title="零拷贝和共享空间不一样"></a>零拷贝和共享空间不一样</h3><p>零拷贝叫sendfile(),一个输入的fd，一个输出的fd。<br>以前是文件file.tex先把fd到内核，然后read拷贝到用户空间，然后用户空间再Write copy到内核write出去到网卡，会有copy的过程。<br>有了sendfile(),直接调了sendfile，然后内核直接读缓冲区里面的数据，然后发出去，就没了拷贝<br><img src="/img/backend/redis/redis11.png" alt="io"><br><img src="/img/backend/redis/redis12.png" alt="io"></p>
 <h3 id="sendfile-mmap就出来了kafka"><a href="#sendfile-mmap就出来了kafka" class="headerlink" title="sendfile+mmap就出来了kafka"></a>sendfile+mmap就出来了kafka</h3><p>通过mmap写入挂载文件，然后这时候用户个内核共享，内核直接能看到这个数据，然后通过sendfile展示给客户。<br>一切的知识来自于内核<br><img src="/img/backend/redis/redis13.png" alt="io"></p>
@@ -771,7 +779,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-11-12, 20:26:22</p>
-    <p><span class="copy-title">最后更新:</span>2020-11-15, 17:29:29</p>
+    <p><span class="copy-title">最后更新:</span>2020-11-17, 19:57:31</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/11/12/backend/redis/redis-01/" title="Redis 01">https://yaninabu.github.io/2020/11/12/backend/redis/redis-01/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
