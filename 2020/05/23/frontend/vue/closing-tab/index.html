@@ -6,27 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="闭合标签使用不当 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
+<meta name="description" content="连接redis-cli 默认0-16个库helphelp @通用 比如类型@string @listhelp command key没有类型的区分，只有value有String（Byte）类型12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 01">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;11&#x2F;12&#x2F;backend&#x2F;redis&#x2F;redis-01&#x2F;index.html">
+<meta property="og:title" content="redis 02">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;11&#x2F;17&#x2F;backend&#x2F;redis&#x2F;redis-02&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
+<meta property="og:description" content="连接redis-cli 默认0-16个库helphelp @通用 比如类型@string @listhelp command key没有类型的区分，只有value有String（Byte）类型12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis5.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis6.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis7.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis8.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis9.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis10.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis11.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis12.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
-<meta property="og:updated_time" content="2020-11-17T11:57:31.131Z">
+<meta property="og:updated_time" content="2020-11-18T13:37:18.215Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
