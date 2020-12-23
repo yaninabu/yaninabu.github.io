@@ -6,15 +6,27 @@
   <meta name="keywords" content="">
   <meta name="description" content="Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="连接redis-cli 默认0-16个库helphelp @通用 比如类型@string @listhelp command key没有类型的区分，只有value有String（Byte）类型12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565">
+<meta name="description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
 <meta property="og:type" content="article">
-<meta property="og:title" content="redis 02">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;11&#x2F;17&#x2F;backend&#x2F;redis&#x2F;redis-02&#x2F;index.html">
+<meta property="og:title" content="Redis 01">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;11&#x2F;12&#x2F;backend&#x2F;redis&#x2F;redis-01&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="连接redis-cli 默认0-16个库helphelp @通用 比如类型@string @listhelp command key没有类型的区分，只有value有String（Byte）类型12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565">
+<meta property="og:description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-11-18T13:37:18.215Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis5.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis6.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis7.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis8.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis9.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis10.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis11.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis12.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
+<meta property="og:updated_time" content="2020-11-18T12:18:06.676Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -133,7 +145,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(37)</small></div></li>
+    <li><div class="all active">全部文章<small>(42)</small></div></li>
     
         
             
@@ -145,11 +157,11 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(32)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(37)</small></div>
                 
                     <ul class="sub hide">
                         
-                        <li><div data-rel="redis">redis<small>(4)</small></div>
+                        <li><div data-rel="redis">redis<small>(8)</small></div>
                             
                         </li>
                             
@@ -167,7 +179,7 @@
                             
                         </li>
                             
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(20)</small></div>
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(21)</small></div>
                             
                                 <ul class="sub hide">
                                     
@@ -178,6 +190,9 @@
                                     </li>
                                     
                                     <li><div data-rel="多线程与高并发"><i class="fold iconfont icon-right"></i>多线程与高并发<small>(17)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="hashmap vs concurrenthashmap">hashmap vs concurrenthashmap<small>(1)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -316,6 +331,10 @@
             
         
     
+        
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -326,7 +345,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="37">
+<input type="hidden" id="yelog_site_posts_number" value="42">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -660,6 +679,46 @@
            data-author="" >
             <span class="post-title" title="redis 02">redis 02</span>
             <span class="post-date" title="2020-11-17 20:10:59">2020/11/17</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/19/backend/redis/redis-03/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="redis 03">redis 03</span>
+            <span class="post-date" title="2020-11-19 20:56:18">2020/11/19</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/12/14/backend/redis/redis-05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-date" title="2020-12-14 19:51:08">2020/12/14</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/12/18/backend/redis/redis-06/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/19/backend/redis/redis-04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 04">Redis 04</span>
+            <span class="post-date" title="2020-11-19 22:06:18">2020/11/19</span>
+        </a>
+        
+        <a  class="后端 java hashmap vs concurrenthashmap "
+           href="/2020/11/20/backend/java/container/hashmap-vs-conconrennthashmap/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java集合">java集合</span>
+            <span class="post-date" title="2020-11-20 20:36:17">2020/11/20</span>
         </a>
         
     </nav>
