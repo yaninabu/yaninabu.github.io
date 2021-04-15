@@ -6,27 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="volatile vs synchronized | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
+<meta name="description" content="AKF12345678910111213141516171819202122232425262728293031323334353637383940414243x轴y轴z轴方向上进行解决单机造成的问题单机造成的问题1. 单点故障2. 最大连接数3. 内存不足通过AKF一变多，同样会造成问题1. 数据一致性所有节点阻塞，直到数据全部一致,强一致性当往一个redis里面写的时候不马上返回，再往其他re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 01">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;11&#x2F;12&#x2F;backend&#x2F;redis&#x2F;redis-01&#x2F;index.html">
+<meta property="og:title" content="Redis 05">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;12&#x2F;18&#x2F;backend&#x2F;redis&#x2F;redis-06&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="数据的发展过程 刚开始数据存放在文件中，放到磁盘上，磁盘寻址是毫秒级的，一个扇区是512b，但读取起来很慢，并且以4K为单位读取。  出现了数据库，出现了表，一块一块默认按照4K存储，也是在磁盘上，如果没有索引，速度并没有提高，和上面的发展过程是一样的。  创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中">
+<meta property="og:description" content="AKF12345678910111213141516171819202122232425262728293031323334353637383940414243x轴y轴z轴方向上进行解决单机造成的问题单机造成的问题1. 单点故障2. 最大连接数3. 内存不足通过AKF一变多，同样会造成问题1. 数据一致性所有节点阻塞，直到数据全部一致,强一致性当往一个redis里面写的时候不马上返回，再往其他re">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis5.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis6.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis7.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis8.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis9.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis10.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis11.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis12.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis13.png">
-<meta property="og:updated_time" content="2020-11-18T12:18:06.676Z">
+<meta property="og:updated_time" content="2020-12-23T13:47:12.088Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;redis&#x2F;redis4.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -145,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(42)</small></div></li>
+    <li><div class="all active">全部文章<small>(49)</small></div></li>
     
         
             
@@ -157,82 +145,9 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(37)</small></div>
-                
-                    <ul class="sub hide">
-                        
-                        <li><div data-rel="redis">redis<small>(8)</small></div>
-                            
-                        </li>
-                            
-                        <li><div data-rel="jvm"><i class="fold iconfont icon-right"></i>jvm<small>(2)</small></div>
-                            
-                                <ul class="sub hide">
-                                    
-                                    <li><div data-rel="class文件硬件到内存">class文件硬件到内存<small>(1)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="ClassFileFormat">ClassFileFormat<small>(1)</small></div>
-                                    </li>
-                                    
-                                </ul>
-                            
-                        </li>
-                            
-                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(21)</small></div>
-                            
-                                <ul class="sub hide">
-                                    
-                                    <li><div data-rel="基础">基础<small>(1)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="容器">容器<small>(2)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="多线程与高并发"><i class="fold iconfont icon-right"></i>多线程与高并发<small>(17)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="hashmap vs concurrenthashmap">hashmap vs concurrenthashmap<small>(1)</small></div>
-                                    </li>
-                                    
-                                </ul>
-                            
-                        </li>
-                            
-                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(6)</small></div>
-                            
-                                <ul class="sub hide">
-                                    
-                                    <li><div data-rel="varchar">varchar<small>(1)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="pom文件的配置">pom文件的配置<small>(1)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="查询缓存">查询缓存<small>(2)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="join">join<small>(1)</small></div>
-                                    </li>
-                                    
-                                    <li><div data-rel="排序算法">排序算法<small>(1)</small></div>
-                                    </li>
-                                    
-                                </ul>
-                            
-                        </li>
-                            
-                    </ul>
+            <li><div data-rel="zookeeper">zookeeper<small>(2)</small></div>
                 
             </li>
-            
-        
-    
-        
-            
-        
-    
-        
             
         
     
@@ -260,6 +175,95 @@
                     </ul>
                 
             </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(42)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="redis">redis<small>(8)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(6)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="pom文件的配置">pom文件的配置<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="查询缓存">查询缓存<small>(2)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="排序算法">排序算法<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="join">join<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="varchar">varchar<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="jvm"><i class="fold iconfont icon-right"></i>jvm<small>(2)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="class文件硬件到内存">class文件硬件到内存<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="ClassFileFormat">ClassFileFormat<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(25)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="容器">容器<small>(2)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="基础">基础<small>(3)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="多线程"><i class="fold iconfont icon-right"></i>多线程<small>(19)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="多线程 concurrenthashmap">多线程 concurrenthashmap<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Rabbit mq">Rabbit mq<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
             
         
     
@@ -345,7 +349,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="42">
+<input type="hidden" id="yelog_site_posts_number" value="49">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -386,14 +390,6 @@
     <nav id="title-list-nav">
         
         <a  class="Docker "
-           href="/2020/06/06/docker/common-docker-cmd/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="常用的docker指令">常用的docker指令</span>
-            <span class="post-date" title="2020-06-06 11:04:52">2020/06/06</span>
-        </a>
-        
-        <a  class="Docker "
            href="/2020/06/06/docker/why-use-docker/"
            data-tag=""
            data-author="" >
@@ -401,36 +397,28 @@
             <span class="post-date" title="2020-06-06 10:18:09">2020/06/06</span>
         </a>
         
-        <a  class="后端 jvm class文件硬件到内存 "
-           href="/2020/08/18/backend/jvm/class-load-process/"
+        <a  class="zookeeper "
+           href="/2021/01/21/zookeeper/zookeeper-case/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="class文件硬件到内存">class文件硬件到内存</span>
-            <span class="post-date" title="2020-08-18 19:03:15">2020/08/18</span>
+            <span class="post-title" title="zookeeper应用场景">zookeeper应用场景</span>
+            <span class="post-date" title="2021-01-21 19:50:30">2021/01/21</span>
         </a>
         
-        <a  class="后端 jvm ClassFileFormat "
-           href="/2020/08/16/backend/jvm/class-format/"
+        <a  class="zookeeper "
+           href="/2021/01/24/zookeeper/zookeeper-code/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="ClassFileFormat">ClassFileFormat</span>
-            <span class="post-date" title="2020-08-16 13:13:52">2020/08/16</span>
+            <span class="post-title" title="zookeeper应用场景">zookeeper应用场景</span>
+            <span class="post-date" title="2021-01-24 19:42:57">2021/01/24</span>
         </a>
         
-        <a  class="后端 redis "
-           href="/2020/05/10/backend/redis/redis-view/"
+        <a  class="Docker "
+           href="/2020/06/06/docker/common-docker-cmd/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="Redis应用场景">Redis应用场景</span>
-            <span class="post-date" title="2020-05-10 16:46:57">2020/05/10</span>
-        </a>
-        
-        <a  class="后端 redis "
-           href="/2020/05/09/backend/redis/redis-base/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="了解Redis">了解Redis</span>
-            <span class="post-date" title="2020-05-09 17:17:33">2020/05/09</span>
+            <span class="post-title" title="常用的docker指令">常用的docker指令</span>
+            <span class="post-date" title="2020-06-06 11:04:52">2020/06/06</span>
         </a>
         
         <a  class="前端 css "
@@ -457,182 +445,6 @@
             <span class="post-date" title="2020-05-23 09:39:42">2020/05/23</span>
         </a>
         
-        <a  class="后端 java 容器 "
-           href="/2020/06/21/backend/java/container/container-process/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="java容器基础">java容器基础</span>
-            <span class="post-date" title="2020-06-21 11:05:23">2020/06/21</span>
-        </a>
-        
-        <a  class="后端 java 容器 "
-           href="/2019/12/14/backend/java/container/java-collection/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="java集合">java集合</span>
-            <span class="post-date" title="2019-12-14 19:09:42">2019/12/14</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 atomic "
-           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic-longadder-synchronized/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Atomic/LongAdder/synchronized">Atomic/LongAdder/synchronized</span>
-            <span class="post-date" title="2020-05-23 21:56:03">2020/05/23</span>
-        </a>
-        
-        <a  class="后端 java 基础 "
-           href="/2020/06/17/backend/java/base/java-reference/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="java的引用">java的引用</span>
-            <span class="post-date" title="2020-06-17 20:24:28">2020/06/17</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/24/backend/java/muti-thread-concurrency/cyclicbarrier/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CyclicBarrier">CyclicBarrier</span>
-            <span class="post-date" title="2020-05-24 10:19:36">2020/05/24</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/24/backend/java/muti-thread-concurrency/countdownlatch/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="CountDownLatch">CountDownLatch</span>
-            <span class="post-date" title="2020-05-24 09:52:54">2020/05/24</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 atomic "
-           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="AtomicXXX">AtomicXXX</span>
-            <span class="post-date" title="2020-05-23 16:06:31">2020/05/23</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/06/13/backend/java/muti-thread-concurrency/exchanger/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Exchanger">Exchanger</span>
-            <span class="post-date" title="2020-06-13 16:55:33">2020/06/13</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/16/backend/java/muti-thread-concurrency/implement-multi-thread/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="java实现多线程的几种方式">java实现多线程的几种方式</span>
-            <span class="post-date" title="2020-05-16 22:03:49">2020/05/16</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/06/15/backend/java/muti-thread-concurrency/lock-support/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="LockSupport">LockSupport</span>
-            <span class="post-date" title="2020-06-15 21:09:03">2020/06/15</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 locks "
-           href="/2020/05/24/backend/java/muti-thread-concurrency/read-write-lock/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="ReadWriteLock">ReadWriteLock</span>
-            <span class="post-date" title="2020-05-24 11:06:55">2020/05/24</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/17/backend/java/muti-thread-concurrency/join-yield-sleep/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="sleep/yield/join">sleep/yield/join</span>
-            <span class="post-date" title="2020-05-17 16:32:48">2020/05/17</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 locks "
-           href="/2020/05/23/backend/java/muti-thread-concurrency/reentrant-lock/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="ReentrantLock">ReentrantLock</span>
-            <span class="post-date" title="2020-05-23 23:07:10">2020/05/23</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/24/backend/java/muti-thread-concurrency/phaser/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Phaser">Phaser</span>
-            <span class="post-date" title="2020-05-24 10:34:54">2020/05/24</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/24/backend/java/muti-thread-concurrency/semaphore/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Semaphore">Semaphore</span>
-            <span class="post-date" title="2020-05-24 13:42:55">2020/05/24</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/17/backend/java/muti-thread-concurrency/synchronized/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="synchronized">synchronized</span>
-            <span class="post-date" title="2020-05-17 17:43:41">2020/05/17</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/17/backend/java/muti-thread-concurrency/thread-status/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="多线程的几种状态">多线程的几种状态</span>
-            <span class="post-date" title="2020-05-17 15:39:57">2020/05/17</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/06/15/backend/java/muti-thread-concurrency/wait-notify/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="wait/notify">wait/notify</span>
-            <span class="post-date" title="2020-06-15 20:20:06">2020/06/15</span>
-        </a>
-        
-        <a  class="后端 mysql varchar "
-           href="/2020/10/31/backend/mysql/base/varchar/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="varchar">varchar</span>
-            <span class="post-date" title="2020-10-31 10:52:07">2020/10/31</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/19/backend/java/muti-thread-concurrency/volatile/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="volatile">volatile</span>
-            <span class="post-date" title="2020-05-19 22:37:36">2020/05/19</span>
-        </a>
-        
-        <a  class="后端 java 多线程与高并发 "
-           href="/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="volatile vs synchronized">volatile vs synchronized</span>
-            <span class="post-date" title="2020-05-23 13:01:56">2020/05/23</span>
-        </a>
-        
-        <a  class="后端 redis "
-           href="/2020/11/12/backend/redis/redis-01/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="Redis 01">Redis 01</span>
-            <span class="post-date" title="2020-11-12 20:26:22">2020/11/12</span>
-        </a>
-        
         <a  class="后端 mysql pom文件的配置 "
            href="/2020/11/04/backend/maven/pom/"
            data-tag=""
@@ -649,28 +461,20 @@
             <span class="post-date" title="2020-10-31 14:27:44">2020/10/31</span>
         </a>
         
-        <a  class="后端 mysql join "
-           href="/2020/11/01/backend/mysql/base/join/"
+        <a  class="后端 jvm class文件硬件到内存 "
+           href="/2020/08/18/backend/jvm/class-load-process/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="join">join</span>
-            <span class="post-date" title="2020-11-01 12:09:33">2020/11/01</span>
+            <span class="post-title" title="class文件硬件到内存">class文件硬件到内存</span>
+            <span class="post-date" title="2020-08-18 19:03:15">2020/08/18</span>
         </a>
         
-        <a  class="后端 mysql 查询缓存 "
-           href="/2020/10/31/backend/mysql/base/%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/"
+        <a  class="后端 jvm ClassFileFormat "
+           href="/2020/08/16/backend/jvm/class-format/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="查询缓存">查询缓存</span>
-            <span class="post-date" title="2020-10-31 14:44:45">2020/10/31</span>
-        </a>
-        
-        <a  class="后端 mysql 排序算法 "
-           href="/2020/11/01/backend/mysql/base/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"
-           data-tag=""
-           data-author="" >
-            <span class="post-title" title="排序算法">排序算法</span>
-            <span class="post-date" title="2020-11-01 12:35:30">2020/11/01</span>
+            <span class="post-title" title="ClassFileFormat">ClassFileFormat</span>
+            <span class="post-date" title="2020-08-16 13:13:52">2020/08/16</span>
         </a>
         
         <a  class="后端 redis "
@@ -679,6 +483,30 @@
            data-author="" >
             <span class="post-title" title="redis 02">redis 02</span>
             <span class="post-date" title="2020-11-17 20:10:59">2020/11/17</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/12/backend/redis/redis-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 01">Redis 01</span>
+            <span class="post-date" title="2020-11-12 20:26:22">2020/11/12</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/19/backend/redis/redis-04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 04">Redis 04</span>
+            <span class="post-date" title="2020-11-19 22:06:18">2020/11/19</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/12/18/backend/redis/redis-06/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
         </a>
         
         <a  class="后端 redis "
@@ -698,27 +526,259 @@
         </a>
         
         <a  class="后端 redis "
-           href="/2020/12/18/backend/redis/redis-06/"
+           href="/2020/05/09/backend/redis/redis-base/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="Redis 05">Redis 05</span>
-            <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
+            <span class="post-title" title="了解Redis">了解Redis</span>
+            <span class="post-date" title="2020-05-09 17:17:33">2020/05/09</span>
         </a>
         
         <a  class="后端 redis "
-           href="/2020/11/19/backend/redis/redis-04/"
+           href="/2020/05/10/backend/redis/redis-view/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="Redis 04">Redis 04</span>
-            <span class="post-date" title="2020-11-19 22:06:18">2020/11/19</span>
+            <span class="post-title" title="Redis应用场景">Redis应用场景</span>
+            <span class="post-date" title="2020-05-10 16:46:57">2020/05/10</span>
         </a>
         
-        <a  class="后端 java hashmap vs concurrenthashmap "
+        <a  class="后端 mysql 排序算法 "
+           href="/2020/11/01/backend/mysql/base/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="排序算法">排序算法</span>
+            <span class="post-date" title="2020-11-01 12:35:30">2020/11/01</span>
+        </a>
+        
+        <a  class="后端 java 容器 "
+           href="/2020/06/21/backend/java/container/container-process/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java容器基础">java容器基础</span>
+            <span class="post-date" title="2020-06-21 11:05:23">2020/06/21</span>
+        </a>
+        
+        <a  class="后端 java 多线程 concurrenthashmap "
            href="/2020/11/20/backend/java/container/hashmap-vs-conconrennthashmap/"
            data-tag=""
            data-author="" >
             <span class="post-title" title="java集合">java集合</span>
             <span class="post-date" title="2020-11-20 20:36:17">2020/11/20</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2020/06/17/backend/java/base/java-reference/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java的引用">java的引用</span>
+            <span class="post-date" title="2020-06-17 20:24:28">2020/06/17</span>
+        </a>
+        
+        <a  class="后端 mysql join "
+           href="/2020/11/01/backend/mysql/base/join/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="join">join</span>
+            <span class="post-date" title="2020-11-01 12:09:33">2020/11/01</span>
+        </a>
+        
+        <a  class="后端 mysql varchar "
+           href="/2020/10/31/backend/mysql/base/varchar/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="varchar">varchar</span>
+            <span class="post-date" title="2020-10-31 10:52:07">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 mysql 查询缓存 "
+           href="/2020/10/31/backend/mysql/base/%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="查询缓存">查询缓存</span>
+            <span class="post-date" title="2020-10-31 14:44:45">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/countdownlatch/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CountDownLatch">CountDownLatch</span>
+            <span class="post-date" title="2020-05-24 09:52:54">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 atomic "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic-longadder-synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Atomic/LongAdder/synchronized">Atomic/LongAdder/synchronized</span>
+            <span class="post-date" title="2020-05-23 21:56:03">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2021/01/26/backend/java/muti-thread-concurrency/cpu/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CPU">CPU</span>
+            <span class="post-date" title="2021-01-26 19:10:29">2021/01/26</span>
+        </a>
+        
+        <a  class="后端 java 多线程 atomic "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="AtomicXXX">AtomicXXX</span>
+            <span class="post-date" title="2020-05-23 16:06:31">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/06/13/backend/java/muti-thread-concurrency/exchanger/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Exchanger">Exchanger</span>
+            <span class="post-date" title="2020-06-13 16:55:33">2020/06/13</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/cyclicbarrier/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CyclicBarrier">CyclicBarrier</span>
+            <span class="post-date" title="2020-05-24 10:19:36">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2021/01/26/backend/java/muti-thread-concurrency/jmm/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JMM">JMM</span>
+            <span class="post-date" title="2021-01-26 20:37:48">2021/01/26</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/join-yield-sleep/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="sleep/yield/join">sleep/yield/join</span>
+            <span class="post-date" title="2020-05-17 16:32:48">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/06/15/backend/java/muti-thread-concurrency/lock-support/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="LockSupport">LockSupport</span>
+            <span class="post-date" title="2020-06-15 21:09:03">2020/06/15</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/16/backend/java/muti-thread-concurrency/implement-multi-thread/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java实现多线程的几种方式">java实现多线程的几种方式</span>
+            <span class="post-date" title="2020-05-16 22:03:49">2020/05/16</span>
+        </a>
+        
+        <a  class="后端 java 多线程 locks "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/read-write-lock/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ReadWriteLock">ReadWriteLock</span>
+            <span class="post-date" title="2020-05-24 11:06:55">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/phaser/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Phaser">Phaser</span>
+            <span class="post-date" title="2020-05-24 10:34:54">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 locks "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/reentrant-lock/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ReentrantLock">ReentrantLock</span>
+            <span class="post-date" title="2020-05-23 23:07:10">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/thread-status/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="多线程的几种状态">多线程的几种状态</span>
+            <span class="post-date" title="2020-05-17 15:39:57">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/semaphore/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Semaphore">Semaphore</span>
+            <span class="post-date" title="2020-05-24 13:42:55">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="volatile vs synchronized">volatile vs synchronized</span>
+            <span class="post-date" title="2020-05-23 13:01:56">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="synchronized">synchronized</span>
+            <span class="post-date" title="2020-05-17 17:43:41">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/06/15/backend/java/muti-thread-concurrency/wait-notify/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="wait/notify">wait/notify</span>
+            <span class="post-date" title="2020-06-15 20:20:06">2020/06/15</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/19/backend/java/muti-thread-concurrency/volatile/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="volatile">volatile</span>
+            <span class="post-date" title="2020-05-19 22:37:36">2020/05/19</span>
+        </a>
+        
+        <a  class="后端 java 容器 "
+           href="/2019/12/14/backend/java/container/java-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java集合">java集合</span>
+            <span class="post-date" title="2019-12-14 19:09:42">2019/12/14</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2021/03/19/backend/java/base/ploxy/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="动态代理/静态代理">动态代理/静态代理</span>
+            <span class="post-date" title="2021-03-19 22:09:07">2021/03/19</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2021/04/08/backend/java/base/java-base/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java基础">java基础</span>
+            <span class="post-date" title="2021-04-08 11:52:45">2021/04/08</span>
+        </a>
+        
+        <a  class="后端 Rabbit mq "
+           href="/2021/04/12/backend/mq/rabbitmq/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Rabbit mq">Rabbit mq</span>
+            <span class="post-date" title="2021-04-12 20:48:50">2021/04/12</span>
         </a>
         
     </nav>
@@ -747,7 +807,7 @@
             
                 <a  data-rel="java">java</a>/
             
-                <a  data-rel="多线程与高并发">多线程与高并发</a>
+                <a  data-rel="多线程">多线程</a>
             
         </span>
         
@@ -755,7 +815,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-05-23 13:37:52'>2020-05-23 13:01</time>
+        创建时间:<time class="date" title='更新时间: 2021-04-08 11:57:06'>2020-05-23 13:01</time>
         
     </div>
     <div class="article-meta">
@@ -827,7 +887,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-05-23, 13:01:56</p>
-    <p><span class="copy-title">最后更新:</span>2020-05-23, 13:37:52</p>
+    <p><span class="copy-title">最后更新:</span>2021-04-08, 11:57:06</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/" title="volatile vs synchronized">https://yaninabu.github.io/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
