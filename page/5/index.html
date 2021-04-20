@@ -6,15 +6,17 @@
   <meta name="keywords" content="">
   <meta name="description" content="Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="AKF12345678910111213141516171819202122232425262728293031323334353637383940414243x轴y轴z轴方向上进行解决单机造成的问题单机造成的问题1. 单点故障2. 最大连接数3. 内存不足通过AKF一变多，同样会造成问题1. 数据一致性所有节点阻塞，直到数据全部一致,强一致性当往一个redis里面写的时候不马上返回，再往其他re">
+<meta name="description" content="作用优势 解耦：提高系统的容错性和可维护性 异步提速：提升用户体验和系统的吞吐量 削峰填谷：提高系统的稳定性  劣势 系统的可用性降低，如果宕机整个业务都会受影响 系统的复杂性提高，以前是同步调用，现在是通过mq异步调用，如何保证消息不丢失  AMQP协议相关概念 Broker：就是rabbit mq server virtual host：类似于namespace的概念，mysql里面的data">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 05">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2020&#x2F;12&#x2F;18&#x2F;backend&#x2F;redis&#x2F;redis-06&#x2F;index.html">
+<meta property="og:title" content="Rabbit mq">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;12&#x2F;backend&#x2F;mq&#x2F;rabbitmq&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="AKF12345678910111213141516171819202122232425262728293031323334353637383940414243x轴y轴z轴方向上进行解决单机造成的问题单机造成的问题1. 单点故障2. 最大连接数3. 内存不足通过AKF一变多，同样会造成问题1. 数据一致性所有节点阻塞，直到数据全部一致,强一致性当往一个redis里面写的时候不马上返回，再往其他re">
+<meta property="og:description" content="作用优势 解耦：提高系统的容错性和可维护性 异步提速：提升用户体验和系统的吞吐量 削峰填谷：提高系统的稳定性  劣势 系统的可用性降低，如果宕机整个业务都会受影响 系统的复杂性提高，以前是同步调用，现在是通过mq异步调用，如何保证消息不丢失  AMQP协议相关概念 Broker：就是rabbit mq server virtual host：类似于namespace的概念，mysql里面的data">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-12-23T13:47:12.088Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;rabbitmq&#x2F;%E5%BB%B6%E6%97%B6PNG.PNG">
+<meta property="og:updated_time" content="2021-04-14T13:27:13.334Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;rabbitmq&#x2F;%E5%BB%B6%E6%97%B6PNG.PNG">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -133,7 +135,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(49)</small></div></li>
+    <li><div class="all active">全部文章<small>(51)</small></div></li>
     
         
             
@@ -180,7 +182,7 @@
     
         
             
-            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(42)</small></div>
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(44)</small></div>
                 
                     <ul class="sub hide">
                         
@@ -188,7 +190,7 @@
                             
                         </li>
                             
-                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(6)</small></div>
+                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(7)</small></div>
                             
                                 <ul class="sub hide">
                                     
@@ -205,6 +207,9 @@
                                     </li>
                                     
                                     <li><div data-rel="varchar">varchar<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="主从复制">主从复制<small>(1)</small></div>
                                     </li>
                                     
                                 </ul>
@@ -249,9 +254,21 @@
                             
                         </li>
                             
+                        <li><div data-rel="重点问题">重点问题<small>(1)</small></div>
+                            
+                        </li>
+                            
                     </ul>
                 
             </li>
+            
+        
+    
+        
+            
+        
+    
+        
             
         
     
@@ -349,7 +366,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="49">
+<input type="hidden" id="yelog_site_posts_number" value="51">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -779,6 +796,22 @@
            data-author="" >
             <span class="post-title" title="Rabbit mq">Rabbit mq</span>
             <span class="post-date" title="2021-04-12 20:48:50">2021/04/12</span>
+        </a>
+        
+        <a  class="后端 重点问题 "
+           href="/2021/04/20/backend/face/face/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="重点问题">重点问题</span>
+            <span class="post-date" title="2021-04-20 20:12:32">2021/04/20</span>
+        </a>
+        
+        <a  class="后端 mysql 主从复制 "
+           href="/2021/04/18/backend/mysql/base/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mysql主从复制">mysql主从复制</span>
+            <span class="post-date" title="2021-04-18 16:45:54">2021/04/18</span>
         </a>
         
     </nav>
