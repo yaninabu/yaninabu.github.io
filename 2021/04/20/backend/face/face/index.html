@@ -6,17 +6,18 @@
   <meta name="keywords" content="">
   <meta name="description" content="重点问题 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="作用优势 解耦：提高系统的容错性和可维护性 异步提速：提升用户体验和系统的吞吐量 削峰填谷：提高系统的稳定性  劣势 系统的可用性降低，如果宕机整个业务都会受影响 系统的复杂性提高，以前是同步调用，现在是通过mq异步调用，如何保证消息不丢失  AMQP协议相关概念 Broker：就是rabbit mq server virtual host：类似于namespace的概念，mysql里面的data">
+<meta name="description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rabbit mq">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;12&#x2F;backend&#x2F;mq&#x2F;rabbitmq&#x2F;index.html">
+<meta property="og:title" content="重点问题">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;20&#x2F;backend&#x2F;face&#x2F;face&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="作用优势 解耦：提高系统的容错性和可维护性 异步提速：提升用户体验和系统的吞吐量 削峰填谷：提高系统的稳定性  劣势 系统的可用性降低，如果宕机整个业务都会受影响 系统的复杂性提高，以前是同步调用，现在是通过mq异步调用，如何保证消息不丢失  AMQP协议相关概念 Broker：就是rabbit mq server virtual host：类似于namespace的概念，mysql里面的data">
+<meta property="og:description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;rabbitmq&#x2F;%E5%BB%B6%E6%97%B6PNG.PNG">
-<meta property="og:updated_time" content="2021-04-14T13:27:13.334Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanDefinitionRegistryPostProcessor.PNG">
+<meta property="og:updated_time" content="2021-04-24T14:55:04.944Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;rabbitmq&#x2F;%E5%BB%B6%E6%97%B6PNG.PNG">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -846,7 +847,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2021-04-20 22:16:49'>2021-04-20 20:12</time>
+        创建时间:<time class="date" title='更新时间: 2021-04-24 22:55:04'>2021-04-20 20:12</time>
         
     </div>
     <div class="article-meta">
@@ -868,7 +869,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#网络"><span class="toc-text">网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#spring"><span class="toc-text">spring</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -905,6 +906,34 @@
 </li>
 <li><p>binlog有几种格式？bin_log的作用？</p>
 </li>
+<li><p>mysql的锁</p>
+</li>
+<li><p>mysql的log文件</p>
+</li>
+</ol>
+<h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><ol>
+<li><p>http的传输</p>
+</li>
+<li><p>https：<br><a href="https://vip.tulingxueyuan.cn/detail/v_60335db1e4b05a9e88745c71/3?from=p_602e1dd8e4b05a9e887343a7&amp;type=6" target="_blank" rel="noopener">https://vip.tulingxueyuan.cn/detail/v_60335db1e4b05a9e88745c71/3?from=p_602e1dd8e4b05a9e887343a7&amp;type=6</a><br>a. 摘要算法<br>b. 对称加密：加密解密用相同的秘钥<br>c. 非对称加密：公钥（可以被任何人使用）私钥严格保密<br>公钥加密（浏览器）-&gt; 私钥解密(服务器) 安全<br>私钥加密(服务器) -&gt; 公钥解密(浏览器) 不安全<br>但是可以公钥加密（浏览器）-&gt; 私钥解密(服务器)传输一个秘钥，以后浏览器服务器用对称加密进行通信，提高执行的效率</p>
+</li>
+<li><p>TCP<br><a href="https://snailclimb.gitee.io/javaguide/#/docs/network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C" target="_blank" rel="noopener">https://snailclimb.gitee.io/javaguide/#/docs/network/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C</a><br>a. 基于连接，数据传输层协议<br>b. 双向全双工</p>
+</li>
+</ol>
+<h3 id="spring"><a href="#spring" class="headerlink" title="spring"></a>spring</h3><p><a href="https://github.com/DocsHome/spring-docs/blob/master/pages/core/IoC-container.md#context-introduction-ctx-vs-beanfactory" target="_blank" rel="noopener">https://github.com/DocsHome/spring-docs/blob/master/pages/core/IoC-container.md#context-introduction-ctx-vs-beanfactory</a></p>
+<ol>
+<li><p>spring ioc的加载过程，bean生产<br>a. AnnotationConfigApplicationContext AbstractApplicationContext getBean(既能获取bean也能生产bean)-&gt;BeanFactory(spring的顶层类，使用了简单工厂模式&lt;一个工厂类根据传入的参数，动态决定应该创建哪一个产品类”car”,Car.class&gt;,负责生产bean)<br>b. Bean由BeanFactory调用getBean创建出来的，所以生产的是由beanfactory生产<br>c. 但是读取方式不一样（注解，xml），交给BeanFactory的方式要是一样的，所以统一读取成BeanDefinition AbstractBeanDefinition(scope, beanClass, lazyInit, autowireMode)</p>
+</li>
+<li><p>bean的生产过程（bean的生命周期）<br>a. 实例化（反射(@conponent spring控制)或者工厂方法（@Bean自己控制，更灵活）），反射根据DeanDefinition里面封装的该类的class<br>b. 填充属性。 解析@value @Autowired<br>会有循环依赖的问题<br>c. 初始化。 定义initMethod destroy等方法<br>初始化之后bean基本成型，我们会把它put到一个map(单例池，也是一级缓存)里面，key存的是beanName，也就是我们getBean的时候时候传的名字getBean(“user”), value是实例</p>
+</li>
+<li><p>扩展点<br>a. 注册bean定义的时候我们还能去修改它，只要getBean还没开始就能扩展修改，spring提供了扩展接口bean工厂的后置处理器BeanFactoryPostProcessor，可以修改我们的bean定义</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">定义一个类实现BeanFactoryPostProcessor)(使用场景当我们spring去集成其他框架比如mybatis)实现postProcessBeanFactory(beanFactory)</span><br><span class="line"></span><br><span class="line">1. 通过方法的beanFactory的getBeanDefinition方法获取bean定义</span><br><span class="line"></span><br><span class="line">2. 修改bean定义</span><br></pre></td></tr></table></figure>
+<p><img src="/img/backend/java/face/BeanFactoryPostProcessor.png" alt="bean"></p>
+</li>
+</ol>
+<p>b. BeanFactoryPostProcessor的子接口BeanDefinitionRegistryPostProcessor来注册bean定义，也就是添加bean定义</p>
+<p><img src="/img/backend/java/face/BeanDefinitionRegistryPostProcessor.PNG" alt="bean"></p>
+<ol start="2">
+<li>Spring框架中的设计模式<br><a href="https://blog.csdn.net/chao821/article/details/92400186" target="_blank" rel="noopener">https://blog.csdn.net/chao821/article/details/92400186</a><br>简单工厂: spring使用工厂模式可以通过BeanFactory或ApplicationContext创建bean对象。<br>单例设计模式: Spring中bean的默认作用域就是singleton<br>代理设计模式:<br>模板方法设计模式: Spring中jdbcTemplate、hibernateTemplate等以Template结尾的对数据库操作的类，它们就使用到模板模式</li>
 </ol>
 
       
@@ -923,7 +952,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2021-04-20, 20:12:32</p>
-    <p><span class="copy-title">最后更新:</span>2021-04-20, 22:16:49</p>
+    <p><span class="copy-title">最后更新:</span>2021-04-24, 22:55:04</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2021/04/20/backend/face/face/" title="重点问题">https://yaninabu.github.io/2021/04/20/backend/face/face/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。

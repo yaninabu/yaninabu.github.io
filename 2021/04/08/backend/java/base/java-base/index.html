@@ -6,17 +6,18 @@
   <meta name="keywords" content="">
   <meta name="description" content="java基础 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="作用优势 解耦：提高系统的容错性和可维护性 异步提速：提升用户体验和系统的吞吐量 削峰填谷：提高系统的稳定性  劣势 系统的可用性降低，如果宕机整个业务都会受影响 系统的复杂性提高，以前是同步调用，现在是通过mq异步调用，如何保证消息不丢失  AMQP协议相关概念 Broker：就是rabbit mq server virtual host：类似于namespace的概念，mysql里面的data">
+<meta name="description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rabbit mq">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;12&#x2F;backend&#x2F;mq&#x2F;rabbitmq&#x2F;index.html">
+<meta property="og:title" content="重点问题">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;20&#x2F;backend&#x2F;face&#x2F;face&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="作用优势 解耦：提高系统的容错性和可维护性 异步提速：提升用户体验和系统的吞吐量 削峰填谷：提高系统的稳定性  劣势 系统的可用性降低，如果宕机整个业务都会受影响 系统的复杂性提高，以前是同步调用，现在是通过mq异步调用，如何保证消息不丢失  AMQP协议相关概念 Broker：就是rabbit mq server virtual host：类似于namespace的概念，mysql里面的data">
+<meta property="og:description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;rabbitmq&#x2F;%E5%BB%B6%E6%97%B6PNG.PNG">
-<meta property="og:updated_time" content="2021-04-14T13:27:13.334Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanDefinitionRegistryPostProcessor.PNG">
+<meta property="og:updated_time" content="2021-04-24T14:55:04.944Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;rabbitmq&#x2F;%E5%BB%B6%E6%97%B6PNG.PNG">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -848,7 +849,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2021-04-18 14:49:34'>2021-04-08 11:52</time>
+        创建时间:<time class="date" title='更新时间: 2021-04-23 20:29:33'>2021-04-08 11:52</time>
         
     </div>
     <div class="article-meta">
@@ -896,7 +897,8 @@
 
 <h3 id="4-List-vs-Set"><a href="#4-List-vs-Set" class="headerlink" title="4. List vs Set"></a>4. List vs Set</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">List：有序，按对象进入的顺序保存对象，可重复，允许多个Null对象，可以使用iterator取出所有的元素，再逐一遍历，也可以使用get（int index）获取指定下标元素</span><br><span class="line"></span><br><span class="line">Set：无序不可重复，最多允许有一个null元素对象，取元素只能使用iterator接口取得所有的元素，再逐一遍历元素 </span><br><span class="line"></span><br><span class="line">1、遍历Collection的两种方式</span><br><span class="line">使用迭代器Iterator</span><br><span class="line">foreach循环（或增强for循环）</span><br></pre></td></tr></table></figure>
 
-<h3 id="5-ThreadLocal"><a href="#5-ThreadLocal" class="headerlink" title="5. ThreadLocal"></a>5. ThreadLocal</h3>
+<h3 id="5-ThreadLocal"><a href="#5-ThreadLocal" class="headerlink" title="5. ThreadLocal"></a>5. ThreadLocal</h3><p><a href="https://blog.csdn.net/qq_34039868/article/details/89017189" target="_blank" rel="noopener">https://blog.csdn.net/qq_34039868/article/details/89017189</a></p>
+
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
     </div>
@@ -913,7 +915,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2021-04-08, 11:52:45</p>
-    <p><span class="copy-title">最后更新:</span>2021-04-18, 14:49:34</p>
+    <p><span class="copy-title">最后更新:</span>2021-04-23, 20:29:33</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2021/04/08/backend/java/base/java-base/" title="java基础">https://yaninabu.github.io/2021/04/08/backend/java/base/java-base/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
