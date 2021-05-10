@@ -6,19 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="java容器基础 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
+<meta name="description" content="1. 自动拆箱和自动装箱过程中遇到的问题12345678910111213141516a. 生成很多无用对象b. 如果类型用不好降低代码执行效率Integer sum = 0; for(int i=1000; i&amp;lt;5000; i++)&amp;#123;   sum+=i;&amp;#125;上面的代码sum+=i可以看成sum = sum + i，但是+这个操作符不适用于Integer对象，首先sum进行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重点问题">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;20&#x2F;backend&#x2F;face&#x2F;face&#x2F;index.html">
+<meta property="og:title" content="java基础">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;08&#x2F;backend&#x2F;java&#x2F;base&#x2F;java-base&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
+<meta property="og:description" content="1. 自动拆箱和自动装箱过程中遇到的问题12345678910111213141516a. 生成很多无用对象b. 如果类型用不好降低代码执行效率Integer sum = 0; for(int i=1000; i&amp;lt;5000; i++)&amp;#123;   sum+=i;&amp;#125;上面的代码sum+=i可以看成sum = sum + i，但是+这个操作符不适用于Integer对象，首先sum进行">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;spring-ioc.PNG">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanDefinitionRegistryPostProcessor.PNG">
-<meta property="og:updated_time" content="2021-04-25T15:34:19.596Z">
+<meta property="og:updated_time" content="2021-04-23T12:29:33.930Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;spring-ioc.PNG">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -137,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(51)</small></div></li>
+    <li><div class="all active">全部文章<small>(53)</small></div></li>
     
         
             
@@ -358,6 +354,34 @@
             
         
     
+        
+            
+            <li><div data-rel="ShardingSphere"><i class="fold iconfont icon-right"></i>ShardingSphere<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="入门">入门<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="实现接口幂等性">实现接口幂等性<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -368,7 +392,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="51">
+<input type="hidden" id="yelog_site_posts_number" value="53">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -524,7 +548,7 @@
            href="/2020/12/18/backend/redis/redis-06/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-title" title="Redis 06">Redis 06</span>
             <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
         </a>
         
@@ -814,6 +838,22 @@
            data-author="" >
             <span class="post-title" title="mysql主从复制">mysql主从复制</span>
             <span class="post-date" title="2021-04-18 16:45:54">2021/04/18</span>
+        </a>
+        
+        <a  class="ShardingSphere 入门 "
+           href="/2021/05/07/ShardingSphere/start/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ShardingSphere">ShardingSphere</span>
+            <span class="post-date" title="2021-05-07 10:57:37">2021/05/07</span>
+        </a>
+        
+        <a  class="实现接口幂等性 "
+           href="/2021/05/10/backend/%E5%B9%82%E7%AD%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="实现接口幂等性">实现接口幂等性</span>
+            <span class="post-date" title="2021-05-10 20:34:02">2021/05/10</span>
         </a>
         
     </nav>

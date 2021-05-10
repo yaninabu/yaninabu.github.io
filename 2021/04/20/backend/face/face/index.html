@@ -6,19 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="重点问题 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
+<meta name="description" content="1. 自动拆箱和自动装箱过程中遇到的问题12345678910111213141516a. 生成很多无用对象b. 如果类型用不好降低代码执行效率Integer sum = 0; for(int i=1000; i&amp;lt;5000; i++)&amp;#123;   sum+=i;&amp;#125;上面的代码sum+=i可以看成sum = sum + i，但是+这个操作符不适用于Integer对象，首先sum进行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重点问题">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;20&#x2F;backend&#x2F;face&#x2F;face&#x2F;index.html">
+<meta property="og:title" content="java基础">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;08&#x2F;backend&#x2F;java&#x2F;base&#x2F;java-base&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
+<meta property="og:description" content="1. 自动拆箱和自动装箱过程中遇到的问题12345678910111213141516a. 生成很多无用对象b. 如果类型用不好降低代码执行效率Integer sum = 0; for(int i=1000; i&amp;lt;5000; i++)&amp;#123;   sum+=i;&amp;#125;上面的代码sum+=i可以看成sum = sum + i，但是+这个操作符不适用于Integer对象，首先sum进行">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;spring-ioc.PNG">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanDefinitionRegistryPostProcessor.PNG">
-<meta property="og:updated_time" content="2021-04-25T15:34:19.596Z">
+<meta property="og:updated_time" content="2021-04-23T12:29:33.930Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;spring-ioc.PNG">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -137,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(51)</small></div></li>
+    <li><div class="all active">全部文章<small>(53)</small></div></li>
     
         
             
@@ -358,6 +354,34 @@
             
         
     
+        
+            
+            <li><div data-rel="ShardingSphere"><i class="fold iconfont icon-right"></i>ShardingSphere<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="入门">入门<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="实现接口幂等性">实现接口幂等性<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -368,7 +392,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="51">
+<input type="hidden" id="yelog_site_posts_number" value="53">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -524,7 +548,7 @@
            href="/2020/12/18/backend/redis/redis-06/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-title" title="Redis 06">Redis 06</span>
             <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
         </a>
         
@@ -816,6 +840,22 @@
             <span class="post-date" title="2021-04-18 16:45:54">2021/04/18</span>
         </a>
         
+        <a  class="ShardingSphere 入门 "
+           href="/2021/05/07/ShardingSphere/start/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ShardingSphere">ShardingSphere</span>
+            <span class="post-date" title="2021-05-07 10:57:37">2021/05/07</span>
+        </a>
+        
+        <a  class="实现接口幂等性 "
+           href="/2021/05/10/backend/%E5%B9%82%E7%AD%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="实现接口幂等性">实现接口幂等性</span>
+            <span class="post-date" title="2021-05-10 20:34:02">2021/05/10</span>
+        </a>
+        
     </nav>
 </div>
     </div>
@@ -848,7 +888,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2021-04-25 23:34:19'>2021-04-20 20:12</time>
+        创建时间:<time class="date" title='更新时间: 2021-05-07 10:52:46'>2021-04-20 20:12</time>
         
     </div>
     <div class="article-meta">
@@ -870,7 +910,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络"><span class="toc-text">网络</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring"><span class="toc-text">spring</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-spring-ioc的加载过程，bean生产"><span class="toc-text">1. spring ioc的加载过程，bean生产</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-bean的生产过程（bean的生命周期）"><span class="toc-text">2. bean的生产过程（bean的生命周期）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-扩展点"><span class="toc-text">3. 扩展点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-bean的生命周期的扩展点，也就是创建Bean的时候"><span class="toc-text">4. bean的生命周期的扩展点，也就是创建Bean的时候</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Spring框架中的设计模式"><span class="toc-text">5. Spring框架中的设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-源码"><span class="toc-text">6. 源码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-BeanFactory-和-FactoryBean的区别"><span class="toc-text">7. BeanFactory 和 FactoryBean的区别</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql"><span class="toc-text">mysql</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网络"><span class="toc-text">网络</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring"><span class="toc-text">spring</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-spring-ioc的加载过程，bean生产"><span class="toc-text">1. spring ioc的加载过程，bean生产</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-bean的生产过程（bean的生命周期）"><span class="toc-text">2. bean的生产过程（bean的生命周期）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-扩展点"><span class="toc-text">3. 扩展点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-bean的生命周期的扩展点，也就是创建Bean的时候"><span class="toc-text">4. bean的生命周期的扩展点，也就是创建Bean的时候</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Spring框架中的设计模式"><span class="toc-text">5. Spring框架中的设计模式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-源码"><span class="toc-text">6. 源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-BeanFactory-和-FactoryBean的区别"><span class="toc-text">7. BeanFactory 和 FactoryBean的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-invokeBeanFactoryPostProcessors-beanFactory-详解"><span class="toc-text">8. invokeBeanFactoryPostProcessors(beanFactory);详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-加载优先级的类"><span class="toc-text">9. 加载优先级的类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-对我们的配置类实现cglib动态代理，也就是-Configuration加与不加的区别实现了-Configuration注解的"><span class="toc-text">10. 对我们的配置类实现cglib动态代理，也就是@Configuration加与不加的区别实现了@Configuration注解的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-怎么判断是不是一个完整的配置类完整的配置类：带Configuration注解"><span class="toc-text">11. 怎么判断是不是一个完整的配置类完整的配置类：带Configuration注解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot"><span class="toc-text">spring boot</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-import"><span class="toc-text">1. import</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-spring-boot自动配置原理"><span class="toc-text">2. spring boot自动配置原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-import-和-component的区别"><span class="toc-text">3. @import 和 @component的区别</span></a></li></ol></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -936,12 +976,35 @@
 <h2 id="5-Spring框架中的设计模式"><a href="#5-Spring框架中的设计模式" class="headerlink" title="5. Spring框架中的设计模式"></a>5. Spring框架中的设计模式</h2><p><a href="https://blog.csdn.net/chao821/article/details/92400186" target="_blank" rel="noopener">https://blog.csdn.net/chao821/article/details/92400186</a></p>
 <p>简单工厂: spring使用工厂模式可以通过BeanFactory或ApplicationContext创建bean对象。</p>
 <p>单例设计模式: Spring中bean的默认作用域就是singleton<br>代理设计模式:<br>模板方法设计模式: Spring中jdbcTemplate、hibernateTemplate等以Template结尾的对数据库操作的类，它们就使用到模板模式</p>
-<h2 id="6-源码"><a href="#6-源码" class="headerlink" title="6. 源码"></a>6. 源码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">一： this()三大步</span><br><span class="line">1. 实例化bean工厂</span><br><span class="line">new AnnotationConfigApplicationContext()-&gt;父类GenericApplicationContext &#123;</span><br><span class="line">		this.beanFactory = new DefaultListableBeanFactory();</span><br><span class="line">	&#125;</span><br><span class="line">得到bean工厂，并且是DefaultListableBeanFactory实现了很多接口包括BeanDefinitionRegistry所以有注册bean定义的功能</span><br><span class="line"></span><br><span class="line">2. AnnotationConfigApplicationContext无参构造函数-&gt;new AnnotatedBeanDefinitionReader，有读取配置类的作用，还有注册很多处理器registerAnnotationConfigProcessors等创世纪的处理器</span><br><span class="line"></span><br><span class="line">internalConfigurationAnnotationProcessor（解析加了@Configuration的配置类，还会解析@Component @ComponentScans注解扫描的包 @Import等注解）-&gt;ConfigurationClassPostProcessor（没有他就不能解析注解）实现了BeanFactoryPostProcessor（如果没有这个类就不会解析我们的配置类）</span><br><span class="line"></span><br><span class="line">internalAutowiredAnnotationProcessor（解析我们的@Autowired和@value注解的）-&gt;AutowiredAnnotationBeanPostProcessor</span><br><span class="line"></span><br><span class="line">3. AnnotationConfigApplicationContext无参构造函数-&gt;new ClassPathBeanDefinitionScanner-&gt;doScan(接收一个包的全路径去扫描)</span><br><span class="line"></span><br><span class="line">二： register（）注册我们的配置类成bean定义</span><br><span class="line"></span><br><span class="line">三： refresh（）spring最核心的加载bean到销毁bean的整个生命周期</span><br><span class="line">invokeBeanFactoryPostProcessors(beanFactory)调用Bean工厂的后置ConfigurationClassPostProcessor处理器，会把类里面加了@ComponentsScan @Component @Bean @Import统统解析出来，解析成Bean定义，并且实例化创世纪的类成为优先成为Bean，其他的类不会实例化 </span><br><span class="line"></span><br><span class="line">registerBeanPostProcessors(beanFactory);注册Bean的后置处理器，假如不注册，依赖于bean的后置处理器的@Autowired @value将无法使用，属性将不会注入</span><br><span class="line"></span><br><span class="line">finishBeanFactoryInitialization(beanFactory);实例化我们剩余的单例Bean-&gt;冻结Bean定义beanFactory.freezeConfiguration();(this.configurationFrozen = true;)不允许修改bean定义正在生产bean-&gt;beanFactory.preInstantiateSingletons();-&gt;List&lt;String&gt; beanNames = new ArrayList&lt;&gt;(this.beanDefinitionNames);(获取所有bean定义的名字，原因是bean定义的类型都不一样根据名字转化成一样类型的RootBeanDefinition，才能进行后续的统一判断);然后判断生产标准（不是抽象的&amp;&amp;是单例的&amp;&amp;不是懒加载的）才能生产成Bean，再判断是不是FactoryBean调用getBean生产Bean-&gt;doGetBean -&gt;1.transformedBeanName(name)获取我们真实的名字，如果是别名也会有map&lt;别名，真实名&gt;拿到真实名；getSingleton(beanName)尝试去缓存里面获取对象（去一级缓存里面去获取），如果取到了直接返回，如果没有创建bean；2. dependsOn是否依赖其他如果依赖先加载依赖的getBean创建 3.创建单例Bean-&gt;getSingleton标记此Bean正在创建</span><br></pre></td></tr></table></figure>
+<h2 id="6-源码"><a href="#6-源码" class="headerlink" title="6. 源码"></a>6. 源码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">一： this()三大步</span><br><span class="line">1. 实例化bean工厂</span><br><span class="line">new AnnotationConfigApplicationContext()-&gt;父类GenericApplicationContext &#123;</span><br><span class="line">		this.beanFactory = new DefaultListableBeanFactory();</span><br><span class="line">	&#125;</span><br><span class="line">得到bean工厂，并且是DefaultListableBeanFactory实现了很多接口包括BeanDefinitionRegistry所以有注册bean定义的功能</span><br><span class="line"></span><br><span class="line">2. AnnotationConfigApplicationContext无参构造函数-&gt;new AnnotatedBeanDefinitionReader，有读取配置类的作用，还有注册很多处理器registerAnnotationConfigProcessors等创世纪的处理器</span><br><span class="line"></span><br><span class="line">internalConfigurationAnnotationProcessor（解析加了@Configuration的配置类，还会解析@Component @ComponentScans注解扫描的包 @Import等注解）-&gt;ConfigurationClassPostProcessor（没有他就不能解析注解）实现了BeanFactoryPostProcessor（如果没有这个类就不会解析我们的配置类）</span><br><span class="line"></span><br><span class="line">internalAutowiredAnnotationProcessor（解析我们的@Autowired和@value注解的）-&gt;AutowiredAnnotationBeanPostProcessor</span><br><span class="line"></span><br><span class="line">3. AnnotationConfigApplicationContext无参构造函数-&gt;new ClassPathBeanDefinitionScanner-&gt;doScan(接收一个包的全路径去扫描)</span><br><span class="line"></span><br><span class="line">二： register（）注册我们的配置类成bean定义</span><br><span class="line"></span><br><span class="line">三： refresh（）spring最核心的加载bean到销毁bean的整个生命周期</span><br><span class="line">invokeBeanFactoryPostProcessors(beanFactory)调用Bean工厂的后置ConfigurationClassPostProcessor处理器，会把类里面加了@ComponentsScan @Component @Bean @Import统统解析出来，解析成Bean定义，并且实例化创世纪的类成为优先成为Bean，其他的类不会实例化 </span><br><span class="line"></span><br><span class="line">registerBeanPostProcessors(beanFactory);注册Bean的后置处理器，假如不注册，依赖于bean的后置处理器的@Autowired @value将无法使用，属性将不会注入</span><br><span class="line"></span><br><span class="line">finishBeanFactoryInitialization(beanFactory);实例化我们剩余的单例Bean</span><br><span class="line"></span><br><span class="line">1. </span><br><span class="line">a. -&gt;冻结Bean定义beanFactory.freezeConfiguration();(this.configurationFrozen = true;)不允许修改bean定义正在生产bean</span><br><span class="line"></span><br><span class="line">b. -&gt;beanFactory.preInstantiateSingletons();-&gt;List&lt;String&gt; beanNames = new ArrayList&lt;&gt;(this.beanDefinitionNames);(获取所有bean定义的名字，原因是bean定义的类型都不一样根据名字转化成一样类型的RootBeanDefinition，才能进行后续的统一判断);</span><br><span class="line"></span><br><span class="line">d. 然后判断生产标准（不是抽象的&amp;&amp;是单例的&amp;&amp;不是懒加载的）才能生产成Bean</span><br><span class="line"></span><br><span class="line">e. 再判断是不是FactoryBean调用getBean生产Bean-&gt;doGetBean -&gt;1.transformedBeanName(name)获取我们真实的名字，如果是别名也会有map&lt;别名，真实名&gt;拿到真实名；</span><br><span class="line"></span><br><span class="line">f. getSingleton(beanName)尝试去缓存里面获取对象（去一级缓存里面去获取），如果取到了直接返回，如果没有创建bean；</span><br><span class="line"></span><br><span class="line">2. dependsOn是否依赖其他如果依赖先加载依赖的getBean创建 </span><br><span class="line"></span><br><span class="line">3.1 创建单例doGetBean-&gt;getSingleton和上边的getSingleton是不一样的方法,主要是标记此Bean正在创建</span><br><span class="line"></span><br><span class="line">3.2 然后调用方法回调的getObject方法-&gt;createBean-&gt;resolveBeforeInstantiation(第一次调用bean的后置处理器)</span><br><span class="line">-&gt;applyBeanPostProcessorsBeforeInstantiation-&gt;getBeanPostProcessors(获取我们所有的bean的后置处理器,我们refresh方法注册了bean的后置处理器registerBeanPostProcessors())然后是InstantiationAwareBeanPostProcessor就调用postProcessBeforeInstantiation方法如果返回了一个bean就代表我们自己实现了bean就直接return了,就不调用后面的创建bean的逻辑了;</span><br><span class="line"></span><br><span class="line">3.3 如果没有创建就调用doCreateBean创建,从而走Ben创建的过程,实例化填充属性,初始化-&gt;createBeanInstance进行实例化(反射(无参构造函数从bean定义里面.beanClass.forName(className).newInstance;有参构造函数挡自动装配getConstracor.newInstance)和工厂);</span><br><span class="line"></span><br><span class="line">3.4 getWrappedInstance的到bean的实例(用了装饰器的设计模式将我们的bean的很多定义放到了instanceWrapper里面),但是tank是空的,还没有经过属性赋值；</span><br><span class="line"></span><br><span class="line">3.5 到populateBean(进行属性赋值，也会去调用bean的后置处理器)；</span><br><span class="line"></span><br><span class="line">3.6 initializeBean（进行对象初始化操作，涉及到很多的aware）-&gt; invokeAwareMethods(如果我们的bean实现了xxxAware接口进行方法回调，只有3个aware，更多的Aware这个bean的后置处理器ApplicationContextAwareProcessor里面调用。可以查看bean的可以查看BeanFactory类的描述)；调用Bean的后置处理器applyBeanPostProcessorsBeforeInitialization（加入我们的bean实现了剩下的aware将会在这里调用，并且会调用标注了这个@PostConstruct的方法，所以初始化不仅调用了aware还调用了@PostConstruct注解的方法）</span><br></pre></td></tr></table></figure>
 
-<h1 id="7-BeanFactory-和-FactoryBean的区别"><a href="#7-BeanFactory-和-FactoryBean的区别" class="headerlink" title="7. BeanFactory 和 FactoryBean的区别"></a>7. BeanFactory 和 FactoryBean的区别</h1><ol>
+<h2 id="7-BeanFactory-和-FactoryBean的区别"><a href="#7-BeanFactory-和-FactoryBean的区别" class="headerlink" title="7. BeanFactory 和 FactoryBean的区别"></a>7. BeanFactory 和 FactoryBean的区别</h2><ol>
 <li>BeanFactory就是生产Bean和getBean</li>
 <li>FactoryBean就是修饰普通的类，普通的类实现FactoryBean类，成为了特殊的Bean<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">实现</span><br><span class="line">getObject（）和getObjectType（）方法</span><br><span class="line">getBean的实例就是得到的是getObject返回的实例，所以说这也是是一个扩展点</span><br><span class="line">当car的类getObject（）&#123;返回的是Tank类&#125;，这时候会报错</span><br><span class="line">Car car = （Car）context.getBean(<span class="string">"car"</span>);<span class="comment">// 报类型转换错误</span></span><br><span class="line">但是如果我们一定要想拿到car的原始类型也是可以的</span><br><span class="line">Car car = （Car）context.getBean(<span class="string">"&amp;car"</span>);</span><br></pre></td></tr></table></figure>
 spring集成很多框架都是用了这个mybatis mapper和fegin等</li>
+</ol>
+<h2 id="8-invokeBeanFactoryPostProcessors-beanFactory-详解"><a href="#8-invokeBeanFactoryPostProcessors-beanFactory-详解" class="headerlink" title="8. invokeBeanFactoryPostProcessors(beanFactory);详解"></a>8. invokeBeanFactoryPostProcessors(beanFactory);详解</h2><h2 id="9-加载优先级的类"><a href="#9-加载优先级的类" class="headerlink" title="9. 加载优先级的类"></a>9. 加载优先级的类</h2><ol>
+<li>实现PriorityOrdered接口的-&gt;getOrder方法返回数字order越小越先执行，list可以排序 最先但是里面也有先后，所以要排序</li>
+<li>实现Ordered接口的，并且排除不在上面PriorityOrdered的队列里面的，也就是如果一个类实现了两个接口只会调用一次；也会list排序</li>
+<li>其他的没有实现PriorityOrdered和Ordered接口的，再次排除</li>
+<li>调用既实现了BeanDefinitionRegistryPostProcessor和实现了BeanFactoryPostProcessor的后置处理器，不会排除；给配置类创建cglib创建动态代理</li>
+</ol>
+<h2 id="10-对我们的配置类实现cglib动态代理，也就是-Configuration加与不加的区别实现了-Configuration注解的"><a href="#10-对我们的配置类实现cglib动态代理，也就是-Configuration加与不加的区别实现了-Configuration注解的" class="headerlink" title="10. 对我们的配置类实现cglib动态代理，也就是@Configuration加与不加的区别实现了@Configuration注解的"></a>10. 对我们的配置类实现cglib动态代理，也就是@Configuration加与不加的区别实现了@Configuration注解的</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span>（“car”）</span><br><span class="line"><span class="function"><span class="keyword">public</span> Car <span class="title">car</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Car car = <span class="keyword">new</span> Car();  </span><br><span class="line">    car.setTank(tank())</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function">Public Tank <span class="title">tank</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">    <span class="keyword">new</span> Tank();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为只要是生成动态代理，的类都会先根据方法名，getBean（“car”）去ioc容器里面去拿，这就是动态代理增强做的事情如果不去ioc容器里面拿，每次都会创建一个新的</p>
+<h2 id="11-怎么判断是不是一个完整的配置类完整的配置类：带Configuration注解"><a href="#11-怎么判断是不是一个完整的配置类完整的配置类：带Configuration注解" class="headerlink" title="11. 怎么判断是不是一个完整的配置类完整的配置类：带Configuration注解"></a>11. 怎么判断是不是一个完整的配置类完整的配置类：带Configuration注解</h2><p>不完整的配置类有@Bean注解、@Componet、@ComponentScan、@Import、@ImportResource注解，但是也会当做是一个配置类去解析</p>
+<h1 id="spring-boot"><a href="#spring-boot" class="headerlink" title="spring boot"></a>spring boot</h1><h2 id="1-import"><a href="#1-import" class="headerlink" title="1. import"></a>1. import</h2><ol>
+<li>import(类)</li>
+<li>import（实现了一个importSelector的类）DeferredImportSelector<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DeferredImportSelector除了有延迟的特性外，还有一个分组group的特性，目的是springBoot自己的bean只在springBoot内部就行排序，不影响spring的bean</span><br><span class="line"></span><br><span class="line">有没有重写getImportGroup()方法，并且查看有没有返回一个实现了DeferredImportSelector.group的类,如果有将调用此类selectImports()</span><br><span class="line"></span><br><span class="line">如果没有直接调用selectImports()方法</span><br></pre></td></tr></table></figure></li>
+<li>import（实现了ImportBeanDefinitionRegister的一个类）</li>
+</ol>
+<h2 id="2-spring-boot自动配置原理"><a href="#2-spring-boot自动配置原理" class="headerlink" title="2. spring boot自动配置原理"></a>2. spring boot自动配置原理</h2><ol>
+<li>首先会通过import去导入一个DeferredImportSelector(主要是为了一个顺序的考虑，他的加载顺序是最后的)</li>
+<li>扫描所有jar包的spring.factories</li>
+</ol>
+<h2 id="3-import-和-component的区别"><a href="#3-import-和-component的区别" class="headerlink" title="3. @import 和 @component的区别"></a>3. @import 和 @component的区别</h2><ol>
+<li>component一定要放到我能扫描到的路径下面，而import可以导入不在我扫描范围的类，把它注册为Bean</li>
+<li>import可以批量</li>
+<li>spring boot这些类一定不在spring的扫描范围之内，所以只能import进来</li>
 </ol>
 
       
@@ -960,7 +1023,7 @@ spring集成很多框架都是用了这个mybatis mapper和fegin等</li>
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2021-04-20, 20:12:32</p>
-    <p><span class="copy-title">最后更新:</span>2021-04-25, 23:34:19</p>
+    <p><span class="copy-title">最后更新:</span>2021-05-07, 10:52:46</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2021/04/20/backend/face/face/" title="重点问题">https://yaninabu.github.io/2021/04/20/backend/face/face/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。

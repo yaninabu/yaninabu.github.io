@@ -6,19 +6,15 @@
   <meta name="keywords" content="">
   <meta name="description" content="Redis 01 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
+<meta name="description" content="1. 自动拆箱和自动装箱过程中遇到的问题12345678910111213141516a. 生成很多无用对象b. 如果类型用不好降低代码执行效率Integer sum = 0; for(int i=1000; i&amp;lt;5000; i++)&amp;#123;   sum+=i;&amp;#125;上面的代码sum+=i可以看成sum = sum + i，但是+这个操作符不适用于Integer对象，首先sum进行">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重点问题">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;20&#x2F;backend&#x2F;face&#x2F;face&#x2F;index.html">
+<meta property="og:title" content="java基础">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;04&#x2F;08&#x2F;backend&#x2F;java&#x2F;base&#x2F;java-base&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="mysql myisam 和 innodb的区别https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_35642036&#x2F;article&#x2F;details&#x2F;82820178  InnoDB为什么推荐使用自增ID作为主键？为什么建议是整型自增？  为什么不用二叉树？为什么不用红黑树？为什么不用B-tree？  什么是索引下推？https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;121084592  e">
+<meta property="og:description" content="1. 自动拆箱和自动装箱过程中遇到的问题12345678910111213141516a. 生成很多无用对象b. 如果类型用不好降低代码执行效率Integer sum = 0; for(int i=1000; i&amp;lt;5000; i++)&amp;#123;   sum+=i;&amp;#125;上面的代码sum+=i可以看成sum = sum + i，但是+这个操作符不适用于Integer对象，首先sum进行">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;spring-ioc.PNG">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanFactoryPostProcessor.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;BeanDefinitionRegistryPostProcessor.PNG">
-<meta property="og:updated_time" content="2021-04-25T15:34:19.596Z">
+<meta property="og:updated_time" content="2021-04-23T12:29:33.930Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;java&#x2F;face&#x2F;spring-ioc.PNG">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -137,7 +133,7 @@
 
 
 <ul>
-    <li><div class="all active">全部文章<small>(51)</small></div></li>
+    <li><div class="all active">全部文章<small>(53)</small></div></li>
     
         
             
@@ -358,6 +354,34 @@
             
         
     
+        
+            
+            <li><div data-rel="ShardingSphere"><i class="fold iconfont icon-right"></i>ShardingSphere<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="入门">入门<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="实现接口幂等性">实现接口幂等性<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
 </ul>
 <div class="left-bottom">
     <div class="menus">
@@ -368,7 +392,7 @@
     </div>
     <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
 </div>
-<input type="hidden" id="yelog_site_posts_number" value="51">
+<input type="hidden" id="yelog_site_posts_number" value="53">
 
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
@@ -524,7 +548,7 @@
            href="/2020/12/18/backend/redis/redis-06/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-title" title="Redis 06">Redis 06</span>
             <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
         </a>
         
@@ -816,6 +840,22 @@
             <span class="post-date" title="2021-04-18 16:45:54">2021/04/18</span>
         </a>
         
+        <a  class="ShardingSphere 入门 "
+           href="/2021/05/07/ShardingSphere/start/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ShardingSphere">ShardingSphere</span>
+            <span class="post-date" title="2021-05-07 10:57:37">2021/05/07</span>
+        </a>
+        
+        <a  class="实现接口幂等性 "
+           href="/2021/05/10/backend/%E5%B9%82%E7%AD%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="实现接口幂等性">实现接口幂等性</span>
+            <span class="post-date" title="2021-05-10 20:34:02">2021/05/10</span>
+        </a>
+        
     </nav>
 </div>
     </div>
@@ -848,7 +888,7 @@
     </div>
     <div class="article-meta">
         
-        创建时间:<time class="date" title='更新时间: 2020-11-18 20:18:06'>2020-11-12 20:26</time>
+        创建时间:<time class="date" title='更新时间: 2021-05-10 20:27:00'>2020-11-12 20:26</time>
         
     </div>
     <div class="article-meta">
@@ -870,7 +910,7 @@
     
     <div class="toc-ref">
     
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据的发展过程"><span class="toc-text">数据的发展过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么redis发展快"><span class="toc-text">为什么redis发展快</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#epoll的发展历程"><span class="toc-text">epoll的发展历程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零拷贝和共享空间不一样"><span class="toc-text">零拷贝和共享空间不一样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sendfile-mmap就出来了kafka"><span class="toc-text">sendfile+mmap就出来了kafka</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#和nginx也很像"><span class="toc-text">和nginx也很像</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据的发展过程"><span class="toc-text">数据的发展过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么发展快"><span class="toc-text">为什么发展快</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#epoll的发展历程"><span class="toc-text">epoll的发展历程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#零拷贝和共享空间不一样"><span class="toc-text">零拷贝和共享空间不一样</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sendfile-mmap就出来了kafka"><span class="toc-text">sendfile+mmap就出来了kafka</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#和nginx也很像"><span class="toc-text">和nginx也很像</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何保证redis和数据库的一致性"><span class="toc-text">如何保证redis和数据库的一致性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#前提"><span class="toc-text">前提</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#先删缓存再写数据库"><span class="toc-text">先删缓存再写数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#先写数据库，再删缓存"><span class="toc-text">先写数据库，再删缓存</span></a></li></ol>
     
 <style>
     .left-col .switch-btn,
@@ -894,7 +934,7 @@
 <li><p>创建索引，索引的叶子节点是在磁盘上面的，但是B+树的树干（区间和偏移）是在内存里面的，内存的寻址是纳秒级别是磁盘的10W倍，先从B+树的树干中查找到叶子节点，然后将叶子节点从磁盘中读到内存，循环遍历符合条件的数据的引用，在通过引用去找磁盘中符合条件的数据</p>
 </li>
 </ol>
-<h3 id="为什么redis发展快"><a href="#为什么redis发展快" class="headerlink" title="为什么redis发展快"></a>为什么redis发展快</h3><p>redis是单线程（数据处理上单线程，真正的处理其他的事情的不是单线程）调用，但是为什么每秒处理几十万的请求？<br>内存是寻址是纳秒级别，而网络网卡是毫秒级别，差着10万倍，除非是10万个请求同一时间，到达，才能有秒级的响应，其他时候是纳秒毫秒级。<br>redis用了是基于内存的用了epoll技术，所有的client端连接先到系统的内核，然后才能到用户去处理，然而从内核到用户态的过程中用到了epoll。用户态端是基于内存的，是快的，而IO是慢的，client端慢慢悠悠传到内核，因为有epoll放到了map区，然后用户态端直接拿出来处理。那什么是epoll呢？<br><img src="/img/backend/redis/redis4.png" alt="io"></p>
+<h3 id="为什么发展快"><a href="#为什么发展快" class="headerlink" title="为什么发展快"></a>为什么发展快</h3><p>redis是单线程（数据处理上单线程，真正的处理其他的事情的不是单线程）调用，但是为什么每秒处理几十万的请求？<br>内存是寻址是纳秒级别，而网络网卡是毫秒级别，差着10万倍，除非是10万个请求同一时间，到达，才能有秒级的响应，其他时候是纳秒毫秒级。<br>redis用了是基于内存的用了epoll技术，所有的client端连接先到系统的内核，然后才能到用户去处理，然而从内核到用户态的过程中用到了epoll。用户态端是基于内存的，是快的，而IO是慢的，client端慢慢悠悠传到内核，因为有epoll放到了map区，然后用户态端直接拿出来处理。那什么是epoll呢？<br><img src="/img/backend/redis/redis4.png" alt="io"></p>
 <h3 id="epoll的发展历程"><a href="#epoll的发展历程" class="headerlink" title="epoll的发展历程"></a>epoll的发展历程</h3><ol>
 <li>刚开始socket是block的，也就是用户态和内核态没有数据返回就一直等待这是，也就是BIO<br><img src="/img/backend/redis/redis5.png" alt="io"></li>
 <li>用户态开始非阻塞了，也就是一直轮询，切换查看文件描述符的数据fd，实现了NIO，但是造成的问题是查看每个文件描述符的数据状态，每次都会有用户态到内核态之间切换的问题，效率低。<br><img src="/img/backend/redis/redis6.png" alt="io"></li>
@@ -904,6 +944,24 @@
 <h3 id="零拷贝和共享空间不一样"><a href="#零拷贝和共享空间不一样" class="headerlink" title="零拷贝和共享空间不一样"></a>零拷贝和共享空间不一样</h3><p>零拷贝叫sendfile(),一个输入的fd，一个输出的fd。<br>以前是文件file.tex先把fd到内核，然后read拷贝到用户空间，然后用户空间再Write copy到内核write出去到网卡，会有copy的过程。<br>有了sendfile(),直接调了sendfile，然后内核直接读缓冲区里面的数据，然后发出去，就没了拷贝<br><img src="/img/backend/redis/redis11.png" alt="io"><br><img src="/img/backend/redis/redis12.png" alt="io"></p>
 <h3 id="sendfile-mmap就出来了kafka"><a href="#sendfile-mmap就出来了kafka" class="headerlink" title="sendfile+mmap就出来了kafka"></a>sendfile+mmap就出来了kafka</h3><p>通过mmap写入挂载文件，然后这时候用户个内核共享，内核直接能看到这个数据，然后通过sendfile展示给客户。<br>一切的知识来自于内核<br><img src="/img/backend/redis/redis13.png" alt="io"></p>
 <h3 id="和nginx也很像"><a href="#和nginx也很像" class="headerlink" title="和nginx也很像"></a>和nginx也很像</h3><p>怎么启动nginx，要满足有多少个内核，就启动多少个worker（一个worker就可以把他的数据压到一二三级缓存了）有几个cpu就有几个nginx进程，每个进程使用的是多路复用epoll，同步非阻塞下的多路复用<br><img src="/img/backend/redis/redis13.png" alt="io"></p>
+<h1 id="如何保证redis和数据库的一致性"><a href="#如何保证redis和数据库的一致性" class="headerlink" title="如何保证redis和数据库的一致性"></a>如何保证redis和数据库的一致性</h1><h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>是先删缓存，还是先修改数据库</p>
+<h3 id="先删缓存再写数据库"><a href="#先删缓存再写数据库" class="headerlink" title="先删缓存再写数据库"></a>先删缓存再写数据库</h3><p>在高并发情况下<br>线程一：删除缓存，还没有修改数据库——————–修改数据库—将修改的值放到数据库<br>线程二：——-发现缓存里面没有，查询数据库（旧值）———————————然后把旧值放在缓存里面（覆盖了线程一的值）</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>是两个操作不是原子性的</p>
+<ol>
+<li>先操作缓存，但是不操作缓存，将缓存修改成一个-99999999一个特殊的值，客户端发现是一个默认的值，就休眠过一会再操作<br>问题是：特殊值对业务有侵入，万一哪天业务有这个值；多次重复休眠，多个线程都在休眠，改动很频繁的情况下，导致性能和系统的使用效率下降</li>
+<li>延时双删：先删除缓存，再删除数据库，休眠一小会，再删除缓存<br>问题是：如果写数据操作频繁，还是会有脏数据的问题</li>
+</ol>
+<p>总结在这种方式下，要求写操作不要太频繁</p>
+<h3 id="先写数据库，再删缓存"><a href="#先写数据库，再删缓存" class="headerlink" title="先写数据库，再删缓存"></a>先写数据库，再删缓存</h3><ol>
+<li>数据库写完之后，缓存删除失败，数据不一致</li>
+</ol>
+<p>解决方案</p>
+<ol>
+<li>给缓存设置一个过期时间，到期了缓存重建<br>问题：缓存时间内，还是有问题</li>
+<li>引入MQ保证原子操作，发一个指令到mq，mq有两个消费者，一个操作数据库，一个操作redis，如果有一个消费失败重试<br>问题是在mq重试时间内还是有问题</li>
+<li>将热点数据缓存设置永不过期，但是在value上设置一个逻辑过期时间，再另起一个线程对于逻辑上过期的value，这样在一定时间范围内能做到最终的一致性</li>
+</ol>
+<p>始终保证一定时间内的最终一致性</p>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
@@ -921,7 +979,7 @@
     
     <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
     <p><span class="copy-title">发布时间:</span>2020-11-12, 20:26:22</p>
-    <p><span class="copy-title">最后更新:</span>2020-11-18, 20:18:06</p>
+    <p><span class="copy-title">最后更新:</span>2021-05-10, 20:27:00</p>
     <span class="copy-title">原始链接:</span><a class="post-url" href="/2020/11/12/backend/redis/redis-01/" title="Redis 01">https://yaninabu.github.io/2020/11/12/backend/redis/redis-01/</a>
     <p>
         <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
