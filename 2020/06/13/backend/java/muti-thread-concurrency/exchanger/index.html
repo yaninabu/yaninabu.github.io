@@ -6,15 +6,18 @@
   <meta name="keywords" content="">
   <meta name="description" content="Exchanger | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="description" content="幂等性相同参数，做相同的操作结果是一样的，比如注册功能，多次点击，注册的是一个人select操作天生具有幂等性 实现 唯一id；比如在数据库里面建唯一约束，比如手机号建立唯一约束，或者操作前判断是否存在，可以放redis里面问题是还是多访问一次数据库，对服务有压力 服务器提供token接口，客户端先获取token，再拿着token去请求，如果token存在redis里面表示第一次请求，请求完删除">
+<meta name="description" content="介绍java开发，能够达到搜索，稳定，可靠，快速，安装使用方便，支持多种语言 场景不是模糊查询（搜索的文字是连在一起的），es是关键字不连在一起，并且关键字高亮 ES与Lucene的关系ES是一个非关系型数据库，底层用到了Lucene，1. Lucene只能在java语言中使用2. 并且使用起来比较繁琐3. 不支持集群环境，数据不同步，索引数据不能太多，索引库和应用所在同一个服务器，共用空间少 E">
 <meta property="og:type" content="article">
-<meta property="og:title" content="实现接口幂等性">
-<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;05&#x2F;10&#x2F;backend&#x2F;%E5%B9%82%E7%AD%89&#x2F;index.html">
+<meta property="og:title" content="ES操作">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;05&#x2F;12&#x2F;ES&#x2F;%E6%93%8D%E4%BD%9C&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="幂等性相同参数，做相同的操作结果是一样的，比如注册功能，多次点击，注册的是一个人select操作天生具有幂等性 实现 唯一id；比如在数据库里面建唯一约束，比如手机号建立唯一约束，或者操作前判断是否存在，可以放redis里面问题是还是多访问一次数据库，对服务有压力 服务器提供token接口，客户端先获取token，再拿着token去请求，如果token存在redis里面表示第一次请求，请求完删除">
+<meta property="og:description" content="介绍java开发，能够达到搜索，稳定，可靠，快速，安装使用方便，支持多种语言 场景不是模糊查询（搜索的文字是连在一起的），es是关键字不连在一起，并且关键字高亮 ES与Lucene的关系ES是一个非关系型数据库，底层用到了Lucene，1. Lucene只能在java语言中使用2. 并且使用起来比较繁琐3. 不支持集群环境，数据不同步，索引数据不能太多，索引库和应用所在同一个服务器，共用空间少 E">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2021-05-10T14:09:28.000Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;ES&#x2F;%E6%B7%BB%E5%8A%A0.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;ES&#x2F;DSL.png">
+<meta property="og:updated_time" content="2021-05-13T14:55:42.309Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;img&#x2F;backend&#x2F;ES&#x2F;%E6%B7%BB%E5%8A%A0.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
