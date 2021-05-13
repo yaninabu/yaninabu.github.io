@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ES操作 | Hexo</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="ES操作 | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="幂等性相同参数，做相同的操作结果是一样的，比如注册功能，多次点击，注册的是一个人select操作天生具有幂等性 实现 唯一id；比如在数据库里面建唯一约束，比如手机号建立唯一约束，或者操作前判断是否存在，可以放redis里面问题是还是多访问一次数据库，对服务有压力 服务器提供token接口，客户端先获取token，再拿着token去请求，如果token存在redis里面表示第一次请求，请求完删除">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实现接口幂等性">
+<meta property="og:url" content="https:&#x2F;&#x2F;yaninabu.github.io&#x2F;2021&#x2F;05&#x2F;10&#x2F;backend&#x2F;%E5%B9%82%E7%AD%89&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="幂等性相同参数，做相同的操作结果是一样的，比如注册功能，多次点击，注册的是一个人select操作天生具有幂等性 实现 唯一id；比如在数据库里面建唯一约束，比如手机号建立唯一约束，或者操作前判断是否存在，可以放redis里面问题是还是多访问一次数据库，对服务有压力 服务器提供token接口，客户端先获取token，再拿着token去请求，如果token存在redis里面表示第一次请求，请求完删除">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2021-05-10T14:09:28.000Z">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.0.1" rel="stylesheet">
+
+<link href="/css/hl_theme/atom-light.css?v=1.0.1" rel="stylesheet">
+
+<link href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="/js/jquery.autocomplete.min.js?v=1.0.1" ></script>
+
+<script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.0.1" ></script>
+
+</head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="false">
+  <input class="theme_blog_path" value="">
+</div>
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/" class="avatar_target">
+    <img class="avatar" src="/img/avatar.jpg" />
+</a>
+<div class="author">
+    <span>Yanina Bu</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+        <a title="github" href="https://github.com/yaninabu" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-github"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="reddit" href="http://cl06kw.coding-pages.com/" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-reddit"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <a title="email" href="mailto:824787998@qq.com" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-email"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+        <a title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=824787998&site=qq&menu=yes" target="_blank">
+            
+                <svg class="iconfont-svg" aria-hidden="true">
+                    <use xlink:href="#icon-qq"></use>
+                </svg>
+            
+        </a>
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+<ul>
+    <li><div class="all active">全部文章<small>(54)</small></div></li>
+    
+        
+            
+            <li><div data-rel="Docker">Docker<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="zookeeper">zookeeper<small>(2)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="前端"><i class="fold iconfont icon-right"></i>前端<small>(3)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="css"><i class="fold iconfont icon-right"></i>css<small>(2)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="less">less<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="vue">vue<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="后端"><i class="fold iconfont icon-right"></i>后端<small>(44)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="redis">redis<small>(8)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="mysql"><i class="fold iconfont icon-right"></i>mysql<small>(7)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="pom文件的配置">pom文件的配置<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="查询缓存">查询缓存<small>(2)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="排序算法">排序算法<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="join">join<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="varchar">varchar<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="主从复制">主从复制<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="jvm"><i class="fold iconfont icon-right"></i>jvm<small>(2)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="class文件硬件到内存">class文件硬件到内存<small>(1)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="ClassFileFormat">ClassFileFormat<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="java"><i class="fold iconfont icon-right"></i>java<small>(25)</small></div>
+                            
+                                <ul class="sub hide">
+                                    
+                                    <li><div data-rel="容器">容器<small>(2)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="基础">基础<small>(3)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="多线程"><i class="fold iconfont icon-right"></i>多线程<small>(19)</small></div>
+                                    </li>
+                                    
+                                    <li><div data-rel="多线程 concurrenthashmap">多线程 concurrenthashmap<small>(1)</small></div>
+                                    </li>
+                                    
+                                </ul>
+                            
+                        </li>
+                            
+                        <li><div data-rel="Rabbit mq">Rabbit mq<small>(1)</small></div>
+                            
+                        </li>
+                            
+                        <li><div data-rel="重点问题">重点问题<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="ShardingSphere"><i class="fold iconfont icon-right"></i>ShardingSphere<small>(1)</small></div>
+                
+                    <ul class="sub hide">
+                        
+                        <li><div data-rel="入门">入门<small>(1)</small></div>
+                            
+                        </li>
+                            
+                    </ul>
+                
+            </li>
+            
+        
+    
+        
+            
+            <li><div data-rel="实现接口幂等性">实现接口幂等性<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+        
+            
+        
+    
+        
+            
+            <li><div data-rel="操作">操作<small>(1)</small></div>
+                
+            </li>
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+    
+    
+    
+    
+    </div>
+    <div><a class="about  hasFriend  site_url"  href="/about">关于</a><a style="width: 50%"  class="friends">友链</a></div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="54">
+
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        友情链接
+        <i class="back-title-list"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+            <li><a target="_blank" href="http://yelog.org/">叶落阁</a></li>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <form onkeydown="if(event.keyCode==13){return false;}">
+        <input class="search" type="text" placeholder="Search..." autocomplete="off"id="local-search-input" >
+        <i class="cross"></i>
+        <span>
+            <label for="tagswitch">Tags:</label>
+            <input id="tagswitch" type="checkbox" style="display: none" />
+            <i id="tagsWitchIcon"></i>
+        </span>
+    </form>
+    <div class="tags-list">
+    
+    <div class="clearfix"></div>
+</div>
+
+    
+    <nav id="title-list-nav">
+        
+        <a  class="Docker "
+           href="/2020/06/06/docker/why-use-docker/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="docker的认知">docker的认知</span>
+            <span class="post-date" title="2020-06-06 10:18:09">2020/06/06</span>
+        </a>
+        
+        <a  class="zookeeper "
+           href="/2021/01/21/zookeeper/zookeeper-case/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="zookeeper应用场景">zookeeper应用场景</span>
+            <span class="post-date" title="2021-01-21 19:50:30">2021/01/21</span>
+        </a>
+        
+        <a  class="zookeeper "
+           href="/2021/01/24/zookeeper/zookeeper-code/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="zookeeper应用场景">zookeeper应用场景</span>
+            <span class="post-date" title="2021-01-24 19:42:57">2021/01/24</span>
+        </a>
+        
+        <a  class="Docker "
+           href="/2020/06/06/docker/common-docker-cmd/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="常用的docker指令">常用的docker指令</span>
+            <span class="post-date" title="2020-06-06 11:04:52">2020/06/06</span>
+        </a>
+        
+        <a  class="前端 css "
+           href="/2020/05/09/frontend/css/css-font-size/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="字体单位">字体单位</span>
+            <span class="post-date" title="2020-05-09 15:26:49">2020/05/09</span>
+        </a>
+        
+        <a  class="前端 css less "
+           href="/2020/05/09/frontend/css/css-less/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="less变量">less变量</span>
+            <span class="post-date" title="2020-05-09 13:59:41">2020/05/09</span>
+        </a>
+        
+        <a  class="前端 vue "
+           href="/2020/05/23/frontend/vue/closing-tab/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="闭合标签使用不当">闭合标签使用不当</span>
+            <span class="post-date" title="2020-05-23 09:39:42">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 mysql pom文件的配置 "
+           href="/2020/11/04/backend/maven/pom/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="pom文件的配置">pom文件的配置</span>
+            <span class="post-date" title="2020-11-04 20:29:43">2020/11/04</span>
+        </a>
+        
+        <a  class="后端 mysql 查询缓存 "
+           href="/2020/10/31/backend/mysql/%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="查询缓存">查询缓存</span>
+            <span class="post-date" title="2020-10-31 14:27:44">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 jvm class文件硬件到内存 "
+           href="/2020/08/18/backend/jvm/class-load-process/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="class文件硬件到内存">class文件硬件到内存</span>
+            <span class="post-date" title="2020-08-18 19:03:15">2020/08/18</span>
+        </a>
+        
+        <a  class="后端 jvm ClassFileFormat "
+           href="/2020/08/16/backend/jvm/class-format/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ClassFileFormat">ClassFileFormat</span>
+            <span class="post-date" title="2020-08-16 13:13:52">2020/08/16</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/17/backend/redis/redis-02/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="redis 02">redis 02</span>
+            <span class="post-date" title="2020-11-17 20:10:59">2020/11/17</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/12/backend/redis/redis-01/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 01">Redis 01</span>
+            <span class="post-date" title="2020-11-12 20:26:22">2020/11/12</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/19/backend/redis/redis-04/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 04">Redis 04</span>
+            <span class="post-date" title="2020-11-19 22:06:18">2020/11/19</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/12/18/backend/redis/redis-06/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 06">Redis 06</span>
+            <span class="post-date" title="2020-12-18 20:10:34">2020/12/18</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/12/14/backend/redis/redis-05/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis 05">Redis 05</span>
+            <span class="post-date" title="2020-12-14 19:51:08">2020/12/14</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/05/09/backend/redis/redis-base/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="了解Redis">了解Redis</span>
+            <span class="post-date" title="2020-05-09 17:17:33">2020/05/09</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/05/10/backend/redis/redis-view/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Redis应用场景">Redis应用场景</span>
+            <span class="post-date" title="2020-05-10 16:46:57">2020/05/10</span>
+        </a>
+        
+        <a  class="后端 mysql 排序算法 "
+           href="/2020/11/01/backend/mysql/base/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="排序算法">排序算法</span>
+            <span class="post-date" title="2020-11-01 12:35:30">2020/11/01</span>
+        </a>
+        
+        <a  class="后端 java 容器 "
+           href="/2020/06/21/backend/java/container/container-process/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java容器基础">java容器基础</span>
+            <span class="post-date" title="2020-06-21 11:05:23">2020/06/21</span>
+        </a>
+        
+        <a  class="后端 java 多线程 concurrenthashmap "
+           href="/2020/11/20/backend/java/container/hashmap-vs-conconrennthashmap/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java集合">java集合</span>
+            <span class="post-date" title="2020-11-20 20:36:17">2020/11/20</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2020/06/17/backend/java/base/java-reference/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java的引用">java的引用</span>
+            <span class="post-date" title="2020-06-17 20:24:28">2020/06/17</span>
+        </a>
+        
+        <a  class="后端 mysql join "
+           href="/2020/11/01/backend/mysql/base/join/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="join">join</span>
+            <span class="post-date" title="2020-11-01 12:09:33">2020/11/01</span>
+        </a>
+        
+        <a  class="后端 mysql varchar "
+           href="/2020/10/31/backend/mysql/base/varchar/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="varchar">varchar</span>
+            <span class="post-date" title="2020-10-31 10:52:07">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 mysql 查询缓存 "
+           href="/2020/10/31/backend/mysql/base/%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="查询缓存">查询缓存</span>
+            <span class="post-date" title="2020-10-31 14:44:45">2020/10/31</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/countdownlatch/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CountDownLatch">CountDownLatch</span>
+            <span class="post-date" title="2020-05-24 09:52:54">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 atomic "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic-longadder-synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Atomic/LongAdder/synchronized">Atomic/LongAdder/synchronized</span>
+            <span class="post-date" title="2020-05-23 21:56:03">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2021/01/26/backend/java/muti-thread-concurrency/cpu/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CPU">CPU</span>
+            <span class="post-date" title="2021-01-26 19:10:29">2021/01/26</span>
+        </a>
+        
+        <a  class="后端 java 多线程 atomic "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/atomic/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="AtomicXXX">AtomicXXX</span>
+            <span class="post-date" title="2020-05-23 16:06:31">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/06/13/backend/java/muti-thread-concurrency/exchanger/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Exchanger">Exchanger</span>
+            <span class="post-date" title="2020-06-13 16:55:33">2020/06/13</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/cyclicbarrier/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="CyclicBarrier">CyclicBarrier</span>
+            <span class="post-date" title="2020-05-24 10:19:36">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2021/01/26/backend/java/muti-thread-concurrency/jmm/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="JMM">JMM</span>
+            <span class="post-date" title="2021-01-26 20:37:48">2021/01/26</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/join-yield-sleep/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="sleep/yield/join">sleep/yield/join</span>
+            <span class="post-date" title="2020-05-17 16:32:48">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/06/15/backend/java/muti-thread-concurrency/lock-support/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="LockSupport">LockSupport</span>
+            <span class="post-date" title="2020-06-15 21:09:03">2020/06/15</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/16/backend/java/muti-thread-concurrency/implement-multi-thread/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java实现多线程的几种方式">java实现多线程的几种方式</span>
+            <span class="post-date" title="2020-05-16 22:03:49">2020/05/16</span>
+        </a>
+        
+        <a  class="后端 java 多线程 locks "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/read-write-lock/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ReadWriteLock">ReadWriteLock</span>
+            <span class="post-date" title="2020-05-24 11:06:55">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/phaser/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Phaser">Phaser</span>
+            <span class="post-date" title="2020-05-24 10:34:54">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 locks "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/reentrant-lock/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ReentrantLock">ReentrantLock</span>
+            <span class="post-date" title="2020-05-23 23:07:10">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/thread-status/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="多线程的几种状态">多线程的几种状态</span>
+            <span class="post-date" title="2020-05-17 15:39:57">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/24/backend/java/muti-thread-concurrency/semaphore/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Semaphore">Semaphore</span>
+            <span class="post-date" title="2020-05-24 13:42:55">2020/05/24</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/23/backend/java/muti-thread-concurrency/volatile-vs-synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="volatile vs synchronized">volatile vs synchronized</span>
+            <span class="post-date" title="2020-05-23 13:01:56">2020/05/23</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/17/backend/java/muti-thread-concurrency/synchronized/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="synchronized">synchronized</span>
+            <span class="post-date" title="2020-05-17 17:43:41">2020/05/17</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/06/15/backend/java/muti-thread-concurrency/wait-notify/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="wait/notify">wait/notify</span>
+            <span class="post-date" title="2020-06-15 20:20:06">2020/06/15</span>
+        </a>
+        
+        <a  class="后端 java 多线程 "
+           href="/2020/05/19/backend/java/muti-thread-concurrency/volatile/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="volatile">volatile</span>
+            <span class="post-date" title="2020-05-19 22:37:36">2020/05/19</span>
+        </a>
+        
+        <a  class="后端 java 容器 "
+           href="/2019/12/14/backend/java/container/java-collection/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java集合">java集合</span>
+            <span class="post-date" title="2019-12-14 19:09:42">2019/12/14</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2021/03/19/backend/java/base/ploxy/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="动态代理/静态代理">动态代理/静态代理</span>
+            <span class="post-date" title="2021-03-19 22:09:07">2021/03/19</span>
+        </a>
+        
+        <a  class="后端 java 基础 "
+           href="/2021/04/08/backend/java/base/java-base/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="java基础">java基础</span>
+            <span class="post-date" title="2021-04-08 11:52:45">2021/04/08</span>
+        </a>
+        
+        <a  class="后端 Rabbit mq "
+           href="/2021/04/12/backend/mq/rabbitmq/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="Rabbit mq">Rabbit mq</span>
+            <span class="post-date" title="2021-04-12 20:48:50">2021/04/12</span>
+        </a>
+        
+        <a  class="后端 重点问题 "
+           href="/2021/04/20/backend/face/face/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="重点问题">重点问题</span>
+            <span class="post-date" title="2021-04-20 20:12:32">2021/04/20</span>
+        </a>
+        
+        <a  class="后端 mysql 主从复制 "
+           href="/2021/04/18/backend/mysql/base/%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="mysql主从复制">mysql主从复制</span>
+            <span class="post-date" title="2021-04-18 16:45:54">2021/04/18</span>
+        </a>
+        
+        <a  class="ShardingSphere 入门 "
+           href="/2021/05/07/ShardingSphere/start/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ShardingSphere">ShardingSphere</span>
+            <span class="post-date" title="2021-05-07 10:57:37">2021/05/07</span>
+        </a>
+        
+        <a  class="实现接口幂等性 "
+           href="/2021/05/10/backend/%E5%B9%82%E7%AD%89/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="实现接口幂等性">实现接口幂等性</span>
+            <span class="post-date" title="2021-05-10 20:34:02">2021/05/10</span>
+        </a>
+        
+        <a  class="操作 "
+           href="/2021/05/12/ES/%E6%93%8D%E4%BD%9C/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ES操作">ES操作</span>
+            <span class="post-date" title="2021-05-12 21:11:16">2021/05/12</span>
+        </a>
+        
+        <a  class="后端 redis "
+           href="/2020/11/19/backend/redis/redis_%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="redis 数据结构">redis 数据结构</span>
+            <span class="post-date" title="2020-11-19 20:56:18">2020/11/19</span>
+        </a>
+        
+    </nav>
+</div>
+    </div>
+    <div class="hide-list">
+        <div class="semicircle">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div class="post">
+    <div class="pjax">
+        <article id="post-ES/操作" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">ES操作</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            
+                <a  data-rel="操作">操作</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+        创建时间:<time class="date" title='更新时间: 2021-05-13 22:55:42'>2021-05-12 21:11</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        
+        <span id="busuanzi_container_page_pv">
+            阅读:<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#场景"><span class="toc-text">场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES与Lucene的关系"><span class="toc-text">ES与Lucene的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES-VS-Solr"><span class="toc-text">ES VS Solr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES-VS-关系型数据库"><span class="toc-text">ES VS 关系型数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lucene全文检索"><span class="toc-text">Lucene全文检索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分词原理之倒排数据"><span class="toc-text">分词原理之倒排数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES安装细节"><span class="toc-text">ES安装细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#客户端Kibana可视化界面ELK（Elasticsearch-Logstash-Kibana）"><span class="toc-text">客户端Kibana可视化界面ELK（Elasticsearch , Logstash, Kibana）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装分词器"><span class="toc-text">安装分词器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作"><span class="toc-text">操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档批量操作"><span class="toc-text">文档批量操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DSL语言高级查询"><span class="toc-text">DSL语言高级查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#query"><span class="toc-text">query</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#filter"><span class="toc-text">filter</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#文档映射"><span class="toc-text">文档映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#核心数据类型"><span class="toc-text">核心数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#对已存在的mapping映射进行修改"><span class="toc-text">对已存在的mapping映射进行修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES并发控制"><span class="toc-text">ES并发控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES集群搭建"><span class="toc-text">ES集群搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ElasticSearch-head工具更好的管理集群"><span class="toc-text">ElasticSearch-head工具更好的管理集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ES节点类型"><span class="toc-text">ES节点类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分片"><span class="toc-text">分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Elasticsearch文档写入原理"><span class="toc-text">Elasticsearch文档写入原理</span></a></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>java开发，能够达到搜索，稳定，可靠，快速，安装使用方便，支持多种语言</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>不是模糊查询（搜索的文字是连在一起的），es是关键字不连在一起，并且关键字高亮</p>
+<h3 id="ES与Lucene的关系"><a href="#ES与Lucene的关系" class="headerlink" title="ES与Lucene的关系"></a>ES与Lucene的关系</h3><p>ES是一个非关系型数据库，底层用到了Lucene，1. Lucene只能在java语言中使用2. 并且使用起来比较繁琐3. 不支持集群环境，数据不同步，索引数据不能太多，索引库和应用所在同一个服务器，共用空间少</p>
+<h3 id="ES-VS-Solr"><a href="#ES-VS-Solr" class="headerlink" title="ES VS Solr"></a>ES VS Solr</h3><ol>
+<li>当单纯的对已有数据进行搜索时，Solr更快，比如数据是现成的数据，但是在互联网公司数据一般都是实时产生的这时候ES快</li>
+<li>solr用zookeeper进行分布式系统管理，而ES自身带有分布式协调管理功能</li>
+<li>Solr支持更多格式的数据，比如Json，xml，csv；而ES仅支持json文件格式</li>
+<li>Solr在传统的搜索应用表现好于es，因为传统的数据更新比较慢，但是处理实时搜索应用时效率低于ES</li>
+</ol>
+<h3 id="ES-VS-关系型数据库"><a href="#ES-VS-关系型数据库" class="headerlink" title="ES VS 关系型数据库"></a>ES VS 关系型数据库</h3><table>
+<thead>
+<tr>
+<th>关系型数据库</th>
+<th>数据库DataBase</th>
+<th>Table（表）</th>
+<th>Row（行）</th>
+<th>Column（列）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ES</td>
+<td>index索引库</td>
+<td>Type（类型）</td>
+<td>Document（文档）</td>
+<td>Field（字段）</td>
+</tr>
+</tbody></table>
+<h3 id="Lucene全文检索"><a href="#Lucene全文检索" class="headerlink" title="Lucene全文检索"></a>Lucene全文检索</h3><h3 id="分词原理之倒排数据"><a href="#分词原理之倒排数据" class="headerlink" title="分词原理之倒排数据"></a>分词原理之倒排数据</h3><p>新加步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">分词-&gt;去重-&gt;排序</span><br></pre></td></tr></table></figure>
+<p><img src="/img/backend/ES/%E6%B7%BB%E5%8A%A0.png" alt="新加"></p>
+<p>搜索步骤：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">搜索的时候关键字也会被拆分hello，what，world，会查找到排序完的数据，再去找原始数据所以倒排索引是根据最后排序完的词条去找我们的index也就是id，正排是根据id去找数据内容</span><br></pre></td></tr></table></figure>
+
+<p>海量数据搜索为什么ES比数据库快很多</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql新加内容是数据是增长的，也就是表的的数据是无限增长的，但是ES新加数据内容也会增加，但是ES最后倒排的表也就是排完序的表的值不会是无限的，因为字母或者词不会无限，之后index（编号，id值）列的值会增加，所以搜索起来快</span><br></pre></td></tr></table></figure>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ol>
+<li>index</li>
+<li>映射mapping；类似于mysql的schema表结构。用来定义一个文档，mapping是处理数据和规则方面做一些限制，如某个字段的类型、默认值、分词器、是否被索引3. 字段Field4. 字段类型;Text,keyword,Byte5. document;类似于一条记录6. 节点；集群里面的一台机器</li>
+</ol>
+<h3 id="ES安装细节"><a href="#ES安装细节" class="headerlink" title="ES安装细节"></a>ES安装细节</h3><ol>
+<li>不能使用root用户启动，必须是普通的用户来启动安装</li>
+</ol>
+<h3 id="客户端Kibana可视化界面ELK（Elasticsearch-Logstash-Kibana）"><a href="#客户端Kibana可视化界面ELK（Elasticsearch-Logstash-Kibana）" class="headerlink" title="客户端Kibana可视化界面ELK（Elasticsearch , Logstash, Kibana）"></a>客户端Kibana可视化界面ELK（Elasticsearch , Logstash, Kibana）</h3><h3 id="安装分词器"><a href="#安装分词器" class="headerlink" title="安装分词器"></a>安装分词器</h3><ol>
+<li>单字分词器 standard（ES默认分词器“清华大学”拆分成：清，华，大，学）</li>
+<li>ik分析器；多个type,比如：ik_smart最粗力度（中华人民共和国）的拆分ik_max_word最细力度的拆分（推荐）（中华人民共和国，中华，人民，共和国）</li>
+</ol>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 创建索引库PUT /es_db</span><br><span class="line"><span class="number">2.</span> 获取索引库信息GET /es_db</span><br><span class="line"><span class="number">3.</span> 删除索引库DELETE /es_db</span><br><span class="line"><span class="number">4.</span> 添加文档(也就是添加一条记录，返回具体信息，有版本号代表一共修改了几次)PUT /es_db/_doc/<span class="number">1</span>&#123;    <span class="string">"name"</span>: <span class="string">"张三"</span>,    <span class="string">"sex"</span>: <span class="number">1</span>&#125;</span><br><span class="line">POST /es_db/_doc&#123;    <span class="string">"name"</span>: <span class="string">"张三"</span>,    <span class="string">"sex"</span>: <span class="number">1</span>&#125;</span><br><span class="line"><span class="number">5.</span> 修改文档（version变成<span class="number">2</span>）PUT /es_db/_doc/<span class="number">1</span>&#123;    <span class="string">"name"</span>: <span class="string">"Yanina"</span>,    <span class="string">"sex"</span>: <span class="number">1</span>&#125;</span><br><span class="line">POST /es_db/_doc/<span class="number">1</span>&#123;    <span class="string">"name"</span>: <span class="string">"Yanina"</span>,    <span class="string">"sex"</span>: <span class="number">1</span>&#125;</span><br><span class="line"><span class="number">6.</span> 查询文档GET /es_db/_doc/<span class="number">1</span>GET /es_db/_doc/_search 或者 GET /es_db/_search（查询所有的数据） 相当于select * From studentGET /es_db/_search?q=age:<span class="number">28</span>（查询age=<span class="number">28</span>的数据） 相当于select * From student where age = <span class="number">28</span>GET /es_db/_search?q=age[<span class="number">25</span> TO <span class="number">26</span>] 相当于select * From student where age between <span class="number">25</span> and <span class="number">26</span>GET /es_db/_doc/_mget&#123;    <span class="string">"ids"</span>: [<span class="string">"1"</span>, <span class="string">"3"</span>]&#125;批量获取数据，相当于select * <span class="keyword">from</span> student where id <span class="keyword">in</span> (<span class="number">1</span>，<span class="number">3</span>)GET /es_db/_search?q=age[<span class="number">25</span> TO <span class="number">26</span>]&amp;<span class="keyword">from</span>=<span class="number">0</span>&amp;size=<span class="number">1</span>分页查询GET /es_db/_search?_source=name,age 只返回name和age的信息</span><br><span class="line"><span class="number">7.</span> 删除文档DELETE /es_db/_doc/<span class="number">1</span></span><br><span class="line">添加数据post、put都可以都能起到创建和更新的作用</span><br><span class="line">需要注意的是：<span class="number">1.</span> put需要对一个具体的资源进行操作，也就是要确定id才能进行更新创建，而post是可以针对整个资源集合进行操作的，如果不写id就由es生成一个唯一id，进行创建文档创建和更新<span class="number">2.</span> PUT智慧将json数据进行替换，Post只会更新相同值的字段<span class="number">3.</span> PUT与DELETE都是幂等性的操作，即使无论多少次，结果都是一样的</span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://note.youdao.com/ynoteshare1/index.html?id=7fffae927f3bc06aab2fdc663ec5cad3&amp;type=note" target="_blank" rel="noopener">https://note.youdao.com/ynoteshare1/index.html?id=7fffae927f3bc06aab2fdc663ec5cad3&amp;type=note</a></p>
+<h3 id="文档批量操作"><a href="#文档批量操作" class="headerlink" title="文档批量操作"></a>文档批量操作</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">1.批量获取文档数据</span><br><span class="line">批量获取文档数据是通过_mget的API来实现的</span><br><span class="line"></span><br><span class="line">2.批量操作文档数据</span><br><span class="line">批量对文档进行写操作是通过_bulk的API来实现的</span><br><span class="line">请求方式：POST</span><br><span class="line">请求地址：_bulk</span><br><span class="line">POST _bulk</span><br><span class="line">&#123;&quot;create&quot;:&#123;&quot;_index&quot;:&quot;article&quot;, &quot;_type&quot;:&quot;_doc&quot;, &quot;_id&quot;:3&#125;&#125;</span><br><span class="line">&#123;&quot;id&quot;:3,&quot;title&quot;:&quot;白起老师1&quot;,&quot;content&quot;:&quot;白起老师666&quot;,&quot;tags&quot;:[&quot;java&quot;, &quot;面向对象&quot;],&quot;create_time&quot;:1554015482530&#125;</span><br><span class="line">&#123;&quot;create&quot;:&#123;&quot;_index&quot;:&quot;article&quot;, &quot;_type&quot;:&quot;_doc&quot;, &quot;_id&quot;:4&#125;&#125;</span><br><span class="line">&#123;&quot;id&quot;:4,&quot;title&quot;:&quot;白起老师2&quot;,&quot;content&quot;:&quot;白起老师NB&quot;,&quot;tags&quot;:[&quot;java&quot;, &quot;面向对象&quot;],&quot;create_time&quot;:1554015482530&#125;</span><br><span class="line">不指定create存在就更新不存在就创建</span><br></pre></td></tr></table></figure>
+
+<h3 id="DSL语言高级查询"><a href="#DSL语言高级查询" class="headerlink" title="DSL语言高级查询"></a>DSL语言高级查询</h3><p>Elasticsearch提供了基于JSON的DSL来定义查询。<br><img src="/img/backend/ES/DSL.png" alt="DSL"><br>DSL查询语言中存在两种：查询DSL（query DSL）和过滤DSL（filter DSL）</p>
+<h4 id="query"><a href="#query" class="headerlink" title="query"></a>query</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">1. 无查询条件</span><br><span class="line">无查询条件是查询所有，默认是查询所有的，或者使用match_all表示所有</span><br><span class="line">GET /es_db/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">&quot;query&quot;:&#123;</span><br><span class="line">&quot;match_all&quot;:&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">2. 有查询条件</span><br><span class="line">a. 模糊匹配(按照什么样的分词器匹配)</span><br><span class="line">* match : 通过match关键词模糊匹配条件内容,match会根据该字段的分词器，进行分词查询 </span><br><span class="line">POST /es_db/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">&quot;from&quot;: 0,</span><br><span class="line">&quot;size&quot;: 2, </span><br><span class="line">&quot;query&quot;: &#123;</span><br><span class="line">&quot;match&quot;: &#123;</span><br><span class="line">&quot;address&quot;: &quot;广州&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">SQL: select * from user where address like &apos;%广州%&apos; limit 0, 2</span><br><span class="line"></span><br><span class="line">多字段模糊匹配查询与精准查询 multi_match</span><br><span class="line">POST /es_db/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">&quot;query&quot;:&#123;</span><br><span class="line">&quot;multi_match&quot;:&#123;</span><br><span class="line">&quot;query&quot;:&quot;张三&quot;,</span><br><span class="line">&quot;fields&quot;:[&quot;address&quot;,&quot;name&quot;]</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">SQL: select * from student  where name like &apos;%张三%&apos; or address like &apos;%张三%&apos; 	</span><br><span class="line"></span><br><span class="line">未指定字段(所有字段有满足)条件查询 query_string , 含 AND 与 OR 条件</span><br><span class="line">POST /es_db/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">&quot;query&quot;:&#123;</span><br><span class="line">&quot;query_string&quot;:&#123;</span><br><span class="line">&quot;query&quot;:&quot;广州 OR 长沙&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">指定字段条件查询 query_string , 含 AND 与 OR 条件</span><br><span class="line">POST /es_db/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">&quot;query&quot;:&#123;</span><br><span class="line">&quot;query_string&quot;:&#123;</span><br><span class="line">&quot;query&quot;:&quot;admin OR 长沙&quot;,</span><br><span class="line">&quot;fields&quot;:[&quot;name&quot;,&quot;address&quot;]</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">* prefix : 前缀匹配</span><br><span class="line">* regexp : 通过正则表达式来匹配数据</span><br><span class="line"></span><br><span class="line">b. 精确匹配</span><br><span class="line">* term : 单个条件相等</span><br><span class="line">* terms : 单个字段属于某个值数组内的值</span><br><span class="line">* range : 字段属于某个范围内的值</span><br><span class="line">* exists : 某个字段的值是否存在</span><br><span class="line">* ids : 通过ID批量查询</span><br></pre></td></tr></table></figure>
+
+<h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Filter过滤器方式查询，它的查询不会计算相关性分值，也不会对结果进行排序, 因此效率会高一点，查询的结果可以被缓存。</span><br></pre></td></tr></table></figure>
+
+<h3 id="文档映射"><a href="#文档映射" class="headerlink" title="文档映射"></a>文档映射</h3><ol>
+<li>动态映射自己存放值的时候，ES动态判断我们输入的类型，会自动创建隐射关系</li>
+<li>静态映射我们事先定义好，包含字段类型，分词器等<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">PUT /es_db</span><br><span class="line">&#123;</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;sex&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;integer&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;age&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;integer&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;book&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;address&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">其中&quot;index&quot;:true,&quot;store&quot;:true的意思：</span><br><span class="line">index： 代表插入的时候要不要做分词处理</span><br><span class="line">store： 代表要不要保存元数据的信息</span><br><span class="line">比如我们要插入一条：Title： java设计模式大全 Content： java设计模式大全这本书....如果我们插入时两个字段&quot;index&quot;:true,&quot;store&quot;:trueTitle和Content在倒排索引中内容都会分词，并且元数据表都会存储这些内存如果我们插入时两个字段&quot;index&quot;:true,&quot;store&quot;:falseTitle和Content在倒排索引中内容都会分词，并且元数据表这两个字段存储null，这种情况是为了搜索的时候使用，但是页面展示的时候不展示的情况</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="核心数据类型"><a href="#核心数据类型" class="headerlink" title="核心数据类型"></a>核心数据类型</h3><ol>
+<li>string类型</li>
+</ol>
+<ul>
+<li>text: 可以分词；不能用来排序和聚合（只能精准查询, 不能分词查询，能聚合、排序）</li>
+<li>keyword: 不分词，如果能被拆分，分词器也不会帮你拆分了，不能进行分词模糊检索（只能精准查询, 不能分词查询，能聚合、排序）<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">1、通过term 和 match查询数据时细节点以及数据类型keyword与text区别</span><br><span class="line">1.1 term查询 1.1.1 term查询keyword字段。 term不会分词。而keyword字段也不分词。需要完全匹配才可。</span><br><span class="line"> hello world  ===  hello       world hello world </span><br><span class="line">1.1.2 term查询text字段。因为text字段会分词，而term不分词，所以term查询的条件必须是text字段分词后的某一个。 </span><br><span class="line"></span><br><span class="line">1.2.match查询</span><br><span class="line">1.2.1 match查询keyword字段match会被分词，而keyword不会被分词，match的需要跟keyword的完全匹配可以。就算我们理解的match已经被分词了，但是操作keyword的时候只要和keyword一致就能搜索出来</span><br><span class="line"></span><br><span class="line">1.2.2 match查询text字段match分词，text也分词，只要match的分词结果和text的分词结果有相同的就匹配。</span><br><span class="line">PUT /es_db_test</span><br><span class="line">&#123;</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;sex&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;integer&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;age&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;integer&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;book&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;address&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;index&quot;: true,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT /es_db_test/_doc/1</span><br><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;Jack&quot;,</span><br><span class="line">    &quot;sex&quot;: 1,</span><br><span class="line">    &quot;age&quot;: 25,</span><br><span class="line">    &quot;book&quot;: &quot;elasticSearch入门至精通&quot;,</span><br><span class="line">    &quot;address&quot;: &quot;广州车陂&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST /es_db_test/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;term&quot;: &#123;</span><br><span class="line">            &quot;address&quot;: &quot;广州车陂&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">POST /es_db_test/_doc/_search</span><br><span class="line">&#123;</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">        &quot;match&quot;: &#123;</span><br><span class="line">            &quot;address&quot;: &quot;广州车陂&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; // 能被搜索出来，搜广东搜索不出来</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="对已存在的mapping映射进行修改"><a href="#对已存在的mapping映射进行修改" class="headerlink" title="对已存在的mapping映射进行修改"></a>对已存在的mapping映射进行修改</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1. 如果要推倒现有的映射, 你得重新建立一个静态索引</span><br><span class="line">2. 然后把之前索引里的数据导入到新的索引里</span><br><span class="line">3. 删除原创建的索引</span><br><span class="line">4. 为新索引起个别名, 为原索引名</span><br><span class="line">导db_index数据到db_index_2</span><br><span class="line">POST _reindex</span><br><span class="line">&#123;</span><br><span class="line">    &quot;source&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;db_index&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;dest&quot;: &#123;</span><br><span class="line">        &quot;index&quot;: &quot;db_index_2&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">DELETE /db_index</span><br><span class="line">PUT /db_index_2/_alias/db_index</span><br></pre></td></tr></table></figure>
+
+<h3 id="ES并发控制"><a href="#ES并发控制" class="headerlink" title="ES并发控制"></a>ES并发控制</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">数据库层面有两种</span><br><span class="line">1. 悲观并发控制</span><br><span class="line">2. 乐观并发控制（ES使用乐观）7.x之前是用_version去判断，但是如果7.x之后不使用version进行并发版本控制， version属于单个文档，但是seq_no数据整个index（索引库），也就是更新_doc/1和_doc/2的记录seq_no是一样的接着+1，if_seq_no=版本值&amp;if_primary_term=文档位置_seq_no：文档版本号，作用同_version_primary_term：文档所在主分片的标号</span><br><span class="line">POST /es_sc/_search</span><br><span class="line">DELETE /es_sc</span><br><span class="line">POST /es_sc/_doc/1&#123;&quot;id&quot;: 1,&quot;name&quot;: &quot;Test&quot;,&quot;desc&quot;: &quot;TEST&quot;,&quot;create_date&quot;: &quot;2021-02-24&quot;&#125;</span><br><span class="line">POST /es_sc/_update/1&#123;&quot;doc&quot;: &#123;&quot;name&quot;: &quot;TEST 1&quot;&#125;&#125;</span><br><span class="line"></span><br><span class="line">POST /es_sc/_update/1/?if_seq_no=1&amp;if_primary_term=1&#123;&quot;doc&quot;: &#123;&quot;name&quot;: &quot;TEST 2&quot;&#125;    &#125;</span><br><span class="line">POST /es_sc/_update/1/?if_seq_no=1&amp;if_primary_term=1&#123;&quot;doc&quot;: &#123;&quot;name&quot;: &quot;TEST 3&quot;&#125;    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ES集群搭建"><a href="#ES集群搭建" class="headerlink" title="ES集群搭建"></a>ES集群搭建</h3><h3 id="ElasticSearch-head工具更好的管理集群"><a href="#ElasticSearch-head工具更好的管理集群" class="headerlink" title="ElasticSearch-head工具更好的管理集群"></a>ElasticSearch-head工具更好的管理集群</h3><h3 id="ES节点类型"><a href="#ES节点类型" class="headerlink" title="ES节点类型"></a>ES节点类型</h3><ol>
+<li>master<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在Elasticsearch启动时，会选举出来一个Master节点。当某个节点启动后，然后使用Zen Discovery机制找到集群中的其他节点，并建立连接。discovery.seed_hosts: [&quot;192.168.21.130&quot;, &quot;192.168.21.131&quot;, &quot;192.168.21.132&quot;]并从候选主节点中选举出一个主节点。cluster.initial_master_nodes: [&quot;node1&quot;, &quot;node2&quot;,&quot;node3&quot;]</span><br><span class="line">Master节点（相对于数据节点来说压力比较小一点）主要负责： 管理索引（创建索引、删除索引）、分配分片 维护元数据（也就是mapping映射） 管理集群节点状态 不负责数据写入和查询（主要是交给数据节点处理），比较轻量级</span><br><span class="line"> 在生产环境中，内存可以相对小一点，但机器要稳定。```2. DataNode数据节点```在Elasticsearch集群中，会有N个DataNode节点。DataNode节点主要负责：数据写入、数据检索，大部分Elasticsearch的压力都在DataNode节点上</span><br><span class="line">在生产环境中，内存最好配置大一些</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h3><ol>
+<li>主分片</li>
+<li>备份副本备份分片ES 7.x之后默认一个index只有一个主分片和一个主分片只有一个备份分片，当然也可以自己设置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">// 创建指定分片数量、副本数量的索引</span><br><span class="line">PUT /job_idx_shard_temp</span><br><span class="line">&#123;</span><br><span class="line">    &quot;mappings&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;id&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;long&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;area&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;exp&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;edu&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;salary&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;job_type&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;cmp&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;pv&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;title&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">                &quot;store&quot;: true</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;jd&quot;: &#123;</span><br><span class="line">                &quot;type&quot;: &quot;text&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;settings&quot;: &#123;</span><br><span class="line">        &quot;number_of_shards&quot;: 3,</span><br><span class="line">        &quot;number_of_replicas&quot;:2</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="Elasticsearch文档写入原理"><a href="#Elasticsearch文档写入原理" class="headerlink" title="Elasticsearch文档写入原理"></a>Elasticsearch文档写入原理</h3>
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 824787998@qq.com </span>
+    </div>
+</article>
+
+
+<p>
+    <a  class="dashang" onclick="dashangToggle()">赏</a>
+</p>
+
+
+<div class="article_copyright">
+    <p><span class="copy-title">文章标题:</span>ES操作</p>
+    
+    <p><span class="copy-title">本文作者:</span><a  title="Yanina Bu">Yanina Bu</a></p>
+    <p><span class="copy-title">发布时间:</span>2021-05-12, 21:11:16</p>
+    <p><span class="copy-title">最后更新:</span>2021-05-13, 22:55:42</p>
+    <span class="copy-title">原始链接:</span><a class="post-url" href="/2021/05/12/ES/%E6%93%8D%E4%BD%9C/" title="ES操作">https://yaninabu.github.io/2021/05/12/ES/%E6%93%8D%E4%BD%9C/</a>
+    <p>
+        <span class="copy-title">版权声明:</span><i class="fa fa-creative-commons"></i> <a rel="license noopener" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+    </p>
+</div>
+
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">©2016-2019 Yelog</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full"><span class="min "></span></button>
+<button class="post-toc-menu"><span class="post-toc-menu-icons"></span></button>
+<div class="post-toc"><span class="post-toc-title">目录</span>
+    <div class="post-toc-content">
+
+    </div>
+</div>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+<div class="acParent"></div>
+
+<div class="hide_box" onclick="dashangToggle()"></div>
+<div class="shang_box">
+    <a class="shang_close"  onclick="dashangToggle()">×</a>
+    <div class="shang_tit">
+        <p>喜欢就点赞,疼爱就打赏</p>
+    </div>
+    <div class="shang_payimg">
+        <div class="pay_img">
+            <img src="/img/alipay.png" class="alipay" title="扫码支持">
+            <img src="/img/weixin.png" class="weixin" title="扫码支持">
+        </div>
+    </div>
+    <div class="shang_payselect">
+        <span><label><input type="radio" name="pay" checked value="alipay">支付宝</label></span><span><label><input type="radio" name="pay" value="weixin">微信</label></span>
+    </div>
+</div>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+<script src="/js/jquery.pjax.js?v=1.0.1" ></script>
+
+<script src="/js/script.js?v=1.0.1" ></script>
+<script>
+    var img_resize = 'default';
+    /*作者、标签的自动补全*/
+    $(function () {
+        $('.search').AutoComplete({
+            'data': [],
+            'itemHeight': 20,
+            'width': 418
+        }).AutoComplete('show');
+    })
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $(".post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+        $("input[name=pay]").on("click", function () {
+            if($("input[name=pay]:checked").val()=="weixin"){
+                $(".shang_box .shang_payimg .pay_img").addClass("weixin_img");
+            } else {
+                $(".shang_box .shang_payimg .pay_img").removeClass("weixin_img");
+            }
+        })
+        
+
+        /*高亮代码块行号*/
+        
+        $('pre code').each(function(){
+            var lines = $(this).text().split('\n').length - 1, widther='';
+            if (lines>99) {
+                widther = 'widther'
+            }
+            var $numbering = $('<ul/>').addClass('pre-numbering ' + widther).attr("unselectable","on");
+            $(this).addClass('has-numbering ' + widther)
+                    .parent()
+                    .append($numbering);
+            for(var i=1;i<=lines;i++){
+                $numbering.append($('<li/>').text(i));
+            }
+        });
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+    function dashangToggle() {
+        $(".shang_box").fadeToggle();
+        $(".hide_box").fadeToggle();
+    }
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<style>
+    pre{
+        position: relative;
+        margin-bottom: 24px;
+        border-radius: 10px;
+        background: #FFF;
+        overflow: hidden;
+    }
+    code.has-numbering{
+        margin-left: 30px;
+    }
+    code.has-numbering.widther{
+        margin-left: 35px;
+    }
+    .pre-numbering{
+        margin: 0px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        padding: 0.5em 3px 0.7em 5px;
+        border-right: 1px solid #C3CCD0;
+        text-align: right;
+        color: #AAA;
+        background-color: #fafafa;
+    }
+    .pre-numbering.widther {
+        width: 35px;
+    }
+</style>
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+        .nav .hide-list.fullscreen {
+            left: 492px
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+    .post .pjax article .article-entry>ol, .post .pjax article .article-entry>ul, .post .pjax article>ol, .post .pjax article>ul{
+        border: #e2dede solid 1px;
+        border-radius: 10px;
+        padding: 10px 32px 10px 56px;
+    }
+    .post .pjax article .article-entry li>ol, .post .pjax article .article-entry li>ul,.post .pjax article li>ol, .post .pjax article li>ul{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    .post .pjax article .article-entry>ol>li, .post .pjax article .article-entry>ul>li,.post .pjax article>ol>li, .post .pjax article>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    .post .pjax article .article-entry li>ol>li, .post .pjax article .article-entry li>ul>li,.post .pjax article li>ol>li, .post .pjax article li>ul>li{
+        margin-bottom: auto;
+        margin-left: auto;
+    }
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+    .nav-right:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.3;
+        background: url("https://i.loli.net/2019/07/22/5d3521411f3f169375.png");
+        background-repeat: no-repeat;
+        background-position: 50% 0;
+        -ms-background-size: cover;
+        -o-background-size: cover;
+        -moz-background-size: cover;
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+    
+
+    
+</style>
+
+
+
+
+
+
+
+</html>
